@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_mood">
+
+    <fragment
+        android:id="@+id/navigation_mood"
+        android:name="com.wlx.xmood.ui.mood.MoodFragment"
+        android:label="@string/title_mood"
+        tools:layout="@layout/fragment_mood" />
+
+    <fragment
+        android:id="@+id/navigation_memorandum"
+        android:name="com.wlx.xmood.ui.memorandum.MemorandumFragment"
+        android:label="@string/title_memorandum"
+        tools:layout="@layout/fragment_memorandum" />
+
+    <fragment
+        android:id="@+id/navigation_schedule"
+        android:name="com.wlx.xmood.ui.schedule.ScheduleFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_schedule" />
+    <fragment
+        android:id="@+id/navigation_me"
+        android:name="com.wlx.xmood.ui.me.MeFragment"
+        android:label="@string/title_me"
+        tools:layout="@layout/fragment_me" />
+
+</navigation>
