@@ -7,4 +7,6 @@
     <string name="title_add_memorandum">新的备忘录</string>
     <string name="title_search_memorandum">查找备忘录</string>
     <string name="title_add_schedule">新的课程</string>
+    <string name="string_under_nickname">A XMooder~</string>
+    <string name="me_menu_theme">主题</string>
 </resources>

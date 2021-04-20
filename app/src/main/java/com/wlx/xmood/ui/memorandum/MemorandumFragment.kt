@@ -39,6 +39,18 @@ class MemorandumFragment : Fragment() {
             }
             true
         }
+//        val status_bar: FrameLayout = root.findViewById(R.id.memorandum_status_bar)
+//        status_bar.layoutParams = FrameLayout.LayoutParams(status_bar.width, getStatusHeight())
         return root
     }
+
+    private fun getStatusHeight(): Int {
+        var height = 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            height = resources.getDimensionPixelSize(resourceId) ?: 30
+        }
+        return height
+    }
+
 }
