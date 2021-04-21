@@ -10,7 +10,11 @@
         android:name="com.wlx.xmood.ui.mood.MoodFragment"
         android:label="@string/title_mood"
         tools:layout="@layout/fragment_mood" />
-
+    <fragment
+        android:id="@+id/navigation_daily"
+        android:name="com.wlx.xmood.ui.daily.DailyFragment"
+        android:label="@string/title_daily"
+        tools:layout="@layout/fragment_daily" />
     <fragment
         android:id="@+id/navigation_memorandum"
         android:name="com.wlx.xmood.ui.memorandum.MemorandumFragment"

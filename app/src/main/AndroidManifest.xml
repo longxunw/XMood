@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.XMood">
+        <activity android:name=".settings.setting.SettingActivity"></activity>
+        <activity android:name=".settings.share.ShareActivity" />
+        <activity android:name=".settings.feedback.FeedBackActivity" />
+        <activity android:name=".settings.theme.ThemeSelectActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">

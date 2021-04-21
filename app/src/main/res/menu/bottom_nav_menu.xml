@@ -5,7 +5,10 @@
         android:id="@+id/navigation_mood"
         android:icon="@drawable/ic_mood_black_24"
         android:title="@string/title_mood" />
-
+    <item
+        android:id="@+id/navigation_daily"
+        android:icon="@drawable/ic_daily_24"
+        android:title="@string/title_daily"/>
     <item
         android:id="@+id/navigation_memorandum"
         android:icon="@drawable/ic_memorandum_black_24"

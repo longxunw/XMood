@@ -1,12 +1,19 @@
 <resources>
     <string name="app_name">XMood</string>
     <string name="title_mood">心情</string>
+    <string name="title_daily">日程</string>
     <string name="title_memorandum">备忘录</string>
     <string name="title_schedule">课程表</string>
     <string name="title_me">我</string>
     <string name="title_add_memorandum">新的备忘录</string>
     <string name="title_search_memorandum">查找备忘录</string>
     <string name="title_add_schedule">新的课程</string>
+    <string name="title_add_daily">新的日程</string>
     <string name="string_under_nickname">A XMooder~</string>
     <string name="me_menu_theme">主题</string>
+    <string name="me_menu_feedback">反馈</string>
+    <string name="me_menu_share">分享</string>
+    <string name="me_menu_setting">设置</string>
+    <string name="me_menu_exit">退出</string>
+
 </resources>
