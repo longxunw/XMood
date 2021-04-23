@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.XMood" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.XMood" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -14,5 +14,9 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.XMood1" parent="Theme.XMood">
+        <item name="myTextColor">#353535</item>
     </style>
 </resources>

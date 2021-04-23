@@ -15,5 +15,10 @@
     <string name="me_menu_share">分享</string>
     <string name="me_menu_setting">设置</string>
     <string name="me_menu_exit">退出</string>
-
+    <string name="signWelcome">Welcome,</string>
+    <string name="signXMooder">XMooder!</string>
+    <string name="usernameHint">请输入用户名</string>
+    <string name="passwordHint">请输入密码</string>
+    <string name="signin">登录</string>
+    <string name="signup">注册</string>
 </resources>

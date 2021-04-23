@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="myTextColor" format="color" />
+    <attr name="myNavColor" format="color" />
+    <attr name="myToolBarColor" format="color" />
+    <attr name="myDecorColor" format="color" />
+</resources>

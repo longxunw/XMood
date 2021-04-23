@@ -9,19 +9,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.XMood">
-        <activity android:name=".settings.setting.SettingActivity"></activity>
-        <activity android:name=".settings.share.ShareActivity" />
-        <activity android:name=".settings.feedback.FeedBackActivity" />
-        <activity android:name=".settings.theme.ThemeSelectActivity" />
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:name=".sign.SignActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".settings.setting.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".settings.share.ShareActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".settings.feedback.FeedBackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".settings.theme.ThemeSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

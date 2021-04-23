@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 
 class MainActivity : BaseActivity() {
 
@@ -21,5 +22,7 @@ class MainActivity : BaseActivity() {
 //        )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        navView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+        setTheme(R.style.Theme_XMood1)
     }
 }
