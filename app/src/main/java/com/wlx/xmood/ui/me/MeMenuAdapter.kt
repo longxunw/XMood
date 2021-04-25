@@ -18,11 +18,11 @@ import com.wlx.xmood.settings.theme.ThemeSelectActivity
 class MeMenuAdapter(
     private val fragment: Fragment,
     private val dataList: List<MeMenuItem>,
-    private val context: Context?
 ) :
     RecyclerView.Adapter<MeMenuAdapter.ViewHolder>() {
 
     private val TAG = "MeMenuAdapter"
+    private lateinit var context: Context
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val img1Id: ImageView = view.findViewById(R.id.me_menu_img1)
@@ -33,7 +33,8 @@ class MeMenuAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.me_menu_item, parent, false)
+        context = parent.context
+        val view = LayoutInflater.from(context).inflate(R.layout.me_menu_item, parent, false)
         return ViewHolder(view)
     }
 

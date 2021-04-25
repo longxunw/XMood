@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 
 object ActivityCollector {
+    var onlyLocal = true
     var token = ""
     var username = ""
     lateinit var tokenSP: SharedPreferences

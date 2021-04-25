@@ -29,9 +29,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signWelcome" />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:id="@+id/signFragment"
         android:name="com.wlx.xmood.sign.in.SigninFragment"
         app:layout_constraintTop_toBottomOf="@id/signXMooder" />

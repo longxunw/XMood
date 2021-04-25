@@ -19,6 +19,17 @@
     <string name="signXMooder">XMooder!</string>
     <string name="usernameHint">请输入用户名</string>
     <string name="passwordHint">请输入密码</string>
+    <string name="passwordHintSecond">请再次输入密码</string>
     <string name="signin">登录</string>
     <string name="signup">注册</string>
+    <string name="set_userpsw">账号信息</string>
+    <string name="set_clear_cash">清除缓存</string>
+    <string name="set_currency">通用</string>
+    <string name="set_privacy">隐私</string>
+    <string name="set_about">关于XMood</string>
+    <string name="privacy_switch">仅在本机存储数据</string>
+    <string name="set_schedule_bg">课程表背景图</string>
+    <string name="set_schedule_menu_photo">从相册中选取</string>
+    <string name="set_schedule_menu_camera">使用相机拍取</string>
+    <string name="cancel">取消</string>
 </resources>

@@ -23,14 +23,9 @@ class MeFragment : Fragment() {
     ): View? {
         init()
         val root = inflater.inflate(R.layout.fragment_me, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_me)
-//        meViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-//        })
-
         val recyclerView: RecyclerView = root.findViewById(R.id.me_menu_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter = MeMenuAdapter(this, menuList, context)
+        adapter = MeMenuAdapter(this, menuList)
         recyclerView.adapter = adapter
         val exitBtn: ConstraintLayout = root.findViewById(R.id.me_menu_exit)
         exitBtn.setOnClickListener {

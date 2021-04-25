@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_dialog"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/select_schedule_bg_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="@string/set_schedule_menu_photo"
+        android:textColor="#666666"
+        android:textSize="18sp"
+        android:focusable="true"
+        app:drawableStartCompat="@drawable/ic_photo_24" />
+
+    <TextView
+        android:id="@+id/select_schedule_bg_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="@string/set_schedule_menu_camera"
+        android:textColor="#666666"
+        android:textSize="18sp"
+        android:focusable="true"
+        app:drawableStartCompat="@drawable/ic_camera_24" />
+
+    <TextView
+        android:id="@+id/select_schedule_bg_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="@string/cancel"
+        android:textColor="#666666"
+        android:textSize="18sp"
+        android:focusable="true"
+        app:drawableStartCompat="@drawable/ic_cancel_24" />
+</LinearLayout>
