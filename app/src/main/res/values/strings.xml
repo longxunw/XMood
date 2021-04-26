@@ -32,4 +32,8 @@
     <string name="set_schedule_menu_photo">从相册中选取</string>
     <string name="set_schedule_menu_camera">使用相机拍取</string>
     <string name="cancel">取消</string>
+    <string name="today">今日</string>
+    <string name="lesson">课程</string>
+    <string name="schedule_to_all">显示全部</string>
+    <string name="memorandum_all_note">所有笔记</string>
 </resources>

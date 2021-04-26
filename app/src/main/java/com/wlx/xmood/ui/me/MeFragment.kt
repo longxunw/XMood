@@ -1,20 +1,44 @@
 package com.wlx.xmood.ui.me
 
+import android.app.Activity
+import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.ActivityCollector
 import com.wlx.xmood.R
+import com.wlx.xmood.utils.DensityUtil
+import de.hdodenhof.circleimageview.CircleImageView
+import java.io.File
 
 class MeFragment : Fragment() {
     private var menuList = arrayListOf<MeMenuItem>()
 
     private lateinit var adapter: MeMenuAdapter
+
+    private lateinit var myContext: Context
+
+    private val fromPhoto = 1
+    private val fromCamera = 2
+    private lateinit var imageUri: Uri
+    private lateinit var outputImage: File
+    private lateinit var userFaceImg: CircleImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,6 +46,7 @@ class MeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         init()
+        myContext = requireContext()
         val root = inflater.inflate(R.layout.fragment_me, container, false)
         val recyclerView: RecyclerView = root.findViewById(R.id.me_menu_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -30,6 +55,10 @@ class MeFragment : Fragment() {
         val exitBtn: ConstraintLayout = root.findViewById(R.id.me_menu_exit)
         exitBtn.setOnClickListener {
             ActivityCollector.finishAll()
+        }
+        userFaceImg = root.findViewById(R.id.me_face_img)
+        userFaceImg.setOnClickListener {
+            showDialog()
         }
         return root
     }
@@ -60,4 +89,104 @@ class MeFragment : Fragment() {
             )
         )
     }
+
+    fun showDialog() {
+        val bottomDialog = Dialog(myContext, R.style.MyDialogTheme);
+        val contentView = LayoutInflater.from(myContext).inflate(
+            R.layout.set_schedule_dialog_content,
+            null
+        )
+        bottomDialog.setContentView(contentView)
+        val layoutParams: ViewGroup.MarginLayoutParams =
+            contentView.layoutParams as ViewGroup.MarginLayoutParams;
+        layoutParams.width =
+            resources.displayMetrics.widthPixels - DensityUtil.dp2px(myContext, 16f)
+        layoutParams.bottomMargin = DensityUtil.dp2px(myContext, 16f)
+        contentView.layoutParams = layoutParams
+        bottomDialog.window?.setGravity(Gravity.BOTTOM);
+        bottomDialog.window?.setWindowAnimations(R.style.BottomDialog_Animation)
+        bottomDialog.window?.findViewById<TextView>(R.id.select_schedule_bg_photo)
+            ?.setOnClickListener {
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                intent.addCategory(Intent.CATEGORY_OPENABLE)
+                intent.type = "image/*"
+                startActivityForResult(intent, fromPhoto)
+                bottomDialog.dismiss()
+            }
+        bottomDialog.window?.findViewById<TextView>(R.id.select_schedule_bg_camera)
+            ?.setOnClickListener {
+                outputImage = File(myContext.externalCacheDir, "output_image.jpg")
+                if (outputImage.exists()) {
+                    outputImage.delete()
+                }
+                outputImage.createNewFile()
+                imageUri =
+                    FileProvider.getUriForFile(
+                        myContext,
+                        "com.wlx.xmood.fileprovider",
+                        outputImage
+                    )
+                val intent = Intent("android.media.action.IMAGE_CAPTURE")
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                startActivityForResult(intent, fromCamera)
+                bottomDialog.dismiss()
+            }
+        bottomDialog.window?.findViewById<TextView>(R.id.select_schedule_bg_cancel)
+            ?.setOnClickListener {
+                bottomDialog.dismiss()
+            }
+        bottomDialog.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            fromCamera -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val bitmap =
+                        BitmapFactory.decodeStream(
+                            myContext.contentResolver.openInputStream(
+                                imageUri
+                            )
+                        )
+                    userFaceImg.setImageBitmap(rotateIfRequired(bitmap))
+                }
+            }
+            fromPhoto -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    data.data?.let {
+                        val bitmap = getBitmapFromUri(it)
+                        userFaceImg.setImageBitmap(bitmap)
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun rotateIfRequired(bitmap: Bitmap): Bitmap {
+        val exif = ExifInterface(outputImage.path)
+        val orientation =
+            exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+        return when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270)
+            else -> bitmap
+        }
+    }
+
+    private fun rotateBitmap(bitmap: Bitmap, degree: Int): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(degree.toFloat())
+        val rotatedBitmap =
+            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        bitmap.recycle()
+        return rotatedBitmap
+    }
+
+    private fun getBitmapFromUri(uri: Uri) =
+        myContext.contentResolver.openFileDescriptor(uri, "r")?.use {
+            BitmapFactory.decodeFileDescriptor(it.fileDescriptor)
+        }
 }
