@@ -32,6 +32,8 @@ class MemorandumFragment : Fragment() {
     private lateinit var navListAdapter: MemorandumNavAdapter
     private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var noteListTitle: TextView
+    private lateinit var allnote: TextView
     private val TAG = "MemorandumFragment"
     private lateinit var root: View
     private var isInCatalog = false
@@ -78,10 +80,12 @@ class MemorandumFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         noteListAdapter = MemorandumAdapter(this, noteList)
         recyclerView.adapter = noteListAdapter
-        val allnote: TextView = root.findViewById(R.id.memorandum_all_note)
+        allnote = root.findViewById(R.id.memorandum_to_all_note)
         allnote.setOnClickListener {
             changeToAll()
         }
+        noteListTitle = root.findViewById(R.id.memorandum_note_list_title)
+
         return root
     }
 
@@ -125,6 +129,8 @@ class MemorandumFragment : Fragment() {
                 noteList.add(note)
             }
         }
+        noteListTitle.text = catalog
+        allnote.visibility = View.VISIBLE
         noteListAdapter.notifyDataSetChanged()
         drawerLayout.closeDrawer(GravityCompat.START)
     }
@@ -137,7 +143,8 @@ class MemorandumFragment : Fragment() {
         for (note in allnoteList) {
             noteList.add(note)
         }
+        noteListTitle.setText(R.string.memorandum_all_note)
+        allnote.visibility = View.GONE
         noteListAdapter.notifyDataSetChanged()
     }
-
 }
