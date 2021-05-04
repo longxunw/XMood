@@ -79,6 +79,10 @@ class MemorandumEditActivity : AppCompatActivity() {
         bottomDialog.show()
     }
 
+    override fun onBackPressed() {
+        showDialog()
+    }
+
     private fun save() {
 
     }
