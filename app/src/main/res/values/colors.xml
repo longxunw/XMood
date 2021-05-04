@@ -13,4 +13,5 @@
     <color name="middle_grey">#8A897C</color>
     <color name="light_cyan">#CBF3F0</color>
     <color name="editbg">#D9000104</color>
+    <color name="ghost_white">#F8F8FF</color>
 </resources>

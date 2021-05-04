@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wlx.xmood">
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.XMood">
-        <activity android:name=".settings.setting.userinfo.UserInfoActivity"></activity>
+        <activity android:name=".ui.memorandum.edit.MemorandumEditActivity"></activity>
+        <activity android:name=".settings.setting.userinfo.UserInfoActivity" />
         <activity android:name=".settings.setting.privacy.PrivacyActivity" />
         <activity android:name=".settings.setting.currency.CurrencyActivity" />
         <activity
@@ -40,8 +40,8 @@
             android:screenOrientation="portrait" />
 
         <provider
-            android:authorities="com.wlx.xmood.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.wlx.xmood.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

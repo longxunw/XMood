@@ -1,6 +1,7 @@
 package com.wlx.xmood.ui.memorandum
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.memorandum.edit.MemorandumEditActivity
 import com.wlx.xmood.utils.TimeUtil
 
 class MemorandumAdapter(
@@ -37,7 +39,13 @@ class MemorandumAdapter(
         holder.head.text = item.head
         holder.bodySimple.text = item.bodySimple
         holder.catalog.text = item.catalog
-        val timeString = TimeUtil.Date2Str(item.updateTime, "YYYY年mm月dd日")
+        val timeString = TimeUtil.Date2Str(item.updateTime, "yyyy年MM月dd日")
+        holder.updateTime.text = timeString
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, MemorandumEditActivity::class.java)
+            intent.putExtra("title", item.head)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
