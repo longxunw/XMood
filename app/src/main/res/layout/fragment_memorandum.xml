@@ -1,52 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/memorandum_drawer_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.memorandum.MemorandumFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/memorandum_app_bar">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_memorandum"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/memorandum_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Toolbar
+                android:id="@+id/toolbar_memorandum"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/light_gray"
+                android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/memorandum_drawer_btn"
+                    android:src="@drawable/ic_home_24" />
+            </Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            android:id="@+id/memorandum_all_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/memorandum_all_note"
+            android:textColor="@color/light_gray"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/memorandum_app_bar" />
+
+        <View
+            android:layout_width="120dp"
+            android:layout_height="5dp"
             android:background="@color/light_gray"
-            android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/memorandum_all_note" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/memorandum_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/memorandum_all_note" />
 
-    <TextView
-        android:id="@+id/memorandum_all_note"
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/memorandum_navView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/memorandum_all_note"
-        android:textSize="28sp"
-        android:textColor="@color/light_gray"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/memorandum_app_bar" />
-
-    <View
-        android:layout_width="120dp"
-        android:layout_height="5dp"
-        app:layout_constraintTop_toBottomOf="@id/memorandum_all_note"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@color/light_gray" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/memorandum_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/memorandum_all_note"
-        android:layout_marginTop="20dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/memorandum_nav_header"
+        app:menu="@menu/memorandum_nav_menu" />
+</androidx.drawerlayout.widget.DrawerLayout>
