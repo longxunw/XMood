@@ -9,26 +9,36 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.haibin.calendarview.Calendar
+import com.haibin.calendarview.CalendarView
 import com.wlx.xmood.R
+import com.wlx.xmood.utils.Utils
 
-class DailyFragment : Fragment() {
+
+class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
 
     companion object {
         fun newInstance() = DailyFragment()
     }
 
+    private val weekDayMap = HashMap<Int, String>()
     private lateinit var viewModel: DailyViewModel
-
+    private val schemeDate = HashMap<String, Calendar>()
+    private lateinit var dayText: TextView
+    private lateinit var monthText: TextView
+    private lateinit var yearText: TextView
+    private lateinit var weekdayText: TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        init()
         viewModel = ViewModelProvider(this).get(DailyViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_daily, container, false)
-        val textView: TextView = root.findViewById(R.id.text_daily)
-        viewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
+//        val textView: TextView = root.findViewById(R.id.text_daily)
+//        viewModel.text.observe(viewLifecycleOwner, {
+//            textView.text = it
+//        })
         val toolbar: Toolbar = root.findViewById(R.id.toolbar_daily)
         toolbar.inflateMenu(R.menu.daily_tool_bar)
         toolbar.setOnMenuItemClickListener {
@@ -38,7 +48,64 @@ class DailyFragment : Fragment() {
             }
             true
         }
+        val calendar: CalendarView = root.findViewById(R.id.daily_calendar_view)
+        calendar.setSchemeDate(schemeDate)
+        calendar.setOnCalendarSelectListener(this)
+        dayText = root.findViewById(R.id.daily_day_text)
+        monthText = root.findViewById(R.id.daily_month_text)
+        yearText = root.findViewById(R.id.daily_year_text)
+        weekdayText = root.findViewById(R.id.daily_weekday)
         return root
     }
 
+    private fun init() {
+        weekDayMap[0] = "日"
+        weekDayMap[1] = "一"
+        weekDayMap[2] = "二"
+        weekDayMap[3] = "三"
+        weekDayMap[4] = "四"
+        weekDayMap[5] = "五"
+        weekDayMap[6] = "六"
+        schemeDate[getSchemeCalendar(2021, 5, 20, R.color.purple_500, "事").toString()] =
+            getSchemeCalendar(2021, 5, 20, R.color.purple_500, "事")
+        schemeDate[getSchemeCalendar(2021, 5, 10, R.color.purple_500, "事").toString()] =
+            getSchemeCalendar(2021, 5, 10, R.color.purple_500, "事")
+        schemeDate[getSchemeCalendar(2021, 5, 2, R.color.purple_500, "事").toString()] =
+            getSchemeCalendar(2021, 5, 2, R.color.purple_500, "事")
+        schemeDate[getSchemeCalendar(2021, 5, 25, R.color.purple_500, "日").toString()] =
+            getSchemeCalendar(2021, 5, 25, R.color.purple_500, "日")
+        schemeDate[getSchemeCalendar(2021, 5, 17, R.color.purple_500, "日").toString()] =
+            getSchemeCalendar(2021, 5, 17, R.color.purple_500, "日")
+    }
+
+    private fun getSchemeCalendar(
+        year: Int,
+        month: Int,
+        day: Int,
+        color: Int,
+        text: String
+    ): Calendar {
+        val calendar = Calendar()
+        calendar.year = year
+        calendar.month = month
+        calendar.day = day
+        calendar.schemeColor = color //如果单独标记颜色、则会使用这个颜色
+        calendar.scheme = text
+        return calendar
+    }
+
+    override fun onCalendarSelect(calendar: Calendar?, isClick: Boolean) {
+        calendar?.let {
+            dayText.text = it.day.toString()
+            val month = "${it.month}月"
+            monthText.text = month
+            yearText.text = it.year.toString()
+            val weekday = "星期${weekDayMap[it.week]}"
+            weekdayText.text = weekday
+        }
+    }
+
+    override fun onCalendarOutOfRange(calendar: Calendar?) {
+        context?.let { Utils.makeToast(it, "超出日期范围") }
+    }
 }

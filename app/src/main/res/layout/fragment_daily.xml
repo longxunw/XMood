@@ -4,12 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/daily_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/daily_app_bar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_daily"
@@ -23,24 +22,106 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <View
+        android:id="@+id/daily_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_gray"
-        app:layout_constraintTop_toBottomOf="@id/daily_app_bar"
-        android:id="@+id/schedule_line" />
+        app:layout_constraintTop_toBottomOf="@id/daily_app_bar" />
 
-    <TextView
-        android:id="@+id/text_daily"
+    <com.haibin.calendarview.CalendarLayout
+        android:id="@+id/daily_calendar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/daily_line"
+        app:calendar_content_view_id="@+id/daily_content_view"
+        app:calendar_show_mode="both_month_week_view">
+
+        <com.haibin.calendarview.CalendarView
+            android:id="@+id/daily_calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/daily_app_bar"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            app:min_year="2021"
+            app:min_year_day="1"
+            app:min_year_month="1"
+
+            app:month_view_show_mode="mode_fix"
+            app:scheme_text="事"
+            app:scheme_text_color="@color/purple_500"
+            app:selected_theme_color="@color/light_cyan"
+            app:year_view_day_text_size="9sp"
+            app:year_view_month_text_size="10sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/daily_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/daily_calendar_bottom_line"
+                android:layout_width="300dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/light_gray"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/daily_day_text"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:text="16"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/daily_calendar_bottom_line" />
+
+            <TextView
+                android:id="@+id/daily_month_text"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:text="四月"
+                android:textSize="25sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/daily_day_text" />
+
+            <TextView
+                android:id="@+id/daily_year_text"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:text="2021"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/daily_month_text" />
+
+            <TextView
+                android:id="@+id/daily_weekday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="start"
+                android:text="星期三"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/daily_day_text"
+                app:layout_constraintTop_toBottomOf="@id/daily_calendar_bottom_line" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.haibin.calendarview.CalendarLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
