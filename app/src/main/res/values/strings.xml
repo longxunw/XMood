@@ -37,4 +37,8 @@
     <string name="schedule_to_all">显示全部</string>
     <string name="memorandum_all_note">所有笔记</string>
     <string name="memorandum_nav_header">笔记分类</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="thisWeek">本周</string>
+    <string name="schedule_to_today">显示当天</string>
 </resources>

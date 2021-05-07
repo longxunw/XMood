@@ -49,21 +49,21 @@ class ScheduleFragment : Fragment() {
     private fun init() {
         lessonList.add(
             LessonItem(
-                "计算理论基础啦啦啦啦啦啦", "田家炳教育书院236",
+                "计算理论基础啦啦啦啦啦啦", "田家炳教育书院236",1, 1,
                 TimeUtil.Str2Long("08:00", "HH:mm"),
                 TimeUtil.Str2Long("09:40", "HH:mm")
             )
         )
         lessonList.add(
             LessonItem(
-                "计算理论基础", "田家炳教育书院236",
+                "计算理论基础", "田家炳教育书院236", 1, 2,
                 TimeUtil.Str2Long("08:00", "HH:mm"),
                 TimeUtil.Str2Long("09:40", "HH:mm")
             )
         )
         lessonList.add(
             LessonItem(
-                "计算理论基础", "田家炳教育书院236",
+                "计算理论基础", "田家炳教育书院236", 2, 3,
                 TimeUtil.Str2Long("08:00", "HH:mm"),
                 TimeUtil.Str2Long("09:40", "HH:mm")
             )
