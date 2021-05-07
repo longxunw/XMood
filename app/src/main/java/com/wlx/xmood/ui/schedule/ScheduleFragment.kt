@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.R
 import com.wlx.xmood.utils.TimeUtil
+import com.wlx.xmood.utils.Utils
 
 class ScheduleFragment : Fragment() {
 
@@ -30,6 +32,12 @@ class ScheduleFragment : Fragment() {
 //        scheduleViewModel.text.observe(viewLifecycleOwner, Observer {
 //            textView.text = it
 //        })
+        val toAllBtn: Button = root.findViewById(R.id.schedule_to_all_btn)
+        toAllBtn.setOnClickListener {
+            Utils.replaceFragmentToActivity(
+                fragmentManager, LessonAllFragment.newInstance(), R.id.nav_host_fragment
+            )
+        }
         init()
         val toolbar: Toolbar = root.findViewById(R.id.toolbar_schedule)
         toolbar.inflateMenu(R.menu.schedule_tool_bar)

@@ -1,18 +1,26 @@
 package com.wlx.xmood.ui.schedule;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
+
+import androidx.fragment.app.Fragment;
 
 import com.wlx.xmood.R;
 
 
 public class LessonAllFragment extends Fragment {
+
+    private static LessonAllFragment fragment;
+
+    public static LessonAllFragment newInstance() {
+
+        if (fragment == null) {
+            fragment = new LessonAllFragment();
+        }
+        return fragment;
+    }
 
 
     @Override
