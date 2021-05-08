@@ -41,15 +41,12 @@
             android:id="@+id/daily_calendar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/daily_app_bar"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             app:min_year="2021"
             app:min_year_day="1"
             app:min_year_month="1"
-
             app:month_view_show_mode="mode_fix"
-            app:scheme_text="事"
             app:scheme_text_color="@color/purple_500"
             app:selected_theme_color="@color/light_cyan"
             app:year_view_day_text_size="9sp"
@@ -120,6 +117,40 @@
                 android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@id/daily_day_text"
                 app:layout_constraintTop_toBottomOf="@id/daily_calendar_bottom_line" />
+
+            <View
+                android:id="@+id/daily_weekday_bottom_line"
+                android:layout_width="200dp"
+                android:layout_height="1dp"
+                app:layout_constraintLeft_toLeftOf="@id/daily_weekday"
+                app:layout_constraintTop_toBottomOf="@id/daily_weekday"
+                app:layout_constraintRight_toRightOf="parent"
+                android:background="@color/light_gray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/daily_content_list_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+
+                app:layout_constraintLeft_toLeftOf="@id/daily_weekday"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/daily_weekday"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/daily_no_event"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="今天没有事情哦，快去放松一下吧"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:textStyle="bold|italic"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="@id/daily_weekday"
+                app:layout_constraintTop_toBottomOf="@id/daily_weekday"
+                app:layout_constraintRight_toRightOf="parent"
+                android:visibility="gone" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.haibin.calendarview.CalendarLayout>

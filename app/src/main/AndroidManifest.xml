@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.XMood">
-        <activity android:name=".ui.memorandum.edit.MemorandumEditActivity"></activity>
+        <activity android:name=".ui.daily.edit.DailyEditActivity"></activity>
+        <activity android:name=".ui.memorandum.edit.MemorandumEditActivity" />
         <activity android:name=".settings.setting.userinfo.UserInfoActivity" />
         <activity android:name=".settings.setting.privacy.PrivacyActivity" />
         <activity android:name=".settings.setting.currency.CurrencyActivity" />

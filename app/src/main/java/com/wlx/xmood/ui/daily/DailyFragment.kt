@@ -8,11 +8,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
 import com.wlx.xmood.R
+import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
@@ -28,6 +34,9 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
     private lateinit var monthText: TextView
     private lateinit var yearText: TextView
     private lateinit var weekdayText: TextView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: DailyItemAdapter
+    private lateinit var noEventText: TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +44,8 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         init()
         viewModel = ViewModelProvider(this).get(DailyViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_daily, container, false)
+        noEventText = root.findViewById(R.id.daily_no_event)
+        viewModel.searchEvent(TimeUtil.Date2Str(Date(), "yyyy-MM-dd"))
 //        val textView: TextView = root.findViewById(R.id.text_daily)
 //        viewModel.text.observe(viewLifecycleOwner, {
 //            textView.text = it
@@ -55,6 +66,26 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         monthText = root.findViewById(R.id.daily_month_text)
         yearText = root.findViewById(R.id.daily_year_text)
         weekdayText = root.findViewById(R.id.daily_weekday)
+        recyclerView = root.findViewById(R.id.daily_content_list_view)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        adapter = DailyItemAdapter(this, viewModel.eventList)
+        recyclerView.adapter = adapter
+        val weekDayBottomLine: View = root.findViewById(R.id.daily_weekday_bottom_line)
+        viewModel.eventLiveData.observe(viewLifecycleOwner, Observer { result ->
+            val events = result.getOrNull()
+            if (events != null) {
+                noEventText.visibility = View.GONE
+                weekDayBottomLine.visibility = View.GONE
+                viewModel.eventList.clear()
+                viewModel.eventList.addAll(events)
+                recyclerView.visibility = View.VISIBLE
+                adapter.notifyDataSetChanged()
+            } else {
+                weekDayBottomLine.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+                noEventText.visibility = View.VISIBLE
+            }
+        })
         return root
     }
 
@@ -96,12 +127,14 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
 
     override fun onCalendarSelect(calendar: Calendar?, isClick: Boolean) {
         calendar?.let {
-            dayText.text = it.day.toString()
-            val month = "${it.month}月"
+            val day = String.format("%02d", it.day)
+            dayText.text = day
+            val month = String.format("%02d", it.month) + "月"
             monthText.text = month
             yearText.text = it.year.toString()
             val weekday = "星期${weekDayMap[it.week]}"
             weekdayText.text = weekday
+            viewModel.searchEvent("${it.year}-${String.format("%02d", it.month)}-$day")
         }
     }
 
