@@ -3,6 +3,7 @@
     package="com.wlx.xmood">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.XMood">
-        <activity android:name=".ui.daily.edit.DailyEditActivity"></activity>
+        <activity android:name=".ui.schedule.edit.ScheduleEditActivity"></activity>
+        <activity android:name=".ui.mood.edit.MoodEditActivity" />
+        <activity android:name=".ui.daily.edit.DailyEditActivity" />
         <activity android:name=".ui.memorandum.edit.MemorandumEditActivity" />
         <activity android:name=".settings.setting.userinfo.UserInfoActivity" />
         <activity android:name=".settings.setting.privacy.PrivacyActivity" />

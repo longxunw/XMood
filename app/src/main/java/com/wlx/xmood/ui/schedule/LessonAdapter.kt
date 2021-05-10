@@ -1,14 +1,17 @@
 package com.wlx.xmood.ui.schedule
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity
 import com.wlx.xmood.utils.TimeUtil
 import java.sql.Date
 
@@ -25,6 +28,7 @@ class LessonAdapter(
         val lessonName: TextView = view.findViewById(R.id.schedule_lesson_name)
         val lessonLocation: TextView = view.findViewById(R.id.schedule_lesson_location)
         val lessonTime: TextView = view.findViewById(R.id.schedule_lesson_time)
+        val toEdit: ImageView = view.findViewById(R.id.schedule_lesson_arrow_btn)
         val line: View = view.findViewById(R.id.schedule_lesson_item_line)
     }
 
@@ -47,6 +51,11 @@ class LessonAdapter(
         val timeString =
             TimeUtil.Date2Str(startDate, "HH:mm") + "-" + TimeUtil.Date2Str(endDate, "HH:mm")
         holder.lessonTime.text = timeString
+        holder.toEdit.setOnClickListener {
+            val intent = Intent(context, ScheduleEditActivity::class.java)
+            intent.putExtra("ScheduleId", item.id)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
