@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:color="@color/teal_700" />
-    <item android:state_pressed="false" android:color="@color/teal_200" />
+    <item android:state_pressed="true" android:color="@color/dark_electric_black" />
+    <item android:state_pressed="false" android:color="@color/independence" />
 </selector>

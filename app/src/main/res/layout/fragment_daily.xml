@@ -88,7 +88,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="end"
                 android:text="四月"
-                android:textSize="25sp"
+                android:textSize="24sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/daily_day_text" />
 
@@ -100,7 +100,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="end"
                 android:text="2021"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/daily_month_text" />
@@ -113,7 +113,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="start"
                 android:text="星期三"
-                android:textSize="25dp"
+                android:textSize="24dp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@id/daily_day_text"
                 app:layout_constraintTop_toBottomOf="@id/daily_calendar_bottom_line" />
