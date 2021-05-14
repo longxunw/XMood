@@ -8,5 +8,9 @@ class MoodEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mood_edit)
+        val moodId = intent.getStringExtra("moodId")
+        if (moodId == null) {
+
+        }
     }
 }

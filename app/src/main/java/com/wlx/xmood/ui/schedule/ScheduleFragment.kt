@@ -21,11 +21,22 @@ class ScheduleFragment : Fragment() {
 
     private val lessonList = ArrayList<LessonItem>()
 
+    companion object {
+        lateinit var instance: ScheduleFragment
+        fun newInstance(): ScheduleFragment {
+            if (instance == null) {
+                instance = ScheduleFragment()
+            }
+            return instance
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        instance = this
         scheduleViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_schedule, container, false)
 //        val textView: TextView = root.findViewById(R.id.text_schedule)

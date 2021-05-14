@@ -1,5 +1,6 @@
 package com.wlx.xmood.ui.memorandum
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,7 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.memorandum.edit.MemorandumEditActivity
+import com.wlx.xmood.ui.memorandum.search.MemorandumSearchFragment
 import com.wlx.xmood.utils.TimeUtil
+import com.wlx.xmood.utils.Utils
 
 class MemorandumFragment : Fragment() {
 
@@ -36,6 +40,10 @@ class MemorandumFragment : Fragment() {
     private lateinit var root: View
     private var isInCatalog = false
     private var nowCatalog = "all"
+
+    companion object {
+        fun newInstance() = MemorandumFragment()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,10 +69,19 @@ class MemorandumFragment : Fragment() {
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.add_memorandum ->
+                R.id.add_memorandum -> {
+                    val intent = Intent(context, MemorandumEditActivity::class.java)
+                    context?.startActivity(intent)
                     Toast.makeText(context, "add_memorandum", Toast.LENGTH_SHORT).show()
-                R.id.search_memorandum ->
+                }
+                R.id.search_memorandum -> {
                     Toast.makeText(context, "search_memorandum", Toast.LENGTH_SHORT).show()
+                    Utils.replaceFragmentToActivity(
+                        fragmentManager,
+                        MemorandumSearchFragment.newInstance(),
+                        R.id.nav_host_fragment
+                    )
+                }
             }
             true
         }
