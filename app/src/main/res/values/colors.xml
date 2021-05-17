@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#D2D7DF</color>
+    <color name="dull_blue">#3E92CC</color>
+    <color name="lake_blue">#6184D8</color>
     <color name="jet">#353535</color>
     <color name="pale_silver">#BDBBB0</color>
     <color name="middle_grey">#8A897C</color>

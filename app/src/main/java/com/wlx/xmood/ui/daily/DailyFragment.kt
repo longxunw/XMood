@@ -1,5 +1,6 @@
 package com.wlx.xmood.ui.daily
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.daily.edit.DailyEditActivity
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
 import java.util.*
@@ -54,8 +56,11 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         toolbar.inflateMenu(R.menu.daily_tool_bar)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.add_daily ->
+                R.id.add_daily -> {
                     Toast.makeText(context, "add_daily", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, DailyEditActivity::class.java) //添加日程activity
+                    context?.startActivity(intent)
+                }
             }
             true
         }

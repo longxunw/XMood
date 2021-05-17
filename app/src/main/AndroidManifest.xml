@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.XMood">
         <activity android:name=".ui.schedule.edit.ScheduleEditActivity"></activity>
-        <activity android:name=".ui.mood.edit.MoodEditActivity" />
+        <activity android:name=".ui.mood.edit.MoodEditActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.daily.edit.DailyEditActivity" />
         <activity android:name=".ui.memorandum.edit.MemorandumEditActivity" />
         <activity android:name=".settings.setting.userinfo.UserInfoActivity" />
