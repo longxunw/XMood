@@ -16,6 +16,7 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -32,8 +33,10 @@ import com.wlx.xmood.utils.Utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class LessonAllFragment extends Fragment {
     private View view;
@@ -66,10 +69,13 @@ public class LessonAllFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_lesson_all, container, false);
             view.findViewById(R.id.schedule_all_lesson).getBackground().setAlpha(190);
         }
+
+        initDate();
 
         view.post(new Runnable() {
             @Override
@@ -85,7 +91,6 @@ public class LessonAllFragment extends Fragment {
                     view.findViewById(R.id.schedule_all_lesson_fri_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
                     view.findViewById(R.id.schedule_all_lesson_sat_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
                     view.findViewById(R.id.schedule_all_lesson_sun_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-
                 }
 
                 try {
@@ -114,6 +119,40 @@ public class LessonAllFragment extends Fragment {
         return view;
     }
 
+    private void initDate() {
+        List<String> result = getCurrentWeekDate();
+        GridView gridView = view.findViewById(R.id.schedule_all_lesson_day_list);
+        gridView.setAdapter(new LessonAllDateAdapter(this.getContext(), result));
+
+    }
+
+    private List<String> getCurrentWeekDate() {
+        List<String> result = new ArrayList<>();
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if (1 == dayWeek) {
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
+        String monday = sdf.format(cal.getTime());
+        result.add(monday);
+        for (int i = 1; i < 7; ++i) {
+            cal.add(Calendar.DATE, 1);
+            result.add(sdf.format(cal.getTime()));
+        }
+        return result;
+    }
+
+
+
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     private TextView createTextView(int start, int end, LessonItem lessonItem) {
         TextView tv = new TextView(this.getActivity());
         int marginHeight = 4;
@@ -136,6 +175,7 @@ public class LessonAllFragment extends Fragment {
         tv.setEllipsize(TextUtils.TruncateAt.valueOf("END"));
 
         tv.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
             @Override
             public void onClick(View view) {
                 View alertView = getLayoutInflater().inflate(R.layout.schedule_lesson_content, null);
@@ -157,7 +197,7 @@ public class LessonAllFragment extends Fragment {
                         "-" + (new SimpleDateFormat("HH:mm")).format(new Date(lessonItem.getEndTime())));
 
 
-                AlertDialog dialog = builder.setTitle("课程详情")
+                @SuppressLint("InflateParams") AlertDialog dialog = builder.setTitle("课程详情")
                         .setCustomTitle(getLayoutInflater().inflate(R.layout.schedule_lesson_content_title, null))
                         .setView(alertView)
                         .create();
@@ -295,6 +335,12 @@ public class LessonAllFragment extends Fragment {
 
         lessonItemList.add(
                 new LessonItem(4, "计算理论基础5晚", "田家炳教育书院236", 5, 4,
+                        new SimpleDateFormat("HH:mm").parse("18:00").getTime(),
+                        new SimpleDateFormat("HH:mm").parse("19:40").getTime())
+        );
+
+        lessonItemList.add(
+                new LessonItem(4, "计算理论基础5晚", "田家炳教育书院236", 1, 4,
                         new SimpleDateFormat("HH:mm").parse("18:00").getTime(),
                         new SimpleDateFormat("HH:mm").parse("19:40").getTime())
         );

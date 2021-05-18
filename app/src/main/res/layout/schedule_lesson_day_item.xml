@@ -1,49 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/schedule_all_lesson_mon"
-        android:background="#88ffffff"
-        style="@style/scheduleAllLessonDayItem"
-        android:text="周一\n"/>
+<TextView android:id="@+id/schedule_all_lesson_item"
+    android:background="#88ffffff"
+    style="@style/scheduleAllLessonDayItem"
+    android:layout_weight="1"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
 
-    <TextView
-        android:id="@+id/schedule_all_lesson_tues"
-        android:background="#88ffffff"
-        style="@style/scheduleAllLessonDayItem"
-        android:text="周二\n"/>
-
-    <TextView
-        android:id="@+id/schedule_all_lesson_wed"
-        android:background="#88ffffff"
-        style="@style/scheduleAllLessonDayItem"
-        android:text="周三\n"/>
-
-    <TextView
-        android:id="@+id/schedule_all_lesson_thurs"
-        android:background="#88ffffff"
-        style="@style/scheduleAllLessonDayItem"
-        android:text="周四\n"/>
-
-    <TextView
-        android:id="@+id/schedule_all_lesson_fri"
-        android:background="#88ffffff"
-        style="@style/scheduleAllLessonDayItem"
-        android:text="周五\n"/>
-
-    <TextView
-        android:id="@+id/schedule_all_lesson_sat"
-        android:background="#88ffffff"
-        style="@style/scheduleAllLessonDayItem"
-        android:text="周六\n"/>
-
-    <TextView
-        android:id="@+id/schedule_all_lesson_sun"
-        android:background="#88ffffff"
-        style="@style/scheduleAllLessonDayItem"
-        android:text="周日\n"/>
-
-</LinearLayout>
