@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -21,12 +22,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.wlx.xmood.R;
+import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity;
 import com.wlx.xmood.utils.TimeUtil;
 import com.wlx.xmood.utils.Utils;
 
@@ -36,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class LessonAllFragment extends Fragment {
     private View view;
@@ -74,6 +77,26 @@ public class LessonAllFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_lesson_all, container, false);
             view.findViewById(R.id.schedule_all_lesson).getBackground().setAlpha(190);
         }
+//        val toolbar: Toolbar = root.findViewById(R.id.toolbar_schedule)
+//        toolbar.inflateMenu(R.menu.schedule_tool_bar)
+//        toolbar.setOnMenuItemClickListener {
+//            when (it.itemId) {
+//                R.id.add_schedule ->
+//                Toast.makeText(context, "add_schedule", Toast.LENGTH_SHORT).show()
+//            }
+//            true
+//        }
+        Toolbar toolbar = view.findViewById(R.id.toolbar_schedule);
+        toolbar.inflateMenu(R.menu.schedule_tool_bar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.add_schedule) {
+                    Toast.makeText(getContext(), "add_schedule", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
 
         initDate();
 
@@ -197,9 +220,18 @@ public class LessonAllFragment extends Fragment {
                         "-" + (new SimpleDateFormat("HH:mm")).format(new Date(lessonItem.getEndTime())));
 
 
-                @SuppressLint("InflateParams") AlertDialog dialog = builder.setTitle("课程详情")
+                AlertDialog dialog = builder.setTitle("课程详情")
                         .setCustomTitle(getLayoutInflater().inflate(R.layout.schedule_lesson_content_title, null))
                         .setView(alertView)
+                        .setPositiveButton("编辑", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
+                                intent.putExtra("ScheduleId", lessonItem.getId());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                getContext().startActivity(intent);
+                            }
+                        })
                         .create();
 
                 dialog.show();
