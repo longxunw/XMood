@@ -31,6 +31,7 @@ class SigninFragment : Fragment() {
         val signinBtn: Button = root.findViewById(R.id.signinInBtn)
         signinBtn.setOnClickListener {
             val intent = Intent(context, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
         val signupBtn: Button = root.findViewById(R.id.signinUpBtn)

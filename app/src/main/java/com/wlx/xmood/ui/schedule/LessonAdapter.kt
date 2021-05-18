@@ -54,6 +54,7 @@ class LessonAdapter(
         holder.toEdit.setOnClickListener {
             val intent = Intent(context, ScheduleEditActivity::class.java)
             intent.putExtra("ScheduleId", item.id)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
     }

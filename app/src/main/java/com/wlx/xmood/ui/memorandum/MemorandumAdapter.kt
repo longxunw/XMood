@@ -44,6 +44,7 @@ class MemorandumAdapter(
         holder.itemView.setOnClickListener {
             val intent = Intent(context, MemorandumEditActivity::class.java)
             intent.putExtra("title", item.head)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
     }

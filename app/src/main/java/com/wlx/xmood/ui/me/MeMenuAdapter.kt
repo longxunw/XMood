@@ -47,24 +47,28 @@ class MeMenuAdapter(
         when (item.targetActivity) {
             "ThemeSelectActivity" -> {
                 intent = Intent(context, ThemeSelectActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 holder.itemView.setOnClickListener {
                     fragment.startActivity(intent)
                 }
             }
             "FeedBackActivity" -> {
                 intent = Intent(context, FeedBackActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 holder.itemView.setOnClickListener {
                     fragment.startActivity(intent)
                 }
             }
             "ShareActivity" -> {
                 intent = Intent(context, ShareActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 holder.itemView.setOnClickListener {
                     fragment.startActivity(intent)
                 }
             }
             "SettingActivity" -> {
                 intent = Intent(context, SettingActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 holder.itemView.setOnClickListener {
                     fragment.startActivity(intent)
                 }

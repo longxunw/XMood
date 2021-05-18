@@ -3,12 +3,12 @@ package com.wlx.xmood.ui.memorandum.edit
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.utils.Utils
 
-class MemorandumEditActivity : AppCompatActivity() {
+class MemorandumEditActivity : BaseActivity() {
     private var isNew = true
 
     override fun onCreate(savedInstanceState: Bundle?) {

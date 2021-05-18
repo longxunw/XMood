@@ -71,6 +71,7 @@ class MemorandumFragment : Fragment() {
             when (it.itemId) {
                 R.id.add_memorandum -> {
                     val intent = Intent(context, MemorandumEditActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context?.startActivity(intent)
                     Toast.makeText(context, "add_memorandum", Toast.LENGTH_SHORT).show()
                 }

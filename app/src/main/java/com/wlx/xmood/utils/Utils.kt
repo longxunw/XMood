@@ -13,6 +13,7 @@ object Utils {
     ) {
         manager?.beginTransaction()?.apply {
             replace(frameId, fragment)
+            addToBackStack(null)
         }?.commit()
     }
 
