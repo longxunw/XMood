@@ -37,6 +37,7 @@ class MoodFragment : Fragment() {
         val addBtn: FloatingActionButton = root.findViewById(R.id.add_mood)
         addBtn.setOnClickListener {
             val intent = Intent(context, MoodEditActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             this.startActivity(intent)
         }
         timeTab = root.findViewById(R.id.mood_time_tab)

@@ -54,6 +54,7 @@ class DailyItemAdapter(
         holder.eventText.setOnClickListener {
             val intent = Intent(context, DailyEditActivity::class.java)
             intent.putExtra("id", item.id)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
         holder.confirmBtn.setOnClickListener {

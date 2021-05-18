@@ -2,14 +2,14 @@ package com.wlx.xmood.ui.mood.edit
 
 import android.os.Bundle
 import android.view.View
-import android.widget.*
 import android.widget.AdapterView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.GridView
+import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.utils.Utils
 
 
-class MoodEditActivity : AppCompatActivity() , AdapterView.OnItemSelectedListener{
+class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     val list: ArrayList<CategoryItem> = ArrayList()
     val texts = arrayOf<String>("Happy", "Sad", "Angry", "Lonely")
 
