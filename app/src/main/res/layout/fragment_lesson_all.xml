@@ -51,15 +51,14 @@
         android:id="@+id/schedule_all_lesson_week"
         android:layout_width="match_parent"
         android:layout_below="@id/schedule_line"
-        android:layout_marginTop="10dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="#ffffffff">
 
         <TextView
             android:id="@+id/schedule_week_text"
             android:layout_centerHorizontal="true"
             android:layout_width="200dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="第七周"
@@ -69,108 +68,92 @@
         <Button
             android:id="@+id/schedule_to_today_btn"
             android:layout_alignParentRight="true"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:background="@color/sign_btn"
             android:text="@string/schedule_to_today"
             android:textColor="@color/white" />
 
     </RelativeLayout>
 
-    <GridLayout
+    <RelativeLayout
         android:id="@+id/schedule_all_lesson"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/schedule_all_lesson_week"
         android:background="@drawable/all_lesson_background"
-        android:columnCount="8"
-        android:rowCount="11">
 
-        <!--    TODO: 周一/周二/... 用adapter写进去   -->
-        <LinearLayout
-            android:id="@+id/schedule_all_lesson_day"
-            android:layout_columnSpan="8"
-            android:layout_rowSpan="1"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_height="50dp"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:background="#66ffffff"
-                android:textColor="#ff333333"
-                android:textSize="14sp"
-                android:gravity="center"/>
-        </LinearLayout>
+        android:orientation="vertical">
 
-        <!--    TODO: 01 8:00-8:45... 用adapter写进去     -->
-        <LinearLayout
+        <include
             android:id="@+id/schedule_all_lesson_time"
-            android:layout_rowSpan="10"
-            android:layout_columnSpan="1"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            layout="@layout/schedule_lesson_time_item"/>
 
+        <include
+            android:id="@+id/schedule_all_lesson_day"
+            android:layout_toRightOf="@+id/schedule_all_lesson_time"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            layout="@layout/schedule_lesson_day_item"/>
+
+
+        <LinearLayout
+            android:id="@+id/schedule_all_lesson_table"
+            android:layout_below="@+id/schedule_all_lesson_day"
+            android:layout_marginTop="4px"
+            android:layout_toRightOf="@+id/schedule_all_lesson_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/schedule_all_lesson_mon_col"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/schedule_all_lesson_tues_col"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/schedule_all_lesson_wed_col"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/schedule_all_lesson_thu_col"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/schedule_all_lesson_fri_col"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/schedule_all_lesson_sat_col"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/schedule_all_lesson_sun_col"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </RelativeLayout>
         </LinearLayout>
 
-        <GridLayout
-            android:id="@+id/schedule_all_lesson_mon"
-            android:columnCount="10"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="10"
-            android:orientation="horizontal">
-        </GridLayout>
 
-        <GridLayout
-            android:id="@+id/schedule_all_lesson_tues"
-            android:columnCount="10"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="10"
-            android:orientation="horizontal">
-        </GridLayout>
-
-        <GridLayout
-            android:id="@+id/schedule_all_lesson_wed"
-            android:columnCount="10"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="10"
-            android:orientation="horizontal">
-        </GridLayout>
-
-        <GridLayout
-            android:id="@+id/schedule_all_lesson_thu"
-            android:columnCount="10"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="10"
-            android:orientation="horizontal">
-        </GridLayout>
-
-        <GridLayout
-            android:id="@+id/schedule_all_lesson_fri"
-            android:columnCount="10"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="10"
-            android:orientation="horizontal">
-        </GridLayout>
-
-        <GridLayout
-            android:id="@+id/schedule_all_lesson_sat"
-            android:columnCount="10"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="10"
-            android:orientation="horizontal">
-        </GridLayout>
-
-        <GridLayout
-            android:id="@+id/schedule_all_lesson_sun"
-            android:columnCount="10"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="10"
-            android:orientation="horizontal">
-        </GridLayout>
-
-
-    </GridLayout>
-
+    </RelativeLayout>
 
 
 

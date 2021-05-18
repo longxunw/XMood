@@ -1,27 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
     android:layout_weight="1"
-    android:textColor="#ff333333"
-    android:background="#66ffffff"
-    android:textSize="14sp"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/schedule_all_lesson_number"
+        android:id="@+id/schedule_all_lesson_blank"
+        style="@style/scheduleAllLessonDayItem"
+        android:background="#88ffffff"
+        android:textSize="13sp"
+        android:layout_marginBottom="4px"
+        android:text="\n"/>
+
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:textStyle="bold" />
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
+        android:orientation="vertical">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="1"/>
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="08:00\n08:45"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/schedule_all_lesson_time"
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:gravity="center" />
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
 
+        android:orientation="vertical">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="2"/>
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="08:55\n09:40"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
+        android:orientation="vertical">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="3"/>
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="10:00\n10:45"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
+        android:orientation="vertical"
+        android:layout_marginBottom="4px">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="4" />
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="10:55\n11:40"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
+        android:orientation="vertical">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="5"/>
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="13:00\n13:45"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
+        android:orientation="vertical">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="6"/>
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="13:55\n14:40"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
+        android:orientation="vertical">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="7"/>
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="15:00\n15:45"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
+        android:orientation="vertical"
+        android:layout_marginBottom="4px">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="8"/>
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="15:55\n16:40"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
+        android:orientation="vertical">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="9"/>
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="18:00\n18:45"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/schedule_all_lesson_period10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ff333333"
+        android:background="#66ffffff"
+        android:orientation="vertical">
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodNumItem"
+            android:text="10"/>
+        <TextView
+            style="@style/scheduleAllLessonTimePeriodItem"
+            android:text="18:55\n19:40"/>
+    </LinearLayout>
 
 </LinearLayout>
