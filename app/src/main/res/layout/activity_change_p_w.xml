@@ -6,13 +6,119 @@
     android:layout_height="match_parent"
     tools:context=".settings.setting.userinfo.ChangePWActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This is Change Password Activity"
-        android:textSize="20sp"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_change_pw"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/light_gray"
+        android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageButton
+            android:id="@+id/change_pw_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:src="@drawable/ic_back_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="修改密码"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/change_pw_current_pw"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:text="当前密码："
+        android:textSize="20sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_change_pw"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp" />
+
+    <EditText
+        android:id="@+id/change_pw_current_pw_edit"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:hint="请输入当前密码"
+        android:inputType="textPassword"
+        android:textSize="20sp"
+        android:background="@drawable/sign_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_change_pw"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@id/change_pw_current_pw"
+        android:paddingHorizontal="10dp" />
+
+    <TextView
+        android:id="@+id/change_pw_new_pw"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:text="新的密码："
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/change_pw_current_pw"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp" />
+
+    <EditText
+        android:id="@+id/change_pw_new_pw_edit"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:hint="请输入新的密码"
+        android:inputType="textPassword"
+        android:textSize="20sp"
+        android:background="@drawable/sign_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/change_pw_current_pw_edit"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@id/change_pw_current_pw"
+        android:paddingHorizontal="10dp" />
+
+    <TextView
+        android:id="@+id/change_pw_new_pw_repeat"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:text="确认密码："
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/change_pw_new_pw"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp" />
+
+    <EditText
+        android:id="@+id/change_pw_new_pw_repeat_edit"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:hint="请确认密码"
+        android:inputType="textPassword"
+        android:textSize="20sp"
+        android:background="@drawable/sign_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/change_pw_new_pw_edit"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@id/change_pw_current_pw"
+        android:paddingHorizontal="10dp" />
+
+    <Button
+        android:id="@+id/change_pw_confirm_btn"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:text="确认修改"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/change_pw_new_pw_repeat"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

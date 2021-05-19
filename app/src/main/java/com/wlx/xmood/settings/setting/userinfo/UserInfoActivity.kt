@@ -2,7 +2,7 @@ package com.wlx.xmood.settings.setting.userinfo
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
+import android.widget.ImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.wlx.xmood.ActivityCollector
 import com.wlx.xmood.BaseActivity
@@ -14,7 +14,7 @@ class UserInfoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_info)
-        val backBtn: ImageView = findViewById(R.id.user_info_back_btn)
+        val backBtn: ImageButton = findViewById(R.id.user_info_back_btn)
         backBtn.setOnClickListener {
             finish()
         }

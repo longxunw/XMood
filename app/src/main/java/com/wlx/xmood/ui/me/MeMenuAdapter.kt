@@ -2,6 +2,7 @@ package com.wlx.xmood.ui.me
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,11 +77,12 @@ class MeMenuAdapter(
                 }
             }
             "Logout" -> {
-                ActivityCollector.isLogin = false
+                Log.d(TAG, "onBindViewHolder: isLogin logout")
                 intent = Intent(context, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 holder.itemView.setOnClickListener {
+                    ActivityCollector.isLogin = false
                     fragment.startActivity(intent)
                 }
             }

@@ -1,9 +1,11 @@
 package com.wlx.xmood.settings.setting
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.wlx.xmood.ActivityCollector
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 
@@ -11,6 +13,8 @@ class SettingActivity : BaseActivity() {
     private val menuList = ArrayList<SetMenuItem>()
 
     private lateinit var adapter: SetMenuAdapter
+
+    private val TAG = "SettingActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,12 +30,15 @@ class SettingActivity : BaseActivity() {
         recyclerView.adapter = adapter
     }
 
-    fun init() {
-        menuList.add(
-            SetMenuItem(
-                R.string.set_userpsw, true, "UserInfoActivity"
+    private fun init() {
+        Log.d(TAG, "isLogin: ${ActivityCollector.isLogin}")
+        if (ActivityCollector.isLogin) {
+            menuList.add(
+                SetMenuItem(
+                    R.string.set_userpsw, true, "UserInfoActivity"
+                )
             )
-        )
+        }
 
         menuList.add(
             SetMenuItem(

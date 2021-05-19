@@ -109,6 +109,7 @@ class MeFragment : Fragment() {
                 R.drawable.ic_me_arrow_24, "SettingActivity"
             )
         )
+        Log.d(TAG, "isLogin: ${ActivityCollector.isLogin}")
         if (ActivityCollector.isLogin) {
             menuList.add(
                 MeMenuItem(
