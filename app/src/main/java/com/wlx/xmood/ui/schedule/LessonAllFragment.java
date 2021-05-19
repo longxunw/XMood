@@ -35,6 +35,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+
 public class LessonAllFragment extends Fragment {
     private View view;
     private int gridWidth, gridHeight;
@@ -261,16 +262,16 @@ public class LessonAllFragment extends Fragment {
 
     private int getStartPeriod(LessonItem lessonItem) throws ParseException {
         long startTime = lessonItem.getStartTime();
-        long period1 = new SimpleDateFormat("HH:mm").parse("08:00").getTime();
-        long period2 = new SimpleDateFormat("HH:mm").parse("08:55").getTime();
-        long period3 = new SimpleDateFormat("HH:mm").parse("10:00").getTime();
-        long period4 = new SimpleDateFormat("HH:mm").parse("10:55").getTime();
-        long period5 = new SimpleDateFormat("HH:mm").parse("13:00").getTime();
-        long period6 = new SimpleDateFormat("HH:mm").parse("13:55").getTime();
-        long period7 = new SimpleDateFormat("HH:mm").parse("15:00").getTime();
-        long period8 = new SimpleDateFormat("HH:mm").parse("15:55").getTime();
-        long period9 = new SimpleDateFormat("HH:mm").parse("18:00").getTime();
-        long period10 = new SimpleDateFormat("HH:mm").parse("18:55").getTime();
+        long period1 = TimeUtil.INSTANCE.Str2Long("08:00", "HH:mm"); //new SimpleDateFormat("HH:mm").parse("08:00").getTime();
+        long period2 = TimeUtil.INSTANCE.Str2Long("08:55", "HH:mm");
+        long period3 = TimeUtil.INSTANCE.Str2Long("10:00", "HH:mm");
+        long period4 = TimeUtil.INSTANCE.Str2Long("10:55", "HH:mm");
+        long period5 = TimeUtil.INSTANCE.Str2Long("13:00", "HH:mm");
+        long period6 = TimeUtil.INSTANCE.Str2Long("13:55", "HH:mm");
+        long period7 = TimeUtil.INSTANCE.Str2Long("15:00", "HH:mm");
+        long period8 = TimeUtil.INSTANCE.Str2Long("15:55", "HH:mm");
+        long period9 = TimeUtil.INSTANCE.Str2Long("18:00", "HH:mm");
+        long period10 = TimeUtil.INSTANCE.Str2Long("18:55", "HH:mm");
 
         if (startTime == period1) {
             return 1;
@@ -298,16 +299,16 @@ public class LessonAllFragment extends Fragment {
 
     private int getEndPeriod(LessonItem lessonItem) throws ParseException {
         long endTime = lessonItem.getEndTime();
-        long period1 = new SimpleDateFormat("HH:mm").parse("08:45").getTime();
-        long period2 = new SimpleDateFormat("HH:mm").parse("09:40").getTime();
-        long period3 = new SimpleDateFormat("HH:mm").parse("10:45").getTime();
-        long period4 = new SimpleDateFormat("HH:mm").parse("11:40").getTime();
-        long period5 = new SimpleDateFormat("HH:mm").parse("13:45").getTime();
-        long period6 = new SimpleDateFormat("HH:mm").parse("14:40").getTime();
-        long period7 = new SimpleDateFormat("HH:mm").parse("15:45").getTime();
-        long period8 = new SimpleDateFormat("HH:mm").parse("16:40").getTime();
-        long period9 = new SimpleDateFormat("HH:mm").parse("18:45").getTime();
-        long period10 = new SimpleDateFormat("HH:mm").parse("19:40").getTime();
+        long period1 = TimeUtil.INSTANCE.Str2Long("08:45", "HH:mm");
+        long period2 = TimeUtil.INSTANCE.Str2Long("09:40", "HH:mm");
+        long period3 = TimeUtil.INSTANCE.Str2Long("10:45", "HH:mm");
+        long period4 = TimeUtil.INSTANCE.Str2Long("11:40", "HH:mm");
+        long period5 = TimeUtil.INSTANCE.Str2Long("13:45", "HH:mm");
+        long period6 = TimeUtil.INSTANCE.Str2Long("14:40", "HH:mm");
+        long period7 = TimeUtil.INSTANCE.Str2Long("15:45", "HH:mm");
+        long period8 = TimeUtil.INSTANCE.Str2Long("16:40", "HH:mm");
+        long period9 = TimeUtil.INSTANCE.Str2Long("18:45", "HH:mm");
+        long period10 = TimeUtil.INSTANCE.Str2Long("19:40", "HH:mm");
 
         if (endTime == period1) {
             return 1;
@@ -337,49 +338,49 @@ public class LessonAllFragment extends Fragment {
 
         lessonItemList.add(
                 new LessonItem(0, "计算理论基础1", "田家炳教育书院236", 1, 1,
-                        new SimpleDateFormat("HH:mm").parse("08:00").getTime(),
-                        new SimpleDateFormat("HH:mm").parse("09:40").getTime())
+                        TimeUtil.INSTANCE.Str2Long("08:00", "HH:mm"),
+                        TimeUtil.INSTANCE.Str2Long("09:40", "HH:mm"))
         );
 
         lessonItemList.add(
                 new LessonItem(1, "计算理论基础2", "田家炳教育书院236", 2, 2,
-                        new SimpleDateFormat("HH:mm").parse("10:00").getTime(),
-                        new SimpleDateFormat("HH:mm").parse("11:40").getTime())
+                        TimeUtil.INSTANCE.Str2Long("10:00", "HH:mm"),
+                        TimeUtil.INSTANCE.Str2Long("11:40", "HH:mm"))
         );
 
         lessonItemList.add(
                 new LessonItem(2, "计算理论基础5", "田家炳教育书院236", 5, 3,
-                        new SimpleDateFormat("HH:mm").parse("08:00").getTime(),
-                        new SimpleDateFormat("HH:mm").parse("10:45").getTime())
+                        TimeUtil.INSTANCE.Str2Long("08:00", "HH:mm"),
+                        TimeUtil.INSTANCE.Str2Long("10:45", "HH:mm"))
         );
 
         lessonItemList.add(
                 new LessonItem(3, "计算理论基础3上午", "田家炳教育书院236", 3, 4,
-                        new SimpleDateFormat("HH:mm").parse("10:00").getTime(),
-                        new SimpleDateFormat("HH:mm").parse("11:40").getTime())
+                        TimeUtil.INSTANCE.Str2Long("10:00", "HH:mm"),
+                        TimeUtil.INSTANCE.Str2Long("11:40", "HH:mm"))
         );
         lessonItemList.add(
-                new LessonItem(3, "计算理论基础1下午", "田家炳教育书院236", 1, 4,
-                        new SimpleDateFormat("HH:mm").parse("10:00").getTime(),
-                        new SimpleDateFormat("HH:mm").parse("11:40").getTime())
-        );
-
-        lessonItemList.add(
-                new LessonItem(3, "计算理论基础3下午", "田家炳教育书院236", 3, 4,
-                        new SimpleDateFormat("HH:mm").parse("13:00").getTime(),
-                        new SimpleDateFormat("HH:mm").parse("15:45").getTime())
+                new LessonItem(4, "计算理论基础1下午", "田家炳教育书院236", 1, 4,
+                        TimeUtil.INSTANCE.Str2Long("10:00", "HH:mm"),
+                        TimeUtil.INSTANCE.Str2Long("11:40", "HH:mm"))
         );
 
         lessonItemList.add(
-                new LessonItem(4, "计算理论基础5晚", "田家炳教育书院236", 5, 4,
-                        new SimpleDateFormat("HH:mm").parse("18:00").getTime(),
-                        new SimpleDateFormat("HH:mm").parse("19:40").getTime())
+                new LessonItem(5, "计算理论基础3下午", "田家炳教育书院236", 3, 4,
+                        TimeUtil.INSTANCE.Str2Long("13:00", "HH:mm"),
+                        TimeUtil.INSTANCE.Str2Long("15:45", "HH:mm"))
         );
 
         lessonItemList.add(
-                new LessonItem(4, "计算理论基础5晚", "田家炳教育书院236", 1, 4,
-                        new SimpleDateFormat("HH:mm").parse("18:00").getTime(),
-                        new SimpleDateFormat("HH:mm").parse("19:40").getTime())
+                new LessonItem(6, "计算理论基础5晚", "田家炳教育书院236", 5, 4,
+                        TimeUtil.INSTANCE.Str2Long("18:00", "HH:mm"),
+                        TimeUtil.INSTANCE.Str2Long("19:40", "HH:mm"))
+        );
+
+        lessonItemList.add(
+                new LessonItem(7, "计算理论基础5晚", "田家炳教育书院236", 1, 4,
+                        TimeUtil.INSTANCE.Str2Long("18:00", "HH:mm"),
+                        TimeUtil.INSTANCE.Str2Long("19:40", "HH:mm"))
         );
 
 
