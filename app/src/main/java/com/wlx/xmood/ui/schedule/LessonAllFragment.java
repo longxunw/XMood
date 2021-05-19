@@ -48,6 +48,7 @@ public class LessonAllFragment extends Fragment {
     private static boolean isFirst = true;
     private final int margin = 4;
     private List<LessonItem> lessonItemList = new ArrayList<>();
+    private Toolbar.OnMenuItemClickListener onMenuItemClickListener = null;
 
     public List<LessonItem> getLessonItemList() {
         return lessonItemList;
@@ -72,31 +73,25 @@ public class LessonAllFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_lesson_all, container, false);
             view.findViewById(R.id.schedule_all_lesson).getBackground().setAlpha(190);
         }
-//        val toolbar: Toolbar = root.findViewById(R.id.toolbar_schedule)
-//        toolbar.inflateMenu(R.menu.schedule_tool_bar)
-//        toolbar.setOnMenuItemClickListener {
-//            when (it.itemId) {
-//                R.id.add_schedule ->
-//                Toast.makeText(context, "add_schedule", Toast.LENGTH_SHORT).show()
-//            }
-//            true
-//        }
-        Toolbar toolbar = view.findViewById(R.id.toolbar_schedule);
-        toolbar.inflateMenu(R.menu.schedule_tool_bar);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.add_schedule) {
-                    Toast.makeText(getContext(), "add_schedule", Toast.LENGTH_SHORT).show();
+
+        if (onMenuItemClickListener == null) {
+            onMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == R.id.add_schedule) {
+                        Toast.makeText(getContext(), "add_schedule", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
                 }
-                return false;
-            }
-        });
+            };
+            Toolbar toolbar = view.findViewById(R.id.toolbar_schedule);
+            toolbar.inflateMenu(R.menu.schedule_tool_bar);
+            toolbar.setOnMenuItemClickListener(onMenuItemClickListener);
+        }
 
         initDate();
 
