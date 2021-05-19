@@ -79,14 +79,11 @@ public class LessonAllFragment extends Fragment {
         }
 
         if (onMenuItemClickListener == null) {
-            onMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.add_schedule) {
-                        Toast.makeText(getContext(), "add_schedule", Toast.LENGTH_SHORT).show();
-                    }
-                    return true;
+            onMenuItemClickListener = item -> {
+                if (item.getItemId() == R.id.add_schedule) {
+                    Toast.makeText(getContext(), "add_schedule", Toast.LENGTH_SHORT).show();
                 }
+                return true;
             };
             Toolbar toolbar = view.findViewById(R.id.toolbar_schedule);
             toolbar.inflateMenu(R.menu.schedule_tool_bar);
@@ -127,12 +124,7 @@ public class LessonAllFragment extends Fragment {
         });
 
         Button toTodayBtn = view.findViewById(R.id.schedule_to_today_btn);
-        toTodayBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.INSTANCE.replaceFragmentToActivity(getFragmentManager(), ScheduleFragment.instance, R.id.nav_host_fragment);
-            }
-        });
+        toTodayBtn.setOnClickListener(view -> Utils.INSTANCE.replaceFragmentToActivity(getFragmentManager(), ScheduleFragment.instance, R.id.nav_host_fragment));
 
         return view;
     }
@@ -218,15 +210,13 @@ public class LessonAllFragment extends Fragment {
                 AlertDialog dialog = builder.setTitle("课程详情")
                         .setCustomTitle(getLayoutInflater().inflate(R.layout.schedule_lesson_content_title, null))
                         .setView(alertView)
-                        .setPositiveButton("编辑", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
-                                intent.putExtra("ScheduleId", lessonItem.getId());
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                getContext().startActivity(intent);
-                            }
+                        .setPositiveButton("编辑", (dialogInterface, i) -> {
+                            Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
+                            intent.putExtra("ScheduleId", lessonItem.getId());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getContext().startActivity(intent);
                         })
+                        .setNegativeButton("取消", (dialogInterface, i) -> { })
                         .create();
 
                 dialog.show();
