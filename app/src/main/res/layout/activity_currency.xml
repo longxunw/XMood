@@ -50,6 +50,7 @@
             android:layout_marginStart="20dp"
             android:gravity="center"
             android:text="@string/set_schedule_bg"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent" />
 
