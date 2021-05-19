@@ -1,38 +1,32 @@
 package com.wlx.xmood.ui.schedule;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.wlx.xmood.R;
 import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity;
+import com.wlx.xmood.utils.DensityUtil;
 import com.wlx.xmood.utils.TimeUtil;
 import com.wlx.xmood.utils.Utils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,6 +41,7 @@ public class LessonAllFragment extends Fragment {
     private RelativeLayout layout;
     private static boolean isFirst = true;
     private final int margin = 4;
+    private Context context;
     private List<LessonItem> lessonItemList = new ArrayList<>();
     private Toolbar.OnMenuItemClickListener onMenuItemClickListener = null;
 
@@ -69,10 +64,10 @@ public class LessonAllFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        context = requireContext();
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_lesson_all, container, false);
             view.findViewById(R.id.schedule_all_lesson).getBackground().setAlpha(190);
@@ -160,14 +155,16 @@ public class LessonAllFragment extends Fragment {
     }
 
 
-
-
     @SuppressLint("UseCompatLoadingForDrawables")
     private TextView createTextView(int start, int end, LessonItem lessonItem) {
         TextView tv = new TextView(this.getActivity());
         int marginHeight = 4;
-        if (start >= 5) marginHeight += 4;
-        if (start >= 9) marginHeight += 4;
+        if (start >= 5) {
+            marginHeight += 4;
+        }
+        if (start >= 9) {
+            marginHeight += 4;
+        }
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(gridWidth - 2, gridHeight * (end - start + 1) - 2);
         params.setMargins(1, 1, 1, 1);
 
@@ -188,41 +185,42 @@ public class LessonAllFragment extends Fragment {
             @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
             @Override
             public void onClick(View view) {
-                View alertView = getLayoutInflater().inflate(R.layout.schedule_lesson_content, null);
-                TextView contentView = alertView.findViewById(R.id.schedule_lesson_content_item);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                int startPeriod = 0, endPeriod = 0;
-                try {
-                    startPeriod = getStartPeriod(lessonItem);
-                    endPeriod = getEndPeriod(lessonItem);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                contentView.setText("课程名称：" + lessonItem.getName() + "\n" +
-                        "上课地点：" + lessonItem.getLocation() + "\n" +
-                        "上课时间：第" + startPeriod + "-" + endPeriod + "节 " +
-                        (new SimpleDateFormat("HH:mm")).format(new Date(lessonItem.getStartTime())) +
-                        "-" + (new SimpleDateFormat("HH:mm")).format(new Date(lessonItem.getEndTime())));
-
-
-                AlertDialog dialog = builder.setTitle("课程详情")
-                        .setCustomTitle(getLayoutInflater().inflate(R.layout.schedule_lesson_content_title, null))
-                        .setView(alertView)
-                        .setPositiveButton("编辑", (dialogInterface, i) -> {
-                            Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
-                            intent.putExtra("ScheduleId", lessonItem.getId());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            getContext().startActivity(intent);
-                        })
-                        .setNegativeButton("取消", (dialogInterface, i) -> { })
-                        .create();
-
-                dialog.show();
-
-                System.out.println(contentView.getWidth() + " " + params.width);
-
+//                View alertView = getLayoutInflater().inflate(R.layout.schedule_lesson_content, null);
+//                TextView contentView = alertView.findViewById(R.id.schedule_lesson_content_item);
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                int startPeriod = 0, endPeriod = 0;
+//                try {
+//                    startPeriod = getStartPeriod(lessonItem);
+//                    endPeriod = getEndPeriod(lessonItem);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                contentView.setText("课程名称：" + lessonItem.getName() + "\n" +
+//                        "上课地点：" + lessonItem.getLocation() + "\n" +
+//                        "上课时间：第" + startPeriod + "-" + endPeriod + "节 " +
+//                        (new SimpleDateFormat("HH:mm")).format(new Date(lessonItem.getStartTime())) +
+//                        "-" + (new SimpleDateFormat("HH:mm")).format(new Date(lessonItem.getEndTime())));
+//
+//
+//                AlertDialog dialog = builder.setTitle("课程详情")
+//                        .setCustomTitle(getLayoutInflater().inflate(R.layout.schedule_lesson_content_title, null))
+//                        .setView(alertView)
+//                        .setPositiveButton("编辑", (dialogInterface, i) -> {
+//                            Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
+//                            intent.putExtra("ScheduleId", lessonItem.getId());
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            getContext().startActivity(intent);
+//                        })
+//                        .setNegativeButton("取消", (dialogInterface, i) -> { })
+//                        .create();
+//
+//                dialog.show();
+//
+//                System.out.println(contentView.getWidth() + " " + params.width);
+//
+                showDialog(lessonItem);
             }
         });
 
@@ -274,16 +272,27 @@ public class LessonAllFragment extends Fragment {
         long period9 = new SimpleDateFormat("HH:mm").parse("18:00").getTime();
         long period10 = new SimpleDateFormat("HH:mm").parse("18:55").getTime();
 
-        if (startTime == period1) return 1;
-        else if (startTime == period2) return 2;
-        else if (startTime == period3) return 3;
-        else if (startTime == period4) return 4;
-        else if (startTime == period5) return 5;
-        else if (startTime == period6) return 6;
-        else if (startTime == period7) return 7;
-        else if (startTime == period8) return 8;
-        else if (startTime == period9) return 9;
-        else if (startTime == period10) return 10;
+        if (startTime == period1) {
+            return 1;
+        } else if (startTime == period2) {
+            return 2;
+        } else if (startTime == period3) {
+            return 3;
+        } else if (startTime == period4) {
+            return 4;
+        } else if (startTime == period5) {
+            return 5;
+        } else if (startTime == period6) {
+            return 6;
+        } else if (startTime == period7) {
+            return 7;
+        } else if (startTime == period8) {
+            return 8;
+        } else if (startTime == period9) {
+            return 9;
+        } else if (startTime == period10) {
+            return 10;
+        }
         return 0;
     }
 
@@ -300,16 +309,27 @@ public class LessonAllFragment extends Fragment {
         long period9 = new SimpleDateFormat("HH:mm").parse("18:45").getTime();
         long period10 = new SimpleDateFormat("HH:mm").parse("19:40").getTime();
 
-        if (endTime == period1) return 1;
-        else if (endTime == period2) return 2;
-        else if (endTime == period3) return 3;
-        else if (endTime == period4) return 4;
-        else if (endTime == period5) return 5;
-        else if (endTime == period6) return 6;
-        else if (endTime == period7) return 7;
-        else if (endTime == period8) return 8;
-        else if (endTime == period9) return 9;
-        else if (endTime == period10) return 10;
+        if (endTime == period1) {
+            return 1;
+        } else if (endTime == period2) {
+            return 2;
+        } else if (endTime == period3) {
+            return 3;
+        } else if (endTime == period4) {
+            return 4;
+        } else if (endTime == period5) {
+            return 5;
+        } else if (endTime == period6) {
+            return 6;
+        } else if (endTime == period7) {
+            return 7;
+        } else if (endTime == period8) {
+            return 8;
+        } else if (endTime == period9) {
+            return 9;
+        } else if (endTime == period10) {
+            return 10;
+        }
         return 0;
     }
 
@@ -363,6 +383,45 @@ public class LessonAllFragment extends Fragment {
         );
 
 
+    }
+
+    private void showDialog(LessonItem lessonItem) {
+        Dialog lessonInfoDialog = new Dialog(getContext(), R.style.MyDialogTheme);
+        View contentView = LayoutInflater.from(getContext()).inflate(
+                R.layout.set_lesson_info_dialog_content, null
+        );
+        TextView name = contentView.findViewById(R.id.dialog_lesson_info_name_text);
+        name.setText(lessonItem.getName());
+        TextView address = contentView.findViewById(R.id.dialog_lesson_info_address_text);
+        address.setText(lessonItem.getLocation());
+        TextView time = contentView.findViewById(R.id.dialog_lesson_info_time_text);
+        String timeStr = TimeUtil.INSTANCE.Date2Str(new Date(lessonItem.getStartTime()), "HH:mm") +
+                "--" + TimeUtil.INSTANCE.Date2Str(new Date(lessonItem.getEndTime()), "HH:mm");
+        time.setText(timeStr);
+        lessonInfoDialog.setContentView(contentView);
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
+        layoutParams.width = getResources().getDisplayMetrics().widthPixels - DensityUtil.INSTANCE.dp2px(context, 40f);
+        contentView.setLayoutParams(layoutParams);
+        lessonInfoDialog.getWindow().setGravity(Gravity.CENTER);
+        TextView cancel = lessonInfoDialog.getWindow().findViewById(R.id.dialog_lesson_info_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lessonInfoDialog.dismiss();
+            }
+        });
+        TextView edit = lessonInfoDialog.getWindow().findViewById(R.id.dialog_lesson_info_edit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ScheduleEditActivity.class);
+                intent.putExtra("ScheduleId", lessonItem.getId());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                lessonInfoDialog.dismiss();
+            }
+        });
+        lessonInfoDialog.show();
     }
 
 }

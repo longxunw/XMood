@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="400dp"
+    android:layout_height="220dp"
+    android:background="@drawable/shape_dialog"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/dialog_lesson_info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="课程详情"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/dialog_lesson_info_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="课程名称:"
+        android:textSize="15sp"
+        android:textColor="@color/light_gray"
+        app:layout_constraintTop_toBottomOf="@id/dialog_lesson_info_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/dialog_lesson_info_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/light_gray"
+        app:layout_constraintTop_toBottomOf="@id/dialog_lesson_info_title"
+        app:layout_constraintLeft_toRightOf="@id/dialog_lesson_info_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/dialog_lesson_info_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="课程地点:"
+        android:textSize="15sp"
+        android:textColor="@color/light_gray"
+        app:layout_constraintTop_toBottomOf="@id/dialog_lesson_info_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/dialog_lesson_info_address_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/light_gray"
+        app:layout_constraintTop_toBottomOf="@id/dialog_lesson_info_name"
+        app:layout_constraintLeft_toRightOf="@id/dialog_lesson_info_address"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/dialog_lesson_info_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="课程时间:"
+        android:textSize="15sp"
+        android:textColor="@color/light_gray"
+        app:layout_constraintTop_toBottomOf="@id/dialog_lesson_info_address"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/dialog_lesson_info_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/light_gray"
+        app:layout_constraintTop_toBottomOf="@id/dialog_lesson_info_address"
+        app:layout_constraintLeft_toRightOf="@id/dialog_lesson_info_time"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/dialog_lesson_info_cancel"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="取消"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/dialog_lesson_info_time"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp" />
+
+    <TextView
+        android:id="@+id/dialog_lesson_info_edit"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="编辑"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/dialog_lesson_info_time"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
