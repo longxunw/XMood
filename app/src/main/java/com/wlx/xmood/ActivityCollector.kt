@@ -2,32 +2,38 @@ package com.wlx.xmood
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
+import kotlin.system.exitProcess
 
 object ActivityCollector {
+    val TAG = "ActivityCollector"
     var onlyLocal = true
     var token = ""
     var username = ""
     lateinit var tokenSP: SharedPreferences
 
-    val activityList = ArrayList<AppCompatActivity>()
+    private val activityList = ArrayList<BaseActivity>()
 
-    fun addActivity(activity: AppCompatActivity) {
+    fun addActivity(activity: BaseActivity) {
         activityList.add(activity)
+        Log.d(TAG, "addActivity: ${activity.toString()}")
     }
 
-    fun removeActivity(activity: AppCompatActivity) {
+    fun removeActivity(activity: BaseActivity) {
+        Log.d(TAG, "removeActivity: ${activity.toString()}")
         activityList.remove(activity)
     }
 
     fun finishAll() {
+        Log.d(TAG, "finishAll: ${activityList.size}")
         for (activity in activityList) {
             if (!activity.isFinishing) {
                 activity.finish()
             }
         }
         activityList.clear()
-        System.exit(0)
+        android.os.Process.killProcess(android.os.Process.myPid())
+        exitProcess(0)
     }
 
     /**对当前的username和token进行缓存 */

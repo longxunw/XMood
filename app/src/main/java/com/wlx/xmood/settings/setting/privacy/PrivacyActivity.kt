@@ -3,13 +3,13 @@ package com.wlx.xmood.settings.setting.privacy
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.wlx.xmood.ActivityCollector
+import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.utils.Utils
 
-class PrivacyActivity : AppCompatActivity() {
+class PrivacyActivity : BaseActivity() {
 
     private val viewModel: PrivacyViewModel by viewModels()
     private val TAG = "PrivacyActivity"

@@ -16,14 +16,14 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
+import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.utils.DensityUtil
 import java.io.File
 
-class CurrencyActivity : AppCompatActivity() {
+class CurrencyActivity : BaseActivity() {
 
     private val fromPhoto = 1
     private val fromCamera = 2

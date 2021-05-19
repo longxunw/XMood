@@ -17,11 +17,7 @@ object NetworkUtil {
         var NETWORK_TYPE_MOBILE = "MOBILE"
         var NETWORK_TYPE_ERROR = "ERROR"
 
-        /**
-         * 返回网络是否可用
-         * @param context
-         * @return 网络可用则返回true，否则返回false
-         */
+
         fun isAvailable(context: Context): Boolean {
             val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val info = cm.activeNetworkInfo
@@ -58,11 +54,6 @@ object NetworkUtil {
             return NETWORK_TYPE_ERROR
         }
 
-        /**
-         * 返回Wifi是否启用
-         * @param context
-         * @return Wifi网络可用则返回true，否则返回false
-         */
         fun isWIFIActivate(context: Context): Boolean {
             return (context.getSystemService(Context.WIFI_SERVICE) as WifiManager)
                 .isWifiEnabled
@@ -78,10 +69,6 @@ object NetworkUtil {
             (context.getSystemService(Context.WIFI_SERVICE) as WifiManager).isWifiEnabled = status
         }
 
-        /**
-         * 跳转到网络设置
-         * @param context
-         */
         fun startNetSettingActivity(context: Context) {
             val intent = Intent(
                 Settings.ACTION_WIFI_SETTINGS
