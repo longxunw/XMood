@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.wlx.xmood.ActivityCollector
 import com.wlx.xmood.MainActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.sign.`in`.SigninFragment
@@ -36,6 +37,7 @@ class SignupFragment : Fragment() {
         val signupBtn: Button = root.findViewById(R.id.signupUpBtn)
         signupBtn.setOnClickListener {
             val intent = Intent(context, MainActivity::class.java)
+            ActivityCollector.isLogin = true
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)

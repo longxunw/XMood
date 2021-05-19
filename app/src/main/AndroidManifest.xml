@@ -11,22 +11,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.XMood">
-        <activity android:name=".ui.schedule.edit.ScheduleEditActivity"></activity>
-        <activity android:name=".ui.mood.edit.MoodEditActivity"
+        <activity
+            android:name=".ui.schedule.edit.ScheduleEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mood.edit.MoodEditActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.daily.edit.DailyEditActivity" />
-        <activity android:name=".ui.memorandum.edit.MemorandumEditActivity" />
-        <activity android:name=".settings.setting.userinfo.UserInfoActivity" />
-        <activity android:name=".settings.setting.privacy.PrivacyActivity" />
-        <activity android:name=".settings.setting.currency.CurrencyActivity" />
+        <activity
+            android:name=".ui.daily.edit.DailyEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.memorandum.edit.MemorandumEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".settings.setting.userinfo.UserInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".settings.setting.privacy.PrivacyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".settings.setting.currency.CurrencyActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".sign.SignActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".settings.setting.SettingActivity"
@@ -43,7 +53,13 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

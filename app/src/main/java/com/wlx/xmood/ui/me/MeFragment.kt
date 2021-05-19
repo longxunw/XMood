@@ -11,10 +11,12 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
@@ -23,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.ActivityCollector
 import com.wlx.xmood.R
+import com.wlx.xmood.sign.SignActivity
 import com.wlx.xmood.utils.DensityUtil
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
@@ -40,6 +43,8 @@ class MeFragment : Fragment() {
     private lateinit var outputImage: File
     private lateinit var userFaceImg: CircleImageView
 
+    private val TAG = "MeFragment"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,6 +53,22 @@ class MeFragment : Fragment() {
         init()
         myContext = requireContext()
         val root = inflater.inflate(R.layout.fragment_me, container, false)
+        Log.d(TAG, "onCreateView: ${ActivityCollector.isLogin}")
+        val meHeaderLogged: ConstraintLayout = root.findViewById(R.id.me_header_logged)
+        val meHeaderNotLogged: RelativeLayout = root.findViewById(R.id.me_header_not_logged)
+        if (!ActivityCollector.isLogin) {
+            meHeaderLogged.visibility = View.GONE
+            meHeaderNotLogged.visibility = View.VISIBLE
+        } else {
+            meHeaderLogged.visibility = View.VISIBLE
+            meHeaderNotLogged.visibility = View.GONE
+        }
+        val toSignBtn: TextView = root.findViewById(R.id.to_sign_btn)
+        toSignBtn.setOnClickListener {
+            val intent = Intent(context, SignActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            this.startActivity(intent)
+        }
         val recyclerView: RecyclerView = root.findViewById(R.id.me_menu_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         adapter = MeMenuAdapter(this, menuList)
@@ -88,6 +109,14 @@ class MeFragment : Fragment() {
                 R.drawable.ic_me_arrow_24, "SettingActivity"
             )
         )
+        if (ActivityCollector.isLogin) {
+            menuList.add(
+                MeMenuItem(
+                    R.drawable.ic_exit_24, R.string.me_menu_logout,
+                    R.drawable.ic_me_arrow_24, "Logout"
+                )
+            )
+        }
     }
 
     fun showDialog() {

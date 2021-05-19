@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.wlx.xmood.ActivityCollector
+import com.wlx.xmood.MainActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.settings.feedback.FeedBackActivity
 import com.wlx.xmood.settings.setting.SettingActivity
@@ -69,6 +71,15 @@ class MeMenuAdapter(
             "SettingActivity" -> {
                 intent = Intent(context, SettingActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                holder.itemView.setOnClickListener {
+                    fragment.startActivity(intent)
+                }
+            }
+            "Logout" -> {
+                ActivityCollector.isLogin = false
+                intent = Intent(context, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 holder.itemView.setOnClickListener {
                     fragment.startActivity(intent)
                 }
