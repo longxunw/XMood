@@ -71,7 +71,7 @@ public class LessonAllFragment extends Fragment {
         context = requireContext();
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_lesson_all, container, false);
-            view.findViewById(R.id.schedule_all_lesson).getBackground().setAlpha(190);
+            view.findViewById(R.id.schedule_all_lesson_background).getBackground().setAlpha(190);
         }
 
         if (onMenuItemClickListener == null) {
