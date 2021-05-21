@@ -21,16 +21,28 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/schedule_today_text"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/schedule_to_all_btn"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:background="@color/sign_btn"
+                android:text="@string/schedule_to_all"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/schedule_line" />
+
+            <TextView
+                android:id="@+id/schedule_week_day_text"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_gravity="start"
-                android:gravity="start|center_vertical"
-                android:text="@string/today"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="第七周"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.512"
+                app:layout_constraintLeft_toRightOf="@id/schedule_day_text"
+                app:layout_constraintBaseline_toBaselineOf="@id/schedule_day_text" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -44,16 +56,29 @@
         app:layout_constraintTop_toBottomOf="@id/schedule_app_bar" />
 
     <TextView
-        android:id="@+id/schedule_day_text"
+        android:id="@+id/schedule_weekday_text"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:gravity="center"
-        android:text="16"
-        android:textSize="30sp"
+        android:text="星期五"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/schedule_to_all_btn" />
+        app:layout_constraintTop_toTopOf="@+id/schedule_lesson_text" />
+
+    <TextView
+        android:id="@+id/schedule_day_text"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="16"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/schedule_weekday_text" />
 
     <TextView
         android:id="@+id/schedule_month_text"
@@ -82,60 +107,31 @@
 
 
     <TextView
-        android:id="@+id/schedule_week_day_text"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="start"
-
-        android:text="星期五/第七周"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintLeft_toRightOf="@id/schedule_day_text"
-        app:layout_constraintRight_toLeftOf="@id/schedule_to_all_btn"
-        app:layout_constraintTop_toBottomOf="@id/schedule_to_all_btn"
-        app:layout_constraintBaseline_toBaselineOf="@id/schedule_day_text"
-        />
-
-    <Button
-        android:id="@+id/schedule_to_all_btn"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:background="@color/sign_btn"
-        android:text="@string/schedule_to_all"
-        android:textColor="@color/white"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/schedule_line" />
-
-    <TextView
         android:id="@+id/schedule_lesson_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
         android:text="@string/lesson"
         android:textColor="@color/light_gray"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="@id/schedule_week_day_text"
-        app:layout_constraintTop_toBottomOf="@id/schedule_day_text" />
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/schedule_day_text"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_app_bar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/schedule_lesson_text"
-        app:layout_constraintTop_toBottomOf="@id/schedule_lesson_text"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/schedule_lesson_text">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/schedule_today_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             app:layout_constraintTop_toTopOf="parent"
-            android:overScrollMode="never" />
+            tools:layout_editor_absoluteX="0dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
