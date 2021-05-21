@@ -15,7 +15,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -77,7 +76,10 @@ public class LessonAllFragment extends Fragment {
         if (onMenuItemClickListener == null) {
             onMenuItemClickListener = item -> {
                 if (item.getItemId() == R.id.add_schedule) {
-                    Toast.makeText(getContext(), "add_schedule", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, ScheduleEditActivity.class);
+                    intent.putExtra("Id", -1);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
                 return true;
             };

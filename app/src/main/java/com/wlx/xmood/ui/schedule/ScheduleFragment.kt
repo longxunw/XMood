@@ -1,5 +1,6 @@
 package com.wlx.xmood.ui.schedule
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
 
@@ -54,8 +56,13 @@ class ScheduleFragment : Fragment() {
         toolbar.inflateMenu(R.menu.schedule_tool_bar)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.add_schedule ->
+                R.id.add_schedule -> {
                     Toast.makeText(context, "add_schedule", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, ScheduleEditActivity::class.java)
+                    intent.putExtra("id", -1)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context?.startActivity(intent)
+                }
             }
             true
         }

@@ -3,13 +3,128 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.schedule.edit.ScheduleEditActivity">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_schedule_edit"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/light_gray"
+        android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageButton
+            android:id="@+id/change_pw_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:src="@drawable/ic_back_24" />
+
+        <TextView
+            android:id="@+id/schedule_edit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/schedule_edit_name"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_schedule_edit"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="课程名称："
+        android:textSize="23sp"
+        android:layout_marginStart="20dp" />
+
+    <EditText
+        android:id="@+id/schedule_edit_name_text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="@id/schedule_edit_name"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/schedule_edit_name"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:maxLines="1"
+        android:inputType="text"
+        android:background="@drawable/sign_edit_text" />
+
+    <TextView
+        android:id="@+id/schedule_edit_location"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/schedule_edit_name"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="课程地点："
+        android:textSize="23sp"
+        android:layout_marginStart="20dp" />
+
+    <EditText
+        android:id="@+id/schedule_edit_location_text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="@id/schedule_edit_location"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/schedule_edit_location"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:maxLines="1"
+        android:inputType="text"
+        android:background="@drawable/sign_edit_text" />
+
+    <TextView
+        android:id="@+id/schedule_edit_weekDay"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/schedule_edit_location"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="星期："
         android:gravity="center"
-        android:text="This is Schedule Edit Activity"
-        android:textSize="20sp" />
+        android:textSize="23sp"
+        android:layout_marginStart="20dp" />
+
+    <Spinner
+        android:id="@+id/schedule_edit_weekDay_spin"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="@id/schedule_edit_weekDay"
+        app:layout_constraintLeft_toRightOf="@id/schedule_edit_weekDay"
+        android:layout_marginStart="20dp"
+        android:entries="@array/weekday_spinner_items" />
+
+    <TextView
+        android:id="@+id/schedule_edit_start_time"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/schedule_edit_weekDay"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="开始时间："
+        android:textSize="23sp"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/schedule_edit_end_time"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/schedule_edit_start_time"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="结束时间："
+        android:textSize="23sp"
+        android:layout_marginStart="20dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
