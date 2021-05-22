@@ -1,9 +1,11 @@
 package com.wlx.xmood.ui.schedule.edit
 
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.TextView
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
+import com.wlx.xmood.utils.Utils
 
 class ScheduleEditActivity : BaseActivity() {
     private var status = 0
@@ -20,6 +22,13 @@ class ScheduleEditActivity : BaseActivity() {
         } else {
             title.text = "编辑课程"
             status = UPDATE
+        }
+
+        val backBtn : ImageButton = findViewById(R.id.change_pw_back_btn)
+
+        backBtn.setOnClickListener {
+            Utils.makeToast(this,"已保存")
+            finish()
         }
         
     }

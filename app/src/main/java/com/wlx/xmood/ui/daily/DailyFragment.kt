@@ -57,7 +57,7 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.add_daily -> {
-                    Toast.makeText(context, "add_daily", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, "add_daily", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, DailyEditActivity::class.java) //添加日程activity
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context?.startActivity(intent)

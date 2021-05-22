@@ -1,9 +1,11 @@
 package com.wlx.xmood.ui.mood.edit
 
+import android.media.Image
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.GridView
+import android.widget.ImageView
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.utils.Utils
@@ -48,6 +50,14 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         initCategoryItem()
         val gridView: GridView = findViewById(R.id.grid_category)
         gridView.adapter = CategoryItemAdapter(this, list)
+
+
+        val backBtn : ImageView = findViewById(R.id.mood_edit_back)
+
+        backBtn.setOnClickListener {
+            Utils.makeToast(this,"已取消")
+            finish()
+        }
 
 
     }
