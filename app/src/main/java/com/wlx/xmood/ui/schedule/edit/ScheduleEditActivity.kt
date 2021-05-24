@@ -21,6 +21,6 @@ class ScheduleEditActivity : BaseActivity() {
             title.text = "编辑课程"
             status = UPDATE
         }
-        
+
     }
 }
