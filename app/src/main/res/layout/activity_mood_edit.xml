@@ -74,7 +74,6 @@
             app:layout_constraintTop_toTopOf="@id/mood_edit_text_rating"
             app:layout_constraintRight_toRightOf="@id/mood_edit_cstlay"
             android:layout_marginEnd="30dp"
-            android:entries="@array/rating_spinner_items"
             />
 
         <TextView
