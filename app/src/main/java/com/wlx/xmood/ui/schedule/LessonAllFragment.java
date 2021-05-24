@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.wlx.xmood.R;
 import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity;
@@ -34,24 +36,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import kotlin.Result;
 
 public class LessonAllFragment extends Fragment {
+    private ScheduleViewModel viewModel;
     private View view;
     private int gridWidth, gridHeight;
     private RelativeLayout layout;
     private static boolean isFirst = true;
     private final int margin = 4;
     private Context context;
-    private List<LessonItem> lessonItemList = new ArrayList<>();
     private Toolbar.OnMenuItemClickListener onMenuItemClickListener = null;
 
-    public List<LessonItem> getLessonItemList() {
-        return lessonItemList;
-    }
-
-    public void setLessonItemList(List<LessonItem> lessonItemList) {
-        this.lessonItemList = lessonItemList;
-    }
 
     private static LessonAllFragment lessonAllFragment;
 
@@ -72,6 +68,11 @@ public class LessonAllFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_lesson_all, container, false);
             view.findViewById(R.id.schedule_all_lesson_background).getBackground().setAlpha(190);
         }
+
+        if (viewModel == null) {
+            viewModel = new ViewModelProvider(this).get(ScheduleViewModel.class);
+        }
+        viewModel.searchSchedule();
 
         if (onMenuItemClickListener == null) {
             onMenuItemClickListener = item -> {
@@ -106,17 +107,12 @@ public class LessonAllFragment extends Fragment {
                     view.findViewById(R.id.schedule_all_lesson_sun_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
                 }
 
-                try {
-                    init();
-                    for (LessonItem lessonItem : lessonItemList) {
-                        try {
-                            addLesson(lessonItem);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                for (LessonItem lessonItem : viewModel.getScheduleList()) {
+                    try {
+                        addLesson(lessonItem);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
             }
         });
@@ -124,6 +120,13 @@ public class LessonAllFragment extends Fragment {
         Button toTodayBtn = view.findViewById(R.id.schedule_to_today_btn);
         toTodayBtn.setOnClickListener(view -> Utils.INSTANCE.replaceFragmentToActivity(getFragmentManager(), ScheduleFragment.instance, R.id.nav_host_fragment));
 
+//        viewModel.getScheduleLiveData().observe(getViewLifecycleOwner(), arrayListResult -> {
+//            arrayListResult.
+//            viewModel.getScheduleList().clear();
+//            viewModel.getScheduleList().addAll(arrayListResult);
+//        });
+        viewModel.scheduleLiveDataObserver(getViewLifecycleOwner());
+        // TODO: 加一个LessonTableAdapter往里面addLesson, 把adapter也传入Observer()
         return view;
     }
 
@@ -234,25 +237,25 @@ public class LessonAllFragment extends Fragment {
         TextView tv;
         switch (lessonItem.getWeekDay()) {
             case 1:
-                layout = (RelativeLayout) view.findViewById(R.id.schedule_all_lesson_mon_col);
+                layout = view.findViewById(R.id.schedule_all_lesson_mon_col);
                 break;
             case 2:
-                layout = (RelativeLayout) view.findViewById(R.id.schedule_all_lesson_tues_col);
+                layout = view.findViewById(R.id.schedule_all_lesson_tues_col);
                 break;
             case 3:
-                layout = (RelativeLayout) view.findViewById(R.id.schedule_all_lesson_wed_col);
+                layout = view.findViewById(R.id.schedule_all_lesson_wed_col);
                 break;
             case 4:
-                layout = (RelativeLayout) view.findViewById(R.id.schedule_all_lesson_thu_col);
+                layout = view.findViewById(R.id.schedule_all_lesson_thu_col);
                 break;
             case 5:
-                layout = (RelativeLayout) view.findViewById(R.id.schedule_all_lesson_fri_col);
+                layout = view.findViewById(R.id.schedule_all_lesson_fri_col);
                 break;
             case 6:
-                layout = (RelativeLayout) view.findViewById(R.id.schedule_all_lesson_sat_col);
+                layout = view.findViewById(R.id.schedule_all_lesson_sat_col);
                 break;
             case 7:
-                layout = (RelativeLayout) view.findViewById(R.id.schedule_all_lesson_sun_col);
+                layout = view.findViewById(R.id.schedule_all_lesson_sun_col);
                 break;
         }
 
@@ -338,52 +341,7 @@ public class LessonAllFragment extends Fragment {
 
     private void init() throws ParseException {
 
-        lessonItemList.add(
-                new LessonItem(0, "计算理论基础1", "田家炳教育书院236", 1, 1,
-                        TimeUtil.INSTANCE.Str2Long("08:00", "HH:mm"),
-                        TimeUtil.INSTANCE.Str2Long("09:40", "HH:mm"))
-        );
 
-        lessonItemList.add(
-                new LessonItem(1, "计算理论基础2", "田家炳教育书院236", 2, 2,
-                        TimeUtil.INSTANCE.Str2Long("10:00", "HH:mm"),
-                        TimeUtil.INSTANCE.Str2Long("11:40", "HH:mm"))
-        );
-
-        lessonItemList.add(
-                new LessonItem(2, "计算理论基础5", "田家炳教育书院236", 5, 3,
-                        TimeUtil.INSTANCE.Str2Long("08:00", "HH:mm"),
-                        TimeUtil.INSTANCE.Str2Long("10:45", "HH:mm"))
-        );
-
-        lessonItemList.add(
-                new LessonItem(3, "计算理论基础3上午", "田家炳教育书院236", 3, 4,
-                        TimeUtil.INSTANCE.Str2Long("10:00", "HH:mm"),
-                        TimeUtil.INSTANCE.Str2Long("11:40", "HH:mm"))
-        );
-        lessonItemList.add(
-                new LessonItem(4, "计算理论基础1下午", "田家炳教育书院236", 1, 4,
-                        TimeUtil.INSTANCE.Str2Long("10:00", "HH:mm"),
-                        TimeUtil.INSTANCE.Str2Long("11:40", "HH:mm"))
-        );
-
-        lessonItemList.add(
-                new LessonItem(5, "计算理论基础3下午", "田家炳教育书院236", 3, 4,
-                        TimeUtil.INSTANCE.Str2Long("13:00", "HH:mm"),
-                        TimeUtil.INSTANCE.Str2Long("15:45", "HH:mm"))
-        );
-
-        lessonItemList.add(
-                new LessonItem(6, "计算理论基础5晚", "田家炳教育书院236", 5, 4,
-                        TimeUtil.INSTANCE.Str2Long("18:00", "HH:mm"),
-                        TimeUtil.INSTANCE.Str2Long("19:40", "HH:mm"))
-        );
-
-        lessonItemList.add(
-                new LessonItem(7, "计算理论基础5晚", "田家炳教育书院236", 1, 4,
-                        TimeUtil.INSTANCE.Str2Long("18:00", "HH:mm"),
-                        TimeUtil.INSTANCE.Str2Long("19:40", "HH:mm"))
-        );
 
 
     }

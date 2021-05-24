@@ -48,7 +48,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/hello"
+                android:id="@+id/daily_edit_save"
                 android:layout_marginRight="20dp"
                 android:layout_gravity="right"
                 android:gravity="center_vertical"
