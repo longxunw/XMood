@@ -5,13 +5,17 @@
     android:layout_height="200dp"
     tools:context=".ui.mood.MoodChartFragment">
 
-    <TextView
-        android:id="@+id/mood_chart_test_text"
+<!--    <TextView-->
+<!--        android:id="@+id/mood_chart_test_text"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="Hello"-->
+<!--        android:gravity="center" />-->
+
+    <lecho.lib.hellocharts.view.LineChartView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello"
-        android:gravity="center" />
-
-
-
+        android:id="@+id/mood_linechart"
+        />
+    
 </FrameLayout>
