@@ -39,7 +39,6 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="第七周"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
@@ -56,6 +55,7 @@
 
     <RelativeLayout
         android:id="@+id/schedule_all_lesson_background"
+        android:alpha="0.7"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/schedule_line"

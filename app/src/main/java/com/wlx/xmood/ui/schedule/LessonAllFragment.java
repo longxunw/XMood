@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.wlx.xmood.R;
@@ -35,11 +36,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import kotlin.Result;
+
 public class LessonAllFragment extends Fragment {
     private LessonAllViewModel viewModel;
     private View view;
     private int gridWidth, gridHeight;
-    private RelativeLayout layout;
+    private RelativeLayout monLayout;
+    private RelativeLayout tuesLayout;
+    private RelativeLayout wedLayout;
+    private RelativeLayout thursLayout;
+    private RelativeLayout friLayout;
+    private RelativeLayout satLayout;
+    private RelativeLayout sunLayout;
     private static boolean isFirst = true;
     private final int margin = 4;
     private Context context;
@@ -63,7 +72,13 @@ public class LessonAllFragment extends Fragment {
         context = requireContext();
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_lesson_all, container, false);
-            view.findViewById(R.id.schedule_all_lesson_background).getBackground().setAlpha(190);
+            monLayout = view.findViewById(R.id.schedule_all_lesson_mon_col);
+            tuesLayout = view.findViewById(R.id.schedule_all_lesson_tues_col);
+            wedLayout = view.findViewById(R.id.schedule_all_lesson_wed_col);
+            thursLayout = view.findViewById(R.id.schedule_all_lesson_thu_col);
+            friLayout = view.findViewById(R.id.schedule_all_lesson_fri_col);
+            satLayout = view.findViewById(R.id.schedule_all_lesson_sat_col);
+            sunLayout = view.findViewById(R.id.schedule_all_lesson_sun_col);
         }
 
         if (viewModel == null) {
@@ -87,74 +102,51 @@ public class LessonAllFragment extends Fragment {
         }
 
         initDate();
+        TextView weekText = view.findViewById(R.id.schedule_week_text);
+        weekText.setText("第 " + TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getStartDate()) + " 周");
 
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                if (isFirst) {
-                    isFirst = false;
-                    gridWidth = view.findViewById(R.id.schedule_all_lesson_table).getWidth() / 7;
-                    gridHeight = (view.findViewById(R.id.schedule_all_lesson_mon_col).getHeight() - margin * 2) / 10;
-                    view.findViewById(R.id.schedule_all_lesson_mon_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-                    view.findViewById(R.id.schedule_all_lesson_tues_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-                    view.findViewById(R.id.schedule_all_lesson_wed_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-                    view.findViewById(R.id.schedule_all_lesson_thu_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-                    view.findViewById(R.id.schedule_all_lesson_fri_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-                    view.findViewById(R.id.schedule_all_lesson_sat_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-                    view.findViewById(R.id.schedule_all_lesson_sun_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
-                }
-
-                for (LessonItem lessonItem : viewModel.getScheduleList()) {
-                    try {
-                        addLesson(lessonItem);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
+        view.post(() -> {
+            if (isFirst) {
+                isFirst = false;
+                gridWidth = view.findViewById(R.id.schedule_all_lesson_table).getWidth() / 7;
+                gridHeight = (view.findViewById(R.id.schedule_all_lesson_mon_col).getHeight() - margin * 2) / 10;
+                view.findViewById(R.id.schedule_all_lesson_mon_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+                view.findViewById(R.id.schedule_all_lesson_tues_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+                view.findViewById(R.id.schedule_all_lesson_wed_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+                view.findViewById(R.id.schedule_all_lesson_thu_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+                view.findViewById(R.id.schedule_all_lesson_fri_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+                view.findViewById(R.id.schedule_all_lesson_sat_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+                view.findViewById(R.id.schedule_all_lesson_sun_col).setLayoutParams(new LinearLayout.LayoutParams(gridWidth, ViewGroup.LayoutParams.MATCH_PARENT));
             }
+
         });
 
         Button toTodayBtn = view.findViewById(R.id.schedule_to_today_btn);
         toTodayBtn.setOnClickListener(view -> Utils.INSTANCE.replaceFragmentToActivity(getFragmentManager(), ScheduleFragment.instance, R.id.nav_host_fragment));
 
-//        viewModel.getScheduleLiveData().observe(getViewLifecycleOwner(), arrayListResult -> {
-//            arrayListResult.
-//            viewModel.getScheduleList().clear();
-//            viewModel.getScheduleList().addAll(arrayListResult);
-//        });
-//        viewModel.scheduleLiveDataObserver(getViewLifecycleOwner());
-        // TODO: 加一个LessonTableAdapter往里面addLesson, 把adapter也传入Observer()
+        viewModel.getScheduleLiveData().observe(getViewLifecycleOwner(), arrayListResult -> {
+            ArrayList<LessonItem> scheduleList = ScheduleDataGet.INSTANCE.getScheduleList();
+            if (scheduleList != null) {
+                viewModel.getScheduleList().clear();
+                viewModel.getScheduleList().addAll(scheduleList);
+            }
+            clearAllLesson();
+            for (LessonItem lessonItem : viewModel.getScheduleList()) {
+                try {
+                    addLesson(lessonItem);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return view;
     }
 
     private void initDate() {
-        List<String> result = getCurrentWeekDate();
+        List<String> result = TimeUtil.INSTANCE.getCurrentWeekDate();
         GridView gridView = view.findViewById(R.id.schedule_all_lesson_day_list);
         gridView.setAdapter(new LessonAllDateAdapter(this.getContext(), result));
-
-    }
-
-    private List<String> getCurrentWeekDate() {
-        List<String> result = new ArrayList<>();
-
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
-        if (1 == dayWeek) {
-            cal.add(Calendar.DAY_OF_MONTH, -1);
-        }
-        cal.setFirstDayOfWeek(Calendar.MONDAY);
-        int day = cal.get(Calendar.DAY_OF_WEEK);
-        cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
-        String monday = sdf.format(cal.getTime());
-        result.add(monday);
-        for (int i = 1; i < 7; ++i) {
-            cal.add(Calendar.DATE, 1);
-            result.add(sdf.format(cal.getTime()));
-        }
-        return result;
     }
 
 
@@ -174,55 +166,18 @@ public class LessonAllFragment extends Fragment {
         tv.setPadding(10, 1, 10, 1);
         tv.setY(gridHeight * (start - 1) + marginHeight);
 
-//        System.out.println("" + params.width + " " + params.height);
         tv.setLayoutParams(params);
         tv.setGravity(Gravity.CENTER);
         tv.setTextSize(13);
         tv.setTextColor(0xff333333);
         tv.setBackground(getResources().getDrawable(R.drawable.shape_lesson_item));
         tv.setText(lessonItem.getName());
-        tv.setMaxEms(1);
         tv.setEllipsize(TextUtils.TruncateAt.valueOf("END"));
 
         tv.setOnClickListener(new View.OnClickListener() {
             @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
             @Override
             public void onClick(View view) {
-//                View alertView = getLayoutInflater().inflate(R.layout.schedule_lesson_content, null);
-//                TextView contentView = alertView.findViewById(R.id.schedule_lesson_content_item);
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                int startPeriod = 0, endPeriod = 0;
-//                try {
-//                    startPeriod = getStartPeriod(lessonItem);
-//                    endPeriod = getEndPeriod(lessonItem);
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                contentView.setText("课程名称：" + lessonItem.getName() + "\n" +
-//                        "上课地点：" + lessonItem.getLocation() + "\n" +
-//                        "上课时间：第" + startPeriod + "-" + endPeriod + "节 " +
-//                        (new SimpleDateFormat("HH:mm")).format(new Date(lessonItem.getStartTime())) +
-//                        "-" + (new SimpleDateFormat("HH:mm")).format(new Date(lessonItem.getEndTime())));
-//
-//
-//                AlertDialog dialog = builder.setTitle("课程详情")
-//                        .setCustomTitle(getLayoutInflater().inflate(R.layout.schedule_lesson_content_title, null))
-//                        .setView(alertView)
-//                        .setPositiveButton("编辑", (dialogInterface, i) -> {
-//                            Intent intent = new Intent(getActivity(), ScheduleEditActivity.class);
-//                            intent.putExtra("ScheduleId", lessonItem.getId());
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            getContext().startActivity(intent);
-//                        })
-//                        .setNegativeButton("取消", (dialogInterface, i) -> { })
-//                        .create();
-//
-//                dialog.show();
-//
-//                System.out.println(contentView.getWidth() + " " + params.width);
-//
                 showDialog(lessonItem);
             }
         });
@@ -232,116 +187,39 @@ public class LessonAllFragment extends Fragment {
 
     private void addLesson(LessonItem lessonItem) throws ParseException {
         TextView tv;
+        RelativeLayout layout;
         switch (lessonItem.getWeekDay()) {
             case 1:
-                layout = view.findViewById(R.id.schedule_all_lesson_mon_col);
+                layout = monLayout;
                 break;
             case 2:
-                layout = view.findViewById(R.id.schedule_all_lesson_tues_col);
+                layout = tuesLayout;
                 break;
             case 3:
-                layout = view.findViewById(R.id.schedule_all_lesson_wed_col);
+                layout = wedLayout;
                 break;
             case 4:
-                layout = view.findViewById(R.id.schedule_all_lesson_thu_col);
+                layout = thursLayout;
                 break;
             case 5:
-                layout = view.findViewById(R.id.schedule_all_lesson_fri_col);
+                layout = friLayout;
                 break;
             case 6:
-                layout = view.findViewById(R.id.schedule_all_lesson_sat_col);
+                layout = satLayout;
                 break;
             case 7:
-                layout = view.findViewById(R.id.schedule_all_lesson_sun_col);
+                layout = sunLayout;
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + lessonItem.getWeekDay());
         }
 
-        int start = getStartPeriod(lessonItem);
-        int end = getEndPeriod(lessonItem);
+        int start = TimeUtil.INSTANCE.getStartPeriod(lessonItem);
+        int end = TimeUtil.INSTANCE.getEndPeriod(lessonItem);
         tv = createTextView(start, end, lessonItem);
         layout.addView(tv);
     }
 
-    private int getStartPeriod(LessonItem lessonItem) throws ParseException {
-        long startTime = lessonItem.getStartTime();
-        long period1 = TimeUtil.INSTANCE.Str2Long("08:00", "HH:mm"); //new SimpleDateFormat("HH:mm").parse("08:00").getTime();
-        long period2 = TimeUtil.INSTANCE.Str2Long("08:55", "HH:mm");
-        long period3 = TimeUtil.INSTANCE.Str2Long("10:00", "HH:mm");
-        long period4 = TimeUtil.INSTANCE.Str2Long("10:55", "HH:mm");
-        long period5 = TimeUtil.INSTANCE.Str2Long("13:00", "HH:mm");
-        long period6 = TimeUtil.INSTANCE.Str2Long("13:55", "HH:mm");
-        long period7 = TimeUtil.INSTANCE.Str2Long("15:00", "HH:mm");
-        long period8 = TimeUtil.INSTANCE.Str2Long("15:55", "HH:mm");
-        long period9 = TimeUtil.INSTANCE.Str2Long("18:00", "HH:mm");
-        long period10 = TimeUtil.INSTANCE.Str2Long("18:55", "HH:mm");
-
-        if (startTime == period1) {
-            return 1;
-        } else if (startTime == period2) {
-            return 2;
-        } else if (startTime == period3) {
-            return 3;
-        } else if (startTime == period4) {
-            return 4;
-        } else if (startTime == period5) {
-            return 5;
-        } else if (startTime == period6) {
-            return 6;
-        } else if (startTime == period7) {
-            return 7;
-        } else if (startTime == period8) {
-            return 8;
-        } else if (startTime == period9) {
-            return 9;
-        } else if (startTime == period10) {
-            return 10;
-        }
-        return 0;
-    }
-
-    private int getEndPeriod(LessonItem lessonItem) throws ParseException {
-        long endTime = lessonItem.getEndTime();
-        long period1 = TimeUtil.INSTANCE.Str2Long("08:45", "HH:mm");
-        long period2 = TimeUtil.INSTANCE.Str2Long("09:40", "HH:mm");
-        long period3 = TimeUtil.INSTANCE.Str2Long("10:45", "HH:mm");
-        long period4 = TimeUtil.INSTANCE.Str2Long("11:40", "HH:mm");
-        long period5 = TimeUtil.INSTANCE.Str2Long("13:45", "HH:mm");
-        long period6 = TimeUtil.INSTANCE.Str2Long("14:40", "HH:mm");
-        long period7 = TimeUtil.INSTANCE.Str2Long("15:45", "HH:mm");
-        long period8 = TimeUtil.INSTANCE.Str2Long("16:40", "HH:mm");
-        long period9 = TimeUtil.INSTANCE.Str2Long("18:45", "HH:mm");
-        long period10 = TimeUtil.INSTANCE.Str2Long("19:40", "HH:mm");
-
-        if (endTime == period1) {
-            return 1;
-        } else if (endTime == period2) {
-            return 2;
-        } else if (endTime == period3) {
-            return 3;
-        } else if (endTime == period4) {
-            return 4;
-        } else if (endTime == period5) {
-            return 5;
-        } else if (endTime == period6) {
-            return 6;
-        } else if (endTime == period7) {
-            return 7;
-        } else if (endTime == period8) {
-            return 8;
-        } else if (endTime == period9) {
-            return 9;
-        } else if (endTime == period10) {
-            return 10;
-        }
-        return 0;
-    }
-
-    private void init() throws ParseException {
-
-
-
-
-    }
 
     private void showDialog(LessonItem lessonItem) {
         Dialog lessonInfoDialog = new Dialog(getContext(), R.style.MyDialogTheme);
@@ -380,6 +258,16 @@ public class LessonAllFragment extends Fragment {
             }
         });
         lessonInfoDialog.show();
+    }
+
+    private void clearAllLesson() {
+        monLayout.removeAllViews();
+        tuesLayout.removeAllViews();
+        wedLayout.removeAllViews();
+        thursLayout.removeAllViews();
+        friLayout.removeAllViews();
+        satLayout.removeAllViews();
+        sunLayout.removeAllViews();
     }
 
 }

@@ -9,7 +9,7 @@
         android:id="@+id/schedule_all_lesson_blank"
         style="@style/scheduleAllLessonDayItem"
         android:layout_height="wrap_content"
-        android:background="#88ffffff"
+        android:background="#aaffffff"
         android:layout_marginBottom="1dp"
         android:text="\n"/>
 
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:layout_marginBottom="1dp"
         android:orientation="vertical">
         <TextView
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:layout_marginBottom="1dp"
         android:orientation="vertical">
         <TextView
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:layout_marginBottom="1dp"
         android:orientation="vertical">
         <TextView
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:orientation="vertical"
         android:layout_marginBottom="4px">
         <TextView
@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:layout_marginBottom="1dp"
         android:orientation="vertical">
         <TextView
@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:layout_marginBottom="1dp"
         android:orientation="vertical">
         <TextView
@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:layout_marginBottom="1dp"
         android:orientation="vertical">
         <TextView
@@ -145,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:orientation="vertical"
         android:layout_marginBottom="4px">
         <TextView
@@ -163,7 +163,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:layout_marginBottom="1dp"
         android:orientation="vertical">
         <TextView
@@ -181,7 +181,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#ff333333"
-        android:background="#66ffffff"
+        android:background="#aaffffff"
         android:layout_marginBottom="1dp"
         android:orientation="vertical">
         <TextView
