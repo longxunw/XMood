@@ -12,37 +12,25 @@ class MemorandumViewModel : ViewModel() {
     val text: LiveData<String> = _text
 
     private val searchNoteLiveData = MutableLiveData<String>()
-    private val searchAllnoteLiveData = MutableLiveData<String>()
     private val searchNavTitleLiveData = MutableLiveData<String>()
 
     val noteList = ArrayList<MemorandumItem>()
-    val allnoteList = ArrayList<MemorandumItem>()
     val navTitleList = ArrayList<String>()
 
-    val noteLiveData = Transformations.switchMap(searchNoteLiveData) {
-        MemoDataGet.getNote()
+    val noteLiveData = Transformations.switchMap(searchNoteLiveData) { query ->
+        MemoDataGet.getNote(query)
     }
 
-    val allnoteLiveData = Transformations.switchMap(searchAllnoteLiveData) {
-        MemoDataGet.getAllnote()
+    val navTitleLiveData = Transformations.switchMap(searchNavTitleLiveData) { query ->
+        MemoDataGet.getNavTitle(query)
     }
 
-
-    val navTitleLiveData = Transformations.switchMap(searchNavTitleLiveData) {
-        MemoDataGet.getNavTitle()
+    fun searchNote(query: String) {
+        searchNoteLiveData.value = query
     }
 
-    fun searchNote() {
-        searchNoteLiveData.value = "query_all"
-    }
-
-    fun searchAllnote() {
-        searchAllnoteLiveData.value = "query_all"
-    }
-
-
-    fun searchNavTitle() {
-        searchNavTitleLiveData.value = "query_all"
+    fun searchNavTitle(query: String) {
+        searchNavTitleLiveData.value = query
     }
 
 }

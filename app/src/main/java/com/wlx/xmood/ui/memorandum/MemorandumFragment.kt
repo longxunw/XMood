@@ -22,7 +22,6 @@ import com.google.android.material.navigation.NavigationView
 import com.wlx.xmood.R
 import com.wlx.xmood.ui.memorandum.edit.MemorandumEditActivity
 import com.wlx.xmood.ui.memorandum.search.MemorandumSearchFragment
-import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
 
 class MemorandumFragment : Fragment() {
@@ -36,8 +35,6 @@ class MemorandumFragment : Fragment() {
     private lateinit var allnote: TextView
     private val TAG = "MemorandumFragment"
     private lateinit var root: View
-    private var isInCatalog = false
-    private var nowCatalog = "all"
 
     companion object {
         fun newInstance() = MemorandumFragment()
@@ -53,14 +50,13 @@ class MemorandumFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_memorandum, container, false)
         val recyclerView: RecyclerView = root.findViewById(R.id.memorandum_list)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        memorandumViewModel.searchNote()
-        memorandumViewModel.searchNavTitle()
-        memorandumViewModel.searchAllnote()
+        memorandumViewModel.searchNote("__all")
+        memorandumViewModel.searchNavTitle("")
         noteListAdapter = MemorandumAdapter(this, memorandumViewModel.noteList)
         recyclerView.adapter = noteListAdapter
         allnote = root.findViewById(R.id.memorandum_to_all_note)
         allnote.setOnClickListener {
-            changeToAll()
+            changeToCatalog("__all")
         }
         drawerLayout = root.findViewById(R.id.memorandum_drawer_layout)
         val toolbar: Toolbar = root.findViewById(R.id.toolbar_memorandum)
@@ -94,27 +90,6 @@ class MemorandumFragment : Fragment() {
 
         noteListTitle = root.findViewById(R.id.memorandum_note_list_title)
         navView = root.findViewById(R.id.memorandum_navView)
-//        savedInstanceState?.let {
-//            Log.d(TAG, "onCreateView: savedInstanceState")
-//            allnoteList = it.getSerializable(NOTELIST) as ArrayList<MemorandumItem>
-//            navTitleList = it.getStringArrayList(NAVTITLELIST) as ArrayList<String>
-//            nowCatalog = it.getString(CATALOG, "all")
-//            val menu = navView.menu
-//            for (i in 0 until navTitleList.size) {
-//                menu.add(1, i, i, navTitleList[i]).setIcon(R.drawable.ic_point_24)
-//                    .setOnMenuItemClickListener {
-//                        changeToCatalog(navTitleList[i])
-//                        true
-//                    }
-//            }
-//            if (nowCatalog == "all") {
-//                isInCatalog = true
-//                changeToAll()
-//            } else {
-//                changeToCatalog(nowCatalog)
-//            }
-//            return root
-//        }
         val menu = navView.menu
         for (i in 0 until memorandumViewModel.navTitleList.size) {
             menu.add(1, i, i, memorandumViewModel.navTitleList[i]).setIcon(R.drawable.ic_point_24)
@@ -133,14 +108,6 @@ class MemorandumFragment : Fragment() {
             }
         })
 
-        memorandumViewModel.allnoteLiveData.observe(viewLifecycleOwner, Observer { result ->
-            val allnotes = result.getOrNull()
-            if (allnotes != null) {
-                memorandumViewModel.allnoteList.clear()
-                memorandumViewModel.allnoteList.addAll(allnotes)
-                noteListAdapter.notifyDataSetChanged()
-            }
-        })
 
         memorandumViewModel.navTitleLiveData.observe(viewLifecycleOwner, Observer { result ->
             val navTitles = result.getOrNull()
@@ -166,42 +133,19 @@ class MemorandumFragment : Fragment() {
         Log.d(TAG, "onCreate: ")
     }
 
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        Log.d(TAG, "onSaveInstanceState: ")
-//        outState.putString(CATALOG, nowCatalog)
-//        outState.putSerializable(NOTELIST, allnoteList)
-//        outState.putSerializable(NAVTITLELIST, navTitleList)
-//    }
-
 
     private fun changeToCatalog(catalog: String) {
-        memorandumViewModel.searchAllnote()
-        isInCatalog = true
-        memorandumViewModel.noteList.clear()
-        for (note in memorandumViewModel.allnoteList) {
-            if (note.catalog == catalog) {
-                memorandumViewModel.noteList.add(note)
-            }
+
+        memorandumViewModel.searchNote(catalog)
+        if (catalog == "__all") {
+            noteListTitle.text = "所有笔记"
+            allnote.visibility = View.GONE
+        } else {
+            noteListTitle.text = catalog
+            allnote.visibility = View.VISIBLE
+            drawerLayout.closeDrawer(GravityCompat.START)
         }
-        noteListTitle.text = catalog
-        allnote.visibility = View.VISIBLE
-        noteListAdapter.notifyDataSetChanged()
-        drawerLayout.closeDrawer(GravityCompat.START)
+
     }
 
-    private fun changeToAll() {
-        if (!isInCatalog) {
-            return
-        }
-        memorandumViewModel.noteList.clear()
-        for (note in memorandumViewModel.allnoteList) {
-            memorandumViewModel.noteList.add(note)
-        }
-        noteListTitle.setText(R.string.memorandum_all_note)
-        isInCatalog = false
-        nowCatalog = "all"
-        allnote.visibility = View.GONE
-        noteListAdapter.notifyDataSetChanged()
-    }
 }
