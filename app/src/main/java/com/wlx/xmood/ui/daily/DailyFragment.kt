@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -29,7 +28,6 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         fun newInstance() = DailyFragment()
     }
 
-    private val weekDayMap = HashMap<Int, String>()
     private lateinit var viewModel: DailyViewModel
     private val schemeDate = HashMap<String, Calendar>()
     private lateinit var dayText: TextView
@@ -48,16 +46,11 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         val root = inflater.inflate(R.layout.fragment_daily, container, false)
         noEventText = root.findViewById(R.id.daily_no_event)
         viewModel.searchEvent(TimeUtil.Date2Str(Date(), "yyyy-MM-dd"))
-//        val textView: TextView = root.findViewById(R.id.text_daily)
-//        viewModel.text.observe(viewLifecycleOwner, {
-//            textView.text = it
-//        })
         val toolbar: Toolbar = root.findViewById(R.id.toolbar_daily)
         toolbar.inflateMenu(R.menu.daily_tool_bar)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.add_daily -> {
-                    //Toast.makeText(context, "add_daily", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, DailyEditActivity::class.java) //添加日程activity
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context?.startActivity(intent)
@@ -96,13 +89,6 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
     }
 
     private fun init() {
-        weekDayMap[0] = "日"
-        weekDayMap[1] = "一"
-        weekDayMap[2] = "二"
-        weekDayMap[3] = "三"
-        weekDayMap[4] = "四"
-        weekDayMap[5] = "五"
-        weekDayMap[6] = "六"
         schemeDate[getSchemeCalendar(2021, 5, 20, R.color.purple_500, "事").toString()] =
             getSchemeCalendar(2021, 5, 20, R.color.purple_500, "事")
         schemeDate[getSchemeCalendar(2021, 5, 10, R.color.purple_500, "事").toString()] =
@@ -138,7 +124,7 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
             val month = String.format("%02d", it.month) + "月"
             monthText.text = month
             yearText.text = it.year.toString()
-            val weekday = "星期${weekDayMap[it.week]}"
+            val weekday = "星期${TimeUtil.getWeekDayChinese(it.week)}"
             weekdayText.text = weekday
             viewModel.searchEvent("${it.year}-${String.format("%02d", it.month)}-$day")
         }

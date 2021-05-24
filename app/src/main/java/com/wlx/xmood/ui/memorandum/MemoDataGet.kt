@@ -32,7 +32,7 @@ object MemoDataGet {
         "Android"
     )
 
-    fun changeToCatalog(catalog: String) {
+    private fun changeToCatalog(catalog: String) {
         if (mcatalog == catalog)
             return
         mcatalog = catalog

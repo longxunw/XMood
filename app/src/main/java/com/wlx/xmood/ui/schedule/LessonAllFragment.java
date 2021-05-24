@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.wlx.xmood.R;
@@ -36,10 +35,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import kotlin.Result;
-
 public class LessonAllFragment extends Fragment {
-    private ScheduleViewModel viewModel;
+    private LessonAllViewModel viewModel;
     private View view;
     private int gridWidth, gridHeight;
     private RelativeLayout layout;
@@ -70,9 +67,9 @@ public class LessonAllFragment extends Fragment {
         }
 
         if (viewModel == null) {
-            viewModel = new ViewModelProvider(this).get(ScheduleViewModel.class);
+            viewModel = new ViewModelProvider(this).get(LessonAllViewModel.class);
         }
-        viewModel.searchSchedule();
+        viewModel.searchSchedule(-1);
 
         if (onMenuItemClickListener == null) {
             onMenuItemClickListener = item -> {
@@ -125,7 +122,7 @@ public class LessonAllFragment extends Fragment {
 //            viewModel.getScheduleList().clear();
 //            viewModel.getScheduleList().addAll(arrayListResult);
 //        });
-        viewModel.scheduleLiveDataObserver(getViewLifecycleOwner());
+//        viewModel.scheduleLiveDataObserver(getViewLifecycleOwner());
         // TODO: 加一个LessonTableAdapter往里面addLesson, 把adapter也传入Observer()
         return view;
     }
