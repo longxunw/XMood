@@ -42,11 +42,6 @@ object ScheduleDataGet {
             6, "计算理论基础5晚", "田家炳教育书院236", 5, 4,
             Str2Long("18:00", "HH:mm"),
             Str2Long("19:40", "HH:mm")
-        ),
-        LessonItem(
-            7, "计算理论基础5晚", "田家炳教育书院236", 1, 4,
-            Str2Long("18:00", "HH:mm"),
-            Str2Long("19:40", "HH:mm")
         )
     )
 
