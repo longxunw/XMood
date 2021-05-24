@@ -1,12 +1,13 @@
 package com.wlx.xmood.ui.memorandum
 
+import android.util.Log
 import androidx.lifecycle.liveData
 import com.wlx.xmood.utils.TimeUtil
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
 object MemoDataGet {
-
+    val TAG = "MemoDataGet"
     var allnoteList = arrayListOf<MemorandumItem>(
         MemorandumItem(
             "TCP与UDP", "TCP是有连接，UDP是无连接",
@@ -45,10 +46,13 @@ object MemoDataGet {
 
     fun getNote(query: String) = fire(Dispatchers.IO) {
         if (query == "__all") {
+            Log.d(TAG, "getNote: allNoteList")
             Result.success(allnoteList)
+        } else {
+            changeToCatalog(query)
+            Log.d(TAG, "getNote: $query")
+            Result.success(noteList)
         }
-        changeToCatalog(query)
-        Result.success(noteList)
     }
 
 
