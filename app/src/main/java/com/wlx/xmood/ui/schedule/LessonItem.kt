@@ -8,5 +8,7 @@ data class LessonItem(
     val weekDay: Int,
     val startTime: Long,
     val endTime: Long,
-    val weekType: Int // 0没有单双周 1单周 2双周
+    val weekType: Int, // 0没有单双周 1单周 2双周
+    val startWeek: Int,
+    val endWeek: Int
 )
