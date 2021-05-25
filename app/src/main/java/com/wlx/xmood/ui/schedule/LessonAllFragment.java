@@ -138,10 +138,10 @@ public class LessonAllFragment extends Fragment {
                     if (lessonItem.getWeekType() == 0) {
                         // 没有单双周 判断在起始周范围内
                         addLesson(lessonItem);
-                    } else if (lessonItem.getWeekType() == 1 && week % 2 == 1) {
+                    } else if (lessonItem.getWeekType() == 1 && week % 2 == 1L) {
                         // 单周 判断当前周是不是单周
                         addLesson(lessonItem);
-                    } else if (lessonItem.getWeekType() == 2 && week % 2 == 0) {
+                    } else if (lessonItem.getWeekType() == 2 && week % 2 == 0L) {
                         // 双周
                         addLesson(lessonItem);
                     }

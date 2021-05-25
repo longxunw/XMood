@@ -2,6 +2,7 @@ package com.wlx.xmood.ui.schedule
 
 import androidx.lifecycle.liveData
 import com.wlx.xmood.utils.TimeUtil.Str2Long
+import com.wlx.xmood.utils.TimeUtil.getWeekCount
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
@@ -14,9 +15,14 @@ object ScheduleDataGet {
             Str2Long("09:40", "HH:mm"), 0, 1, 17
         ),
         LessonItem(
-            1, "计算理论基础2", "田家炳教育书院236", 2,
+            1, "计算理论基础2双周", "田家炳教育书院236", 2,
             Str2Long("10:00", "HH:mm"),
-            Str2Long("11:40", "HH:mm"), 1, 1, 10
+            Str2Long("11:40", "HH:mm"), 2, 1, 17
+        ),
+        LessonItem(
+            8, "计算理论基础2单周", "田家炳教育书院236", 2,
+            Str2Long("13:00", "HH:mm"),
+            Str2Long("14:40", "HH:mm"), 1, 1, 17
         ),
         LessonItem(
             2, "计算理论基础5", "田家炳教育书院236", 5,
@@ -59,10 +65,21 @@ object ScheduleDataGet {
     }
 
     private fun getWeekDaySchedule(query: Int): ArrayList<LessonItem> {
+        val week = getWeekCount(startDate)
         val result = ArrayList<LessonItem>()
         for (schedule in scheduleList) {
             if (query == schedule.weekDay) {
-                result.add(schedule)
+                if (schedule.startWeek > week || schedule.endWeek < week) continue
+                if (schedule.weekType == 0) {
+                    // 没有单双周 判断在起始周范围内
+                    result.add(schedule)
+                } else if (schedule.weekType == 1 && week % 2 == 1L) {
+                    // 单周 判断当前周是不是单周
+                    result.add(schedule)
+                } else if (schedule.weekType == 2 && week % 2 == 0L) {
+                    // 双周
+                    result.add(schedule)
+                }
             }
         }
         return result
