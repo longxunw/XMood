@@ -6,7 +6,7 @@ data class LessonItem(
     val name: String,
     val location: String,
     val weekDay: Int,
-    val period: Int,
     val startTime: Long,
-    val endTime: Long
+    val endTime: Long,
+    val weekType: Int // 0没有单双周 1单周 2双周
 )

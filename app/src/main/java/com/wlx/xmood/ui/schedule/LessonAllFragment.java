@@ -131,6 +131,7 @@ public class LessonAllFragment extends Fragment {
                 viewModel.getScheduleList().addAll(scheduleList);
             }
             clearAllLesson();
+
             for (LessonItem lessonItem : viewModel.getScheduleList()) {
                 try {
                     addLesson(lessonItem);
