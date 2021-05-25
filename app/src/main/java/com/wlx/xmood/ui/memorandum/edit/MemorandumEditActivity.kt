@@ -12,27 +12,34 @@ import androidx.appcompat.widget.Toolbar
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.ui.memorandum.MemoDataGet
+import com.wlx.xmood.ui.memorandum.MemorandumItem
 import com.wlx.xmood.utils.DensityUtil
 import com.wlx.xmood.utils.Utils
+import java.util.*
 
 class MemorandumEditActivity : BaseActivity() {
     private var isNew = true
     private var id = -1
+    private lateinit var titleText: EditText
+    private lateinit var bodyText: EditText
+    private lateinit var catalogText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memorandum_edit)
         id = intent.getIntExtra("id", -1)
+        titleText = findViewById(R.id.memorandum_edit_title)
+        bodyText = findViewById(R.id.memorandum_edit_body)
+        catalogText = findViewById(R.id.memorandum_edit_note_catalog)
         if (id == -1) {
             isNew = true
         } else {
             isNew = false
-            val titleText: EditText = findViewById(R.id.memorandum_edit_title)
-            val bodyText: EditText = findViewById(R.id.memorandum_edit_body)
             val memo = MemoDataGet.getNoteById(id)
             if (memo != null) {
                 titleText.setText(memo.head)
                 bodyText.setText(memo.body)
+                catalogText.setText(memo.catalog)
             }
         }
         val backBtn: ImageView = findViewById(R.id.memorandum_edit_back)
@@ -42,24 +49,23 @@ class MemorandumEditActivity : BaseActivity() {
             when (it.itemId) {
                 R.id.edit_save -> {
                     save()
-                    Utils.makeToast(this, "已保存")
                 }
                 R.id.edit_delete -> {
-                    showDialog(id, "")
+                    showDeleteDialog()
                 }
             }
             true
         }
         backBtn.setOnClickListener {
-            save()
-            Utils.makeToast(this, "已保存")
-            finish()
+            if (isNew and isEmpty()) {
+                finish()
+            } else {
+                showBackDialog()
+            }
         }
-
     }
 
-    //加入无用temp参数是为了规避莫名奇妙的override需要
-    private fun showDialog(id: Int, temp: String) {
+    private fun showDeleteDialog() {
         val bottomDialog = Dialog(this, R.style.MyDialogTheme);
         val contentView = LayoutInflater.from(this).inflate(
             R.layout.delete_memorandum_dialog_content,
@@ -88,45 +94,62 @@ class MemorandumEditActivity : BaseActivity() {
         bottomDialog.show()
     }
 
-//    private fun showDialog() {
-//        val bottomDialog = Dialog(this, R.style.MyDialogTheme);
-//        val contentView = LayoutInflater.from(this).inflate(
-//            R.layout.exit_edit_dialog_content,
-//            null
-//        )
-//        bottomDialog.setContentView(contentView)
-//        val layoutParams: ViewGroup.MarginLayoutParams =
-//            contentView.layoutParams as ViewGroup.MarginLayoutParams;
-//        layoutParams.width =
-//            resources.displayMetrics.widthPixels - DensityUtil.dp2px(this, 16f)
-//        layoutParams.bottomMargin = DensityUtil.dp2px(this, 16f)
-//        contentView.layoutParams = layoutParams
-//        bottomDialog.window?.setGravity(Gravity.BOTTOM);
-//        bottomDialog.window?.setWindowAnimations(R.style.BottomDialog_Animation)
-//        bottomDialog.window?.findViewById<TextView>(R.id.direct_exit)
-//            ?.setOnClickListener {
-//                finish()
-//                bottomDialog.dismiss()
-//            }
-//        bottomDialog.window?.findViewById<TextView>(R.id.preserve_and_exit)
-//            ?.setOnClickListener {
-//                save()
-//                Utils.makeToast(this, "已保存")
-//                finish()
-//                bottomDialog.dismiss()
-//            }
-//        bottomDialog.window?.findViewById<TextView>(R.id.select_schedule_bg_cancel)
-//            ?.setOnClickListener {
-//                bottomDialog.dismiss()
-//            }
-//        bottomDialog.show()
-//    }
-//
-//    override fun onBackPressed() {
-//        showDialog()
-//    }
+    private fun showBackDialog() {
+        val bottomDialog = Dialog(this, R.style.MyDialogTheme);
+        val contentView = LayoutInflater.from(this).inflate(
+            R.layout.exit_edit_dialog_content,
+            null
+        )
+        bottomDialog.setContentView(contentView)
+        val layoutParams: ViewGroup.MarginLayoutParams =
+            contentView.layoutParams as ViewGroup.MarginLayoutParams;
+        layoutParams.width =
+            resources.displayMetrics.widthPixels - DensityUtil.dp2px(this, 16f)
+        layoutParams.bottomMargin = DensityUtil.dp2px(this, 16f)
+        contentView.layoutParams = layoutParams
+        bottomDialog.window?.setGravity(Gravity.BOTTOM);
+        bottomDialog.window?.setWindowAnimations(R.style.BottomDialog_Animation)
+        bottomDialog.window?.findViewById<TextView>(R.id.direct_exit)
+            ?.setOnClickListener {
+                finish()
+                bottomDialog.dismiss()
+            }
+        bottomDialog.window?.findViewById<TextView>(R.id.preserve_and_exit)
+            ?.setOnClickListener {
+                save()
+                bottomDialog.dismiss()
+            }
+        bottomDialog.window?.findViewById<TextView>(R.id.select_schedule_bg_cancel)
+            ?.setOnClickListener {
+                bottomDialog.dismiss()
+            }
+        bottomDialog.show()
+    }
+
+    private fun getNewNote(): MemorandumItem {
+        return MemorandumItem(
+            id,
+            titleText.text.toString(),
+            bodyText.text.toString(),
+            Date(),
+            catalogText.text.toString()
+        )
+    }
 
     private fun save() {
+        val newNote = getNewNote()
+        if (isEmpty()) {
+            Utils.makeToast(this, "空备忘录无法保存")
+            return
+        }
+        MemoDataGet.addNote(newNote)
+        Utils.makeToast(this, "已保存")
+        finish()
+    }
 
+    private fun isEmpty(): Boolean {
+        return titleText.text.toString().isEmpty() and
+                bodyText.text.toString().isEmpty() and
+                catalogText.text.toString().isEmpty()
     }
 }

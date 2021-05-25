@@ -71,7 +71,7 @@ class ScheduleEditActivity : BaseActivity() {
                     save()
                 }
                 R.id.edit_delete -> {
-                    showDeleteDialog(id, "")
+                    showDeleteDialog()
                 }
             }
             true
@@ -128,9 +128,7 @@ class ScheduleEditActivity : BaseActivity() {
         }
     }
 
-    //加入无用temp参数是为了规避莫名奇妙的override需要
-    //按下删除键时显示
-    private fun showDeleteDialog(id: Int, temp: String) {
+    private fun showDeleteDialog() {
         val bottomDialog = Dialog(this, R.style.MyDialogTheme);
         val contentView = LayoutInflater.from(this).inflate(
             R.layout.delete_memorandum_dialog_content,

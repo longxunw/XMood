@@ -73,7 +73,7 @@ object ScheduleDataGet {
         }
         return null
     }
-
+    //若出现时间冲突 则返回false，此处这一逻辑省略
     fun addLesson(lessonItem: LessonItem): Boolean {
         if (lessonItem.id >= 0) {
             val oldLesson = getScheduleById(lessonItem.id)

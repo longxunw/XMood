@@ -83,7 +83,7 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/memorandum_navView"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/memorandum_nav_header"

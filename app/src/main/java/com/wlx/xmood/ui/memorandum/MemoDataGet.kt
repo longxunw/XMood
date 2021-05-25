@@ -8,6 +8,7 @@ import kotlin.coroutines.CoroutineContext
 
 object MemoDataGet {
     val TAG = "MemoDataGet"
+    var id = 10
     var allnoteList = arrayListOf<MemorandumItem>(
         MemorandumItem(
             0,
@@ -35,6 +36,7 @@ object MemoDataGet {
     }
     var mcatalog = "__all"
     var navTitleList = arrayListOf<String>(
+        "默认分类",
         "计网",
         "OS",
         "Android"
@@ -68,6 +70,23 @@ object MemoDataGet {
         }
     }
 
+    fun addNote(memorandumItem: MemorandumItem) {
+        if (memorandumItem.catalog.isEmpty()) {
+            memorandumItem.catalog = "默认分类"
+        }
+        if (memorandumItem.id == -1) {
+            memorandumItem.id = id++
+            allnoteList.add(memorandumItem)
+        } else {
+            for (memo in allnoteList) {
+                if (memorandumItem.id == memo.id) {
+                    allnoteList.remove(memo)
+                    break
+                }
+            }
+            allnoteList.add(memorandumItem)
+        }
+    }
 
     fun getNote(query: String) = fire(Dispatchers.IO) {
         if (query == "__all") {
