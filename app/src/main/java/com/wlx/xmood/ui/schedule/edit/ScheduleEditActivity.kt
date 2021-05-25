@@ -2,6 +2,7 @@ package com.wlx.xmood.ui.schedule.edit
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class ScheduleEditActivity : BaseActivity() {
     private lateinit var startWeek: EditText
     private lateinit var endWeek: EditText
     private lateinit var weekType: Spinner
+    private val TAG = "ScheduleEditActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,13 +95,26 @@ class ScheduleEditActivity : BaseActivity() {
             TimeUtil.Str2Long("10:00", "HH:mm"),
             TimeUtil.Str2Long("11:40", "HH:mm"),
             weekType.selectedItemPosition,
-            startWeek.text.toString().toInt(),
-            endWeek.text.toString().toInt()
+            if (startWeek.text.toString().isEmpty()) 0 else startWeek.text.toString().toInt(),
+            if (endWeek.text.toString().isEmpty()) 0 else endWeek.text.toString().toInt()
         )
     }
 
     private fun save() {
         val newLesson = getNewLesson()
+        Log.d(TAG, "save: ${newLesson.startWeek},${newLesson.endWeek}")
+        if (newLesson.name.isEmpty()) {
+            Utils.makeToast(this, "课程名不能为空")
+            return
+        }
+        if (newLesson.startWeek == 0) {
+            Utils.makeToast(this, "起始周数不能为空")
+            return
+        }
+        if (newLesson.endWeek == 0) {
+            Utils.makeToast(this, "结束周数不能为空")
+            return
+        }
         if (newLesson.endWeek < newLesson.startWeek) {
             Utils.makeToast(this, "结束周数不能小于起始周数")
             return
