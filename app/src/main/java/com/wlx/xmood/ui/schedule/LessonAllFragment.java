@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.wlx.xmood.R;
@@ -30,13 +29,9 @@ import com.wlx.xmood.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import kotlin.Result;
 
 public class LessonAllFragment extends Fragment {
     private LessonAllViewModel viewModel;
@@ -134,7 +129,9 @@ public class LessonAllFragment extends Fragment {
             long week = TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getStartDate());
             for (LessonItem lessonItem : viewModel.getScheduleList()) {
                 try {
-                    if (lessonItem.getStartWeek() > week || lessonItem.getEndWeek() < week) continue;
+                    if (lessonItem.getStartWeek() > week || lessonItem.getEndWeek() < week) {
+                        continue;
+                    }
                     if (lessonItem.getWeekType() == 0) {
                         // 没有单双周 判断在起始周范围内
                         addLesson(lessonItem);
@@ -238,14 +235,27 @@ public class LessonAllFragment extends Fragment {
         View contentView = LayoutInflater.from(getContext()).inflate(
                 R.layout.set_lesson_info_dialog_content, null
         );
+
         TextView name = contentView.findViewById(R.id.dialog_lesson_info_name_text);
         name.setText(lessonItem.getName());
+
         TextView address = contentView.findViewById(R.id.dialog_lesson_info_address_text);
         address.setText(lessonItem.getLocation());
+
         TextView time = contentView.findViewById(R.id.dialog_lesson_info_time_text);
         String timeStr = TimeUtil.INSTANCE.Date2Str(new Date(lessonItem.getStartTime()), "HH:mm") +
                 "--" + TimeUtil.INSTANCE.Date2Str(new Date(lessonItem.getEndTime()), "HH:mm");
         time.setText(timeStr);
+
+        TextView week = contentView.findViewById(R.id.dialog_lesson_info_week_text);
+        String weekStr = lessonItem.getStartWeek() + "--" + lessonItem.getEndWeek() + "  ";
+        if (lessonItem.getWeekType() == 1) {
+            weekStr += "单周";
+        } else if (lessonItem.getWeekType() == 2) {
+            weekStr += "双周";
+        }
+        week.setText(weekStr);
+        
         lessonInfoDialog.setContentView(contentView);
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
         layoutParams.width = getResources().getDisplayMetrics().widthPixels - DensityUtil.INSTANCE.dp2px(context, 40f);
