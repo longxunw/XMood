@@ -50,7 +50,14 @@ class CategoryItemAdapter(
         viewHolder.category.setOnClickListener(
             View.OnClickListener { view ->
                 run {
-                    viewHolder.category.setBackgroundResource(R.drawable.category_item_selected)
+                    if(list[position].selected == 0){
+                        list[position].selected = 1
+                        viewHolder.category.setBackgroundResource(R.drawable.category_item_selected)
+                    }
+                    else{
+                        list[position].selected = 0
+                        viewHolder.category.setBackgroundResource(R.drawable.category_item_unselected)
+                    }
                 }
         })
 

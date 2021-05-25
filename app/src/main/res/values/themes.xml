@@ -16,6 +16,15 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="MyRecyclerViewTheme">
+        <item name="colorPrimary">@color/light_gray</item>
+    </style>
+
+    <style name="MyEditTextTheme">
+        <item name="colorControlActivated">@color/mandarin</item>
+    </style>
+
+
     <style name="MySwitchTheme">
         <item name="colorControlActivated">@color/mandarin</item>
         <item name="colorSwitchThumbNormal">#FFF1F1F1</item>

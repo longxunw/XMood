@@ -1,5 +1,6 @@
 package com.wlx.xmood.ui.mood.edit
 
 data class CategoryItem(
-    val category: String
+    val category: String,
+    var selected: Int
 )
