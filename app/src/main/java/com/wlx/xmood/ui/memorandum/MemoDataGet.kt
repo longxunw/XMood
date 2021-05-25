@@ -10,16 +10,24 @@ object MemoDataGet {
     val TAG = "MemoDataGet"
     var allnoteList = arrayListOf<MemorandumItem>(
         MemorandumItem(
+            0,
             "TCP与UDP", "TCP是有连接，UDP是无连接",
             TimeUtil.Str2Date("2021年4月17日", "yyyy年MM月dd日"), "计网"
         ),
         MemorandumItem(
+            1,
             "线程与进程", "进程可以拥有多个线程，进程是操作系统内存分配的基本单位",
             TimeUtil.Str2Date("2021年4月24日", "yyyy年MM月dd日"), "OS"
         ),
         MemorandumItem(
+            2,
             "线程与协程", "协程比线程更小，可以用来执行轻量级任务",
             TimeUtil.Str2Date("2021年5月4日", "yyyy年MM月dd日"), "Android"
+        ),
+        MemorandumItem(
+            3,
+            "项目deadline", "6.11",
+            TimeUtil.Str2Date("2021年5月25日", "yyyy年MM月dd日"), "Android"
         )
     )
     val noteList = ArrayList<MemorandumItem>().apply {
@@ -32,9 +40,25 @@ object MemoDataGet {
         "Android"
     )
 
+    fun deleteNote(id: Int) {
+        for (memo in allnoteList) {
+            if (id == memo.id) {
+                allnoteList.remove(memo)
+                break
+            }
+        }
+    }
+
+    fun getNoteById(id: Int): MemorandumItem? {
+        for (memo in allnoteList) {
+            if (id == memo.id) {
+                return memo
+            }
+        }
+        return null
+    }
+
     private fun changeToCatalog(catalog: String) {
-        if (mcatalog == catalog)
-            return
         mcatalog = catalog
         noteList.clear()
         for (memo in allnoteList) {
@@ -43,6 +67,7 @@ object MemoDataGet {
             }
         }
     }
+
 
     fun getNote(query: String) = fire(Dispatchers.IO) {
         if (query == "__all") {

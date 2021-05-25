@@ -116,7 +116,8 @@ class MemorandumFragment : Fragment() {
                 memorandumViewModel.navTitleList.addAll(navTitles)
 
                 for (i in 0 until memorandumViewModel.navTitleList.size) {
-                    menu.add(1, i, i, memorandumViewModel.navTitleList[i]).setIcon(R.drawable.ic_point_24)
+                    menu.add(1, i, i, memorandumViewModel.navTitleList[i])
+                        .setIcon(R.drawable.ic_point_24)
                         .setOnMenuItemClickListener {
                             changeToCatalog(memorandumViewModel.navTitleList[i])
                             true
@@ -133,6 +134,10 @@ class MemorandumFragment : Fragment() {
         Log.d(TAG, "onCreate: ")
     }
 
+    override fun onResume() {
+        super.onResume()
+        memorandumViewModel.searchNote(MemoDataGet.mcatalog)
+    }
 
     private fun changeToCatalog(catalog: String) {
 

@@ -14,7 +14,7 @@ import com.wlx.xmood.utils.TimeUtil
 
 class MemorandumAdapter(
     val fragment: Fragment,
-    val dataList: List<MemorandumItem>
+    val dataList: List<MemorandumItem>,
 ) :
     RecyclerView.Adapter<MemorandumAdapter.ViewHolder>() {
     private val TAG = "MemorandumAdapter"
@@ -25,6 +25,7 @@ class MemorandumAdapter(
         val bodySimple: TextView = view.findViewById(R.id.memorandum_note_body_simple)
         val updateTime: TextView = view.findViewById(R.id.memorandum_note_update_time)
         val catalog: TextView = view.findViewById(R.id.memorandum_note_catalog)
+//        val deleteBtn: ImageView = view.findViewById(R.id.memorandum_note_delete)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,17 +38,22 @@ class MemorandumAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = dataList[position]
         holder.head.text = item.head
-        holder.bodySimple.text = item.bodySimple
+        if (item.body.length < 40) {
+            holder.bodySimple.text = item.body
+        } else {
+            holder.bodySimple.text = item.body.subSequence(0, 40)
+        }
         holder.catalog.text = item.catalog
         val timeString = TimeUtil.Date2Str(item.updateTime, "yyyy年MM月dd日")
         holder.updateTime.text = timeString
         holder.itemView.setOnClickListener {
             val intent = Intent(context, MemorandumEditActivity::class.java)
-            intent.putExtra("title", item.head)
+            intent.putExtra("id", item.id)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
     }
+
 
     override fun getItemCount(): Int {
         return dataList.size

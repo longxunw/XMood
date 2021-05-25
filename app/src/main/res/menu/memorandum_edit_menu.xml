@@ -6,4 +6,10 @@
         android:icon="@drawable/ic_preserve_24"
         android:title="保存"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/edit_delete"
+        android:icon="@drawable/baseline_delete_24"
+        android:title="删除"
+        app:showAsAction="always"/>
+
 </menu>
