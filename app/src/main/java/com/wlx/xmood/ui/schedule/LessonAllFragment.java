@@ -255,7 +255,7 @@ public class LessonAllFragment extends Fragment {
             weekStr += "双周";
         }
         week.setText(weekStr);
-        
+
         lessonInfoDialog.setContentView(contentView);
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
         layoutParams.width = getResources().getDisplayMetrics().widthPixels - DensityUtil.INSTANCE.dp2px(context, 40f);
@@ -273,7 +273,7 @@ public class LessonAllFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ScheduleEditActivity.class);
-                intent.putExtra("ScheduleId", lessonItem.getId());
+                intent.putExtra("id", lessonItem.getId());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 lessonInfoDialog.dismiss();

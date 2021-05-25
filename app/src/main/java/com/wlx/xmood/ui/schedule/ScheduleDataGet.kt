@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
 object ScheduleDataGet {
+    private var id = 10
     val startDate = "2021-03-01"
     val scheduleList = arrayListOf<LessonItem>(
         LessonItem(
@@ -60,6 +61,38 @@ object ScheduleDataGet {
                 Result.success(null)
             } else {
                 Result.success(result)
+            }
+        }
+    }
+
+    fun getScheduleById(id: Int): LessonItem? {
+        for (lesson in scheduleList) {
+            if (id == lesson.id) {
+                return lesson
+            }
+        }
+        return null
+    }
+
+    fun addLesson(lessonItem: LessonItem): Boolean {
+        if (lessonItem.id >= 0) {
+            val oldLesson = getScheduleById(lessonItem.id)
+            if (oldLesson != null) {
+                scheduleList.remove(oldLesson)
+            }
+            scheduleList.add(lessonItem)
+        } else {
+            lessonItem.id = id++
+            scheduleList.add(lessonItem)
+        }
+        return true
+    }
+
+    fun deleteLesson(id: Int) {
+        for (lesson in scheduleList) {
+            if (id == lesson.id) {
+                scheduleList.remove(lesson)
+                break
             }
         }
     }

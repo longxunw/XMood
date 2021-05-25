@@ -110,4 +110,8 @@ class ScheduleFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        scheduleViewModel.searchSchedule(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1)
+    }
 }
