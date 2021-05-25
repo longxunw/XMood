@@ -131,10 +131,21 @@ public class LessonAllFragment extends Fragment {
                 viewModel.getScheduleList().addAll(scheduleList);
             }
             clearAllLesson();
-
+            long week = TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getStartDate());
             for (LessonItem lessonItem : viewModel.getScheduleList()) {
                 try {
-                    addLesson(lessonItem);
+                    if (lessonItem.getStartWeek() > week || lessonItem.getEndWeek() < week) continue;
+                    if (lessonItem.getWeekType() == 0) {
+                        // 没有单双周 判断在起始周范围内
+                        addLesson(lessonItem);
+                    } else if (lessonItem.getWeekType() == 1 && week % 2 == 1L) {
+                        // 单周 判断当前周是不是单周
+                        addLesson(lessonItem);
+                    } else if (lessonItem.getWeekType() == 2 && week % 2 == 0L) {
+                        // 双周
+                        addLesson(lessonItem);
+                    }
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
