@@ -11,7 +11,7 @@ object DailyDataGet {
         "2021-05-21" to arrayListOf(
             DailyItem(
                 1,
-            TimeUtil.Str2Long("2021-05-21", "yyyy-MM-dd"),
+                TimeUtil.Str2Long("2021-05-21", "yyyy-MM-dd"),
                 TimeUtil.Str2Long("12:50", "HH:mm"),
                 TimeUtil.Str2Long("15:00", "HH:mm"),
                 "完成项目汇报", false, true
