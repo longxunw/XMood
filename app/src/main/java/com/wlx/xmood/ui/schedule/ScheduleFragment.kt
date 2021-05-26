@@ -16,10 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.R
-import com.wlx.xmood.ui.memorandum.edit.MemorandumEditActivity
-import com.wlx.xmood.ui.schedule.ScheduleDataGet.startDate
 import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity
-import com.wlx.xmood.ui.schedule.edit.SemesterDateSetActivity
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
 import java.util.*
@@ -39,6 +36,11 @@ class ScheduleFragment : Fragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initSemesterDate()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,7 +51,6 @@ class ScheduleFragment : Fragment() {
         scheduleViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
         scheduleViewModel.searchSchedule(calendar.get(Calendar.DAY_OF_WEEK) - 1)
         val root = inflater.inflate(R.layout.fragment_schedule, container, false)
-        initSemesterDate()
 
         val toAllBtn: Button = root.findViewById(R.id.schedule_to_all_btn)
         toAllBtn.setOnClickListener {
@@ -68,13 +69,21 @@ class ScheduleFragment : Fragment() {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context?.startActivity(intent)
                 }
+                R.id.change_start_date -> {
+                    Utils.replaceFragmentToActivity(
+                        requireFragmentManager(),
+                        SemesterDateFragment.newInstance(),
+                        R.id.nav_host_fragment
+                    )
+                }
             }
             true
         }
-
-        val weekCount: TextView = root.findViewById(R.id.schedule_week_text)
-        val weekCountStr = "第 ${TimeUtil.getWeekCount(ScheduleDataGet.startDate)} 周"
-        weekCount.text = weekCountStr
+        if (ScheduleDataGet.startDate.isNotEmpty()) {
+            val weekCount: TextView = root.findViewById(R.id.schedule_week_text)
+            val weekCountStr = "第 ${TimeUtil.getWeekCount(ScheduleDataGet.startDate)} 周"
+            weekCount.text = weekCountStr
+        }
 
         val weekDay: TextView = root.findViewById(R.id.schedule_weekday_text)
         val weekDayStr = "星期${TimeUtil.getWeekDayChinese(calendar.get(Calendar.DAY_OF_WEEK) - 1)}"
@@ -121,11 +130,12 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun initSemesterDate() {
-        if (startDate.isEmpty()) {
-            val intent = Intent(context, SemesterDateSetActivity::class.java)
-            intent.putExtra("data", "refresh")
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context?.startActivity(intent)
+        if (ScheduleDataGet.startDate.isEmpty()) {
+            Utils.replaceFragmentToActivity(
+                requireFragmentManager(),
+                SemesterDateFragment.newInstance(),
+                R.id.nav_host_fragment
+            )
         }
     }
 }

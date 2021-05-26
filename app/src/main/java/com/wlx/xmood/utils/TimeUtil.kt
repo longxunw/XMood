@@ -65,6 +65,9 @@ object TimeUtil {
         return result
     }
 
+    //对一个时间Long只保留小时和分钟
+    fun LongToDayLong(long: Long) = (long % (1000 * 60 * 60 * 24)) + (1000 * 60 * 60 * 24)
+
     @Throws(ParseException::class)
     fun getEndPeriod(lessonItem: LessonItem): Int {
         val endTime = lessonItem.endTime

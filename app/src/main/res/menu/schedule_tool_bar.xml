@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_add_black_24"
         app:showAsAction="always"
         android:title="@string/title_add_schedule" />
+    <item
+        android:id="@+id/change_start_date"
+        android:icon="@drawable/baseline_edit_24"
+        app:showAsAction="never"
+        android:title="修改学期开始时间"/>
 </menu>

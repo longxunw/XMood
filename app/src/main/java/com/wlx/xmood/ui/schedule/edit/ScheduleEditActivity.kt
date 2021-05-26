@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import com.jzxiang.pickerview.data.Type
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.ui.schedule.LessonItem
@@ -18,6 +19,7 @@ import com.wlx.xmood.ui.schedule.ScheduleDataGet
 import com.wlx.xmood.utils.DensityUtil
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
+import com.wlx.xmood.widget.TimePicker
 
 class ScheduleEditActivity : BaseActivity() {
     private var status = 0
@@ -31,6 +33,8 @@ class ScheduleEditActivity : BaseActivity() {
     private lateinit var startWeek: EditText
     private lateinit var endWeek: EditText
     private lateinit var weekType: Spinner
+    private lateinit var startTime: TimePicker
+    private lateinit var endTime: TimePicker
     private val TAG = "ScheduleEditActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +49,9 @@ class ScheduleEditActivity : BaseActivity() {
         startWeek = findViewById(R.id.schedule_edit_start_week_edit)
         endWeek = findViewById(R.id.schedule_edit_end_week_edit)
         weekType = findViewById(R.id.schedule_edit_week_type_spin)
+        startTime = findViewById(R.id.schedule_edit_start_time_edit)
+        endTime = findViewById(R.id.schedule_edit_end_time_edit)
+
 
         val lessonItem = ScheduleDataGet.getScheduleById(id)
         if (id == -1) {
@@ -60,6 +67,8 @@ class ScheduleEditActivity : BaseActivity() {
                 startWeek.setText(lessonItem.startWeek.toString())
                 endWeek.setText(lessonItem.endWeek.toString())
                 weekType.setSelection(lessonItem.weekType, true)
+                startTime.setTime(lessonItem.startTime)
+                endTime.setTime(lessonItem.endTime)
             }
         }
 
@@ -77,6 +86,16 @@ class ScheduleEditActivity : BaseActivity() {
             true
         }
 
+        startTime.setType(Type.HOURS_MINS)
+        startTime.setOnClickListener {
+            startTime.pickerBuilder.setCurrentMillseconds(startTime.current).build()
+                .show(supportFragmentManager, "课程开始时间")
+        }
+        endTime.setType(Type.HOURS_MINS)
+        endTime.setOnClickListener {
+            endTime.pickerBuilder.setCurrentMillseconds(endTime.current).build()
+                .show(supportFragmentManager, "课程结束时间")
+        }
 
         val backBtn: ImageButton = findViewById(R.id.change_pw_back_btn)
 
@@ -92,8 +111,8 @@ class ScheduleEditActivity : BaseActivity() {
             name.text.toString(),
             location.text.toString(),
             weekDay.selectedItemPosition,
-            TimeUtil.Str2Long("10:00", "HH:mm"),
-            TimeUtil.Str2Long("11:40", "HH:mm"),
+            TimeUtil.LongToDayLong(startTime.getTime()),
+            TimeUtil.LongToDayLong(endTime.getTime()),
             weekType.selectedItemPosition,
             if (startWeek.text.toString().isEmpty()) 0 else startWeek.text.toString().toInt(),
             if (endWeek.text.toString().isEmpty()) 0 else endWeek.text.toString().toInt()
@@ -103,6 +122,15 @@ class ScheduleEditActivity : BaseActivity() {
     private fun save() {
         val newLesson = getNewLesson()
         Log.d(TAG, "save: ${newLesson.startWeek},${newLesson.endWeek}")
+        Log.d(
+            TAG,
+            "save: start:${newLesson.startTime}-${
+                TimeUtil.Long2Str(
+                    newLesson.startTime,
+                    "yyyy-MM-dd HH:mm"
+                )
+            } end: ${newLesson.endTime}-${TimeUtil.Long2Str(newLesson.endTime, "yyyy-MM-dd HH:mm")}"
+        )
         if (newLesson.name.isEmpty()) {
             Utils.makeToast(this, "课程名不能为空")
             return
@@ -115,8 +143,21 @@ class ScheduleEditActivity : BaseActivity() {
             Utils.makeToast(this, "结束周数不能为空")
             return
         }
+
         if (newLesson.endWeek < newLesson.startWeek) {
             Utils.makeToast(this, "结束周数不能小于起始周数")
+            return
+        }
+        if (newLesson.startTime == 0L) {
+            Utils.makeToast(this, "开始时间不能为空")
+            return
+        }
+        if (newLesson.endTime == 0L) {
+            Utils.makeToast(this, "结束时间不能为空")
+            return
+        }
+        if (newLesson.endTime < newLesson.startTime) {
+            Utils.makeToast(this, "结束时间不能小于开始时间")
             return
         }
         val result = ScheduleDataGet.addLesson(newLesson)
