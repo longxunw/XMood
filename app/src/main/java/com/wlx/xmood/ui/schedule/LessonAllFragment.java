@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.wlx.xmood.R;
 import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity;
-import com.wlx.xmood.ui.schedule.edit.SemesterDateSetActivity;
 import com.wlx.xmood.utils.DensityUtil;
 import com.wlx.xmood.utils.TimeUtil;
 import com.wlx.xmood.utils.Utils;

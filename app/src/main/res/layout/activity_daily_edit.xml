@@ -6,144 +6,164 @@
     android:layout_height="match_parent"
     tools:context=".ui.daily.edit.DailyEditActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_daily_edit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/daily_edit_bar">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_edit_daily"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/daily_edit_cancel"
-                android:layout_marginStart="20dp"
-                android:layout_gravity="start"
-                android:gravity="start|center_vertical"
-                android:text="取消"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:textColor="@color/light_gray"
-                />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/daily_title"
-                android:layout_gravity="center"
-                android:text="日程"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:textColor="@color/jet"
-                />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/daily_edit_save"
-                android:layout_marginRight="20dp"
-                android:layout_gravity="right"
-                android:gravity="center_vertical"
-                android:text="保存"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:textColor="@color/mandarin"
-                tools:ignore="RtlHardcoded" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <View
-        android:id="@+id/daily_edit_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/light_gray"
-        app:layout_constraintTop_toBottomOf="@id/daily_edit_bar" />
+        android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageButton
+            android:id="@+id/change_pw_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:src="@drawable/ic_back_24" />
+
+        <TextView
+            android:id="@+id/daily_edit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/daily_edit_name"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_daily_edit"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="日程名称："
+        android:textSize="23sp"
+        android:layout_marginStart="20dp" />
 
     <EditText
-        android:id="@+id/daily_event_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/daily_edit_divider"
+        android:id="@+id/daily_edit_name_text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintTop_toTopOf="@id/daily_edit_name"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="20dp"
+        app:layout_constraintLeft_toRightOf="@id/daily_edit_name"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="20dp"
-        android:hint="日程名称"
-        android:textSize="24sp"
-        android:theme="@style/MyEditTextTheme"
-        />
+        android:maxLines="1"
+        android:inputType="text"
+        android:background="@drawable/sign_edit_text" />
 
-    <TextView
-        android:id="@+id/daily_start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="开始时间"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@id/daily_event_name"
-        android:layout_marginTop="30dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="20dp"
-        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text ="2021年5月1日 10：00"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@id/daily_start"
+    <EditText
+        android:id="@+id/daily_edit_location_text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintTop_toTopOf="@id/daily_edit_name_text"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/daily_edit_name_text"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="20dp"
-        />
+        android:maxLines="1"
+        android:inputType="text"
+        android:background="@drawable/sign_edit_text" />
 
-    <TextView
-        android:id="@+id/daily_end"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="结束时间"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@id/daily_start"
-        android:layout_marginTop="30dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+
+    <Spinner
+        android:id="@+id/daily_edit_weekDay_spin"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="@id/daily_edit_name_text"
+        app:layout_constraintLeft_toRightOf="@id/daily_edit_name_text"
         android:layout_marginStart="20dp"
-        />
+        android:entries="@array/weekday_spinner_items" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text ="2021年5月1日 11：30"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@id/daily_end"
+        android:id="@+id/daily_edit_start_date"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/daily_edit_name_text"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="日程日期："
+        android:textSize="23sp"
+        android:layout_marginStart="20dp" />
+
+    <com.wlx.xmood.widget.TimePicker
+        android:id="@+id/daily_edit_start_date_edit"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="@id/daily_edit_start_date"
+        app:layout_constraintLeft_toRightOf="@id/daily_edit_start_date"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="20dp"
-        />
+        android:text="点击此处选择日期"
+        android:gravity="center"
+        android:focusable="false" />
+
+
+    <TextView
+        android:id="@+id/daily_edit_start_time"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/daily_edit_start_date"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="开始时间："
+        android:textSize="23sp"
+        android:layout_marginStart="20dp" />
+
+    <com.wlx.xmood.widget.TimePicker
+        android:id="@+id/daily_edit_start_time_edit"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="@id/daily_edit_start_time"
+        app:layout_constraintLeft_toRightOf="@id/daily_edit_start_time"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="点击此处选择时间"
+        android:gravity="center"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/daily_edit_end_time"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/daily_edit_start_time"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="结束时间："
+        android:textSize="23sp"
+        android:layout_marginStart="20dp" />
+
+    <com.wlx.xmood.widget.TimePicker
+        android:id="@+id/daily_edit_end_time_edit"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="@id/daily_edit_end_time"
+        app:layout_constraintLeft_toRightOf="@id/daily_edit_start_time"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="点击此处选择时间"
+        android:gravity="center"
+        android:focusable="false" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/daily_remind"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:layout_constraintTop_toBottomOf="@id/daily_end"
-        android:layout_marginTop="15dp"
-        >
+        app:layout_constraintTop_toBottomOf="@id/daily_edit_end_time"
+        android:layout_marginTop="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="是否开启提醒"
-            android:textSize="24sp"
+            android:textSize="23sp"
             android:textStyle="bold"
             android:gravity="center"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -159,32 +179,36 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/daily_remind_time"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         app:layout_constraintTop_toBottomOf="@id/daily_remind"
-        >
+        android:layout_marginTop="15dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/daily_edit_alarm_time"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
-            android:text="备注"
-            android:layout_marginTop="10dp"
-            android:textSize="24sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:text="     提醒时间："
+            android:textSize="23sp"
+            android:gravity="left"
             android:layout_marginStart="20dp" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:theme="@style/MyEditTextTheme"
-            android:hint="请输入其他备注"
-            android:textSize="16sp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="20dp" />
+        <com.wlx.xmood.widget.TimePicker
+            android:id="@+id/daily_edit_alarm_time_edit"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:focusable="false"
+            android:gravity="center"
+            android:text="点击此处选择时间"
+            app:layout_constraintBottom_toBottomOf="@+id/daily_edit_alarm_time"
+            app:layout_constraintLeft_toRightOf="@id/daily_edit_alarm_time"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/daily_edit_alarm_time" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
