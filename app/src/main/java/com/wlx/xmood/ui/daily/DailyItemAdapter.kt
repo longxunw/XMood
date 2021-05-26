@@ -45,6 +45,8 @@ class DailyItemAdapter(
         if (item.isFinish) {
             holder.eventText.paintFlags = holder.eventText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             holder.eventText.setTextColor(context.resources.getColor(R.color.pale_silver))
+            holder.eventTime.paintFlags = holder.eventText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            holder.eventTime.setTextColor(context.resources.getColor(R.color.pale_silver))
             holder.isFinish.visibility = View.VISIBLE
             holder.confirmBtn.visibility = View.GONE
         } else {
@@ -61,6 +63,8 @@ class DailyItemAdapter(
             item.isFinish = true
             holder.eventText.paintFlags = holder.eventText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             holder.eventText.setTextColor(context.resources.getColor(R.color.pale_silver))
+            holder.eventTime.paintFlags = holder.eventText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            holder.eventTime.setTextColor(context.resources.getColor(R.color.pale_silver))
             holder.isFinish.visibility = View.VISIBLE
             holder.confirmBtn.visibility = View.GONE
         }

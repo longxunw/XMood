@@ -2,6 +2,10 @@ package com.wlx.xmood.ui.memorandum.edit
 
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,6 +27,9 @@ class MemorandumEditActivity : BaseActivity() {
     private lateinit var titleText: EditText
     private lateinit var bodyText: EditText
     private lateinit var catalogText: EditText
+    private var isEditted = false
+    private val handler = Handler(Looper.getMainLooper())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,13 +63,38 @@ class MemorandumEditActivity : BaseActivity() {
             }
             true
         }
+        titleText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isEditted = true
+            }
+        })
+        bodyText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isEditted = true
+            }
+        })
+        catalogText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isEditted = true
+            }
+        })
+
         backBtn.setOnClickListener {
-            if (isNew and isEmpty()) {
+            if ((isNew and isEmpty()) or !isEditted) {
                 finish()
             } else {
                 showBackDialog()
             }
         }
+        handler.postDelayed(Runnable {
+            isEditted = false
+        }, 1000)
     }
 
     private fun showDeleteDialog() {

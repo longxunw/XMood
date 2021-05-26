@@ -8,7 +8,7 @@ import kotlin.coroutines.CoroutineContext
 
 object ScheduleDataGet {
     private var id = 10
-    var startDate = ""
+    var startDate = "2021-03-01"
     val scheduleList = arrayListOf<LessonItem>(
         LessonItem(
             0, "计算理论基础1", "田家炳教育书院236", 1,

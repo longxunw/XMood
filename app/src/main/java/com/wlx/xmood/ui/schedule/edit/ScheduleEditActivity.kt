@@ -2,14 +2,17 @@ package com.wlx.xmood.ui.schedule.edit
 
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.Toolbar
 import com.jzxiang.pickerview.data.Type
 import com.wlx.xmood.BaseActivity
@@ -20,6 +23,7 @@ import com.wlx.xmood.utils.DensityUtil
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
 import com.wlx.xmood.widget.TimePicker
+
 
 class ScheduleEditActivity : BaseActivity() {
     private var status = 0
@@ -36,6 +40,8 @@ class ScheduleEditActivity : BaseActivity() {
     private lateinit var startTime: TimePicker
     private lateinit var endTime: TimePicker
     private val TAG = "ScheduleEditActivity"
+    private var isEditted = false
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +58,70 @@ class ScheduleEditActivity : BaseActivity() {
         startTime = findViewById(R.id.schedule_edit_start_time_edit)
         endTime = findViewById(R.id.schedule_edit_end_time_edit)
 
+        name.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isEditted = true
+            }
+        })
+        location.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isEditted = true
+            }
+        })
+
+        endWeek.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isEditted = true
+            }
+        })
+        startWeek.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isEditted = true
+            }
+        })
+        startTime.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isEditted = true
+            }
+        })
+        endTime.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isEditted = true
+            }
+        })
+        weekDay.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                arg0: AdapterView<*>?, arg1: View?,
+                arg2: Int, arg3: Long
+            ) {
+                isEditted = true
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        weekType.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                arg0: AdapterView<*>?, arg1: View?,
+                arg2: Int, arg3: Long
+            ) {
+                isEditted = true
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
 
         val lessonItem = ScheduleDataGet.getScheduleById(id)
         if (id == -1) {
@@ -100,8 +170,15 @@ class ScheduleEditActivity : BaseActivity() {
         val backBtn: ImageButton = findViewById(R.id.change_pw_back_btn)
 
         backBtn.setOnClickListener {
-            showBackDialog()
+            if (isEditted) {
+                showBackDialog()
+            } else {
+                finish()
+            }
         }
+        handler.postDelayed(Runnable {
+            isEditted = false
+        }, 1000)
 
     }
 

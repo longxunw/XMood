@@ -11,15 +11,27 @@ class DailyViewModel : ViewModel() {
     }
     val text: LiveData<String> = _text
 
-    private val searchLiveData = MutableLiveData<String>()
+    private val eventSearchLiveData = MutableLiveData<String>()
+    private val daySearchLiveDate = MutableLiveData<String>()
 
     val eventList = ArrayList<DailyItem>()
+    val dayList = ArrayList<String>()
 
-    val eventLiveData = Transformations.switchMap(searchLiveData) { query ->
+    val eventLiveData = Transformations.switchMap(eventSearchLiveData) { query ->
         DailyDataGet.getEvent(query)
     }
 
-    fun searchEvent(query: String) {
-        searchLiveData.value = query
+    val dayLiveData = Transformations.switchMap(daySearchLiveDate) { query ->
+        DailyDataGet.getEventDay(query)
     }
+
+    fun searchEvent(query: String) {
+        eventSearchLiveData.value = query
+    }
+
+    fun searchDay(query: String) {
+        daySearchLiveDate.value = query
+    }
+
+
 }

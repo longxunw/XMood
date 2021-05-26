@@ -2,6 +2,7 @@ package com.wlx.xmood.ui.daily
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,15 +38,19 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DailyItemAdapter
     private lateinit var noEventText: TextView
+    private val TAG = "DailyFragment"
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        init()
+//        init()
         viewModel = ViewModelProvider(this).get(DailyViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_daily, container, false)
         noEventText = root.findViewById(R.id.daily_no_event)
         viewModel.searchEvent(TimeUtil.Date2Str(Date(), "yyyy-MM-dd"))
+        viewModel.searchDay("")
         val toolbar: Toolbar = root.findViewById(R.id.toolbar_daily)
         toolbar.inflateMenu(R.menu.daily_tool_bar)
         toolbar.setOnMenuItemClickListener {
@@ -85,7 +90,36 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
                 noEventText.visibility = View.VISIBLE
             }
         })
+        viewModel.dayLiveData.observe(viewLifecycleOwner, Observer { result ->
+            val days = result.getOrNull()
+            if (days != null) {
+                schemeDate.clear()
+                for (day in days) {
+                    val toGetTime = java.util.Calendar.getInstance()
+                        .apply { timeInMillis = TimeUtil.Str2Long(day, "yyyy-MM-dd") }
+                    Log.d(
+                        TAG,
+                        "onCreateView: ${toGetTime.get(java.util.Calendar.YEAR)},${
+                            toGetTime.get(java.util.Calendar.MONTH) + 1
+                        },${toGetTime.get(java.util.Calendar.DAY_OF_MONTH)}"
+                    )
+                    val schemeCalendar = getSchemeCalendar(
+                        toGetTime.get(java.util.Calendar.YEAR),
+                        toGetTime.get(java.util.Calendar.MONTH) + 1,
+                        toGetTime.get(java.util.Calendar.DAY_OF_MONTH)
+                    )
+                    schemeDate[schemeCalendar.toString()] = schemeCalendar
+                }
+                calendar.setSchemeDate(schemeDate)
+            }
+        })
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.searchEvent(TimeUtil.Date2Str(Date(), "yyyy-MM-dd"))
+        viewModel.searchDay("")
     }
 
     private fun init() {
@@ -105,8 +139,8 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         year: Int,
         month: Int,
         day: Int,
-        color: Int,
-        text: String
+        color: Int = R.color.purple_500,
+        text: String = "事"
     ): Calendar {
         val calendar = Calendar()
         calendar.year = year

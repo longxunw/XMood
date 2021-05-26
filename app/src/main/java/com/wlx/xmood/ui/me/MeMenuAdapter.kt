@@ -15,7 +15,6 @@ import com.wlx.xmood.MainActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.settings.feedback.FeedBackActivity
 import com.wlx.xmood.settings.setting.SettingActivity
-import com.wlx.xmood.settings.share.ShareActivity
 import com.wlx.xmood.settings.theme.ThemeSelectActivity
 
 class MeMenuAdapter(
@@ -63,8 +62,12 @@ class MeMenuAdapter(
                 }
             }
             "ShareActivity" -> {
-                intent = Intent(context, ShareActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val intent = Intent.createChooser(Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, "https://developer.android.com/training/sharing/")
+                }, null)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 holder.itemView.setOnClickListener {
                     fragment.startActivity(intent)
                 }
