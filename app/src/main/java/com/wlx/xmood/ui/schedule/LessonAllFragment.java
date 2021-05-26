@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Random;
 
 public class LessonAllFragment extends Fragment {
+    private static final String TAG = "LessonAllFragment";
     private LessonAllViewModel viewModel;
     private View view;
     private int gridWidth, gridHeight;
@@ -131,10 +133,11 @@ public class LessonAllFragment extends Fragment {
                 viewModel.getScheduleList().addAll(scheduleList);
             }
             clearAllLesson();
-
+//            Log.e(TAG, "onResume: " + viewModel.getScheduleList().size());
             for (LessonItem lessonItem : viewModel.getScheduleList()) {
                 try {
                     addLesson(lessonItem);
+//                    Log.e(TAG, "onResume: " + lessonItem.getId() + lessonItem.getStartTime());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -153,10 +156,11 @@ public class LessonAllFragment extends Fragment {
             viewModel.getScheduleList().addAll(scheduleList);
         }
         clearAllLesson();
-
+//        Log.e(TAG, "onResume: " + viewModel.getScheduleList().size());
         for (LessonItem lessonItem : viewModel.getScheduleList()) {
             try {
                 addLesson(lessonItem);
+//                Log.e(TAG, "onResume: " + lessonItem.getId() + " " + lessonItem.getStartTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

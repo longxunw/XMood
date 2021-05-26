@@ -1,6 +1,8 @@
 package com.wlx.xmood.ui.schedule
 
 import androidx.lifecycle.liveData
+import com.wlx.xmood.utils.TimeUtil
+import com.wlx.xmood.utils.TimeUtil.LongToDayLong
 import com.wlx.xmood.utils.TimeUtil.Str2Long
 import com.wlx.xmood.utils.TimeUtil.getWeekCount
 import kotlinx.coroutines.Dispatchers
@@ -12,43 +14,51 @@ object ScheduleDataGet {
     val scheduleList = arrayListOf<LessonItem>(
         LessonItem(
             0, "计算理论基础1", "田家炳教育书院236", 1,
-            Str2Long("08:00", "HH:mm"),
-            Str2Long("09:30", "HH:mm"), 0, 1, 17
+            LongToDayLong(Str2Long("08:00", "HH:mm")),
+            LongToDayLong(Str2Long("09:30", "HH:mm")),
+            0, 1, 17
         ),
         LessonItem(
             1, "计算理论基础2双周", "田家炳教育书院236", 2,
-            Str2Long("10:00", "HH:mm"),
-            Str2Long("11:30", "HH:mm"), 2, 1, 17
+            LongToDayLong(Str2Long("10:00", "HH:mm")),
+            LongToDayLong(Str2Long("11:30", "HH:mm")),
+            2, 1, 17
         ),
         LessonItem(
             8, "计算理论基础2单周", "田家炳教育书院236", 2,
-            Str2Long("13:00", "HH:mm"),
-            Str2Long("14:40", "HH:mm"), 1, 1, 17
+            LongToDayLong(Str2Long("13:00", "HH:mm")),
+            LongToDayLong(Str2Long("14:40", "HH:mm")),
+            1, 1, 17
         ),
         LessonItem(
             2, "计算理论基础5", "田家炳教育书院236", 5,
-            Str2Long("08:00", "HH:mm"),
-            Str2Long("10:45", "HH:mm"), 2, 11, 17
+            LongToDayLong(Str2Long("08:00", "HH:mm")),
+            LongToDayLong(Str2Long("10:45", "HH:mm")),
+            2, 11, 17
         ),
         LessonItem(
             3, "计算理论基础3上午", "田家炳教育书院236", 3,
-            Str2Long("10:00", "HH:mm"),
-            Str2Long("11:40", "HH:mm"), 0, 13, 17
+            LongToDayLong(Str2Long("10:00", "HH:mm")),
+            LongToDayLong(Str2Long("11:40", "HH:mm")),
+            0, 13, 17
         ),
         LessonItem(
             4, "计算理论基础1上午", "田家炳教育书院236", 1,
-            Str2Long("10:00", "HH:mm"),
-            Str2Long("11:40", "HH:mm"), 1, 1, 13
+            LongToDayLong(Str2Long("10:00", "HH:mm")),
+            LongToDayLong(Str2Long("11:40", "HH:mm")),
+            1, 1, 13
         ),
         LessonItem(
             5, "计算理论基础3下午", "田家炳教育书院236", 3,
-            Str2Long("13:00", "HH:mm"),
-            Str2Long("15:45", "HH:mm"), 2, 1, 17
+            LongToDayLong(Str2Long("13:00", "HH:mm")),
+            LongToDayLong(Str2Long("15:45", "HH:mm")),
+            2, 1, 17
         ),
         LessonItem(
             6, "计算理论基础5晚", "田家炳教育书院236", 5,
-            Str2Long("18:00", "HH:mm"),
-            Str2Long("19:40", "HH:mm"), 0, 1, 17
+            LongToDayLong(Str2Long("18:00", "HH:mm")),
+            LongToDayLong(Str2Long("19:40", "HH:mm")),
+            0, 1, 17
         )
     )
 

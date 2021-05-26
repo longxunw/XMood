@@ -23,7 +23,7 @@ object TimeUtil {
     }
 
     fun Long2Str(timestamp: Long, pattern: String): String {
-        return SimpleDateFormat(pattern, Locale.CHINA).format(Date(timestamp))
+        return SimpleDateFormat(pattern, Locale.ENGLISH).format(Date(timestamp))
     }
 
     fun Str2Long(string: String, pattern: String): Long {
@@ -71,16 +71,16 @@ object TimeUtil {
     @Throws(ParseException::class)
     fun getEndPeriod(lessonItem: LessonItem): Int {
         val endTime = lessonItem.endTime
-        val period1 = Str2Long("08:45", "HH:mm")
-        val period2 = Str2Long("09:40", "HH:mm")
-        val period3 = Str2Long("10:45", "HH:mm")
-        val period4 = Str2Long("11:40", "HH:mm")
-        val period5 = Str2Long("13:45", "HH:mm")
-        val period6 = Str2Long("14:40", "HH:mm")
-        val period7 = Str2Long("15:45", "HH:mm")
-        val period8 = Str2Long("16:40", "HH:mm")
-        val period9 = Str2Long("18:45", "HH:mm")
-        val period10 = Str2Long("19:40", "HH:mm")
+        val period1 = LongToDayLong(Str2Long("08:45", "HH:mm"))
+        val period2 = LongToDayLong(Str2Long("09:40", "HH:mm"))
+        val period3 = LongToDayLong(Str2Long("10:45", "HH:mm"))
+        val period4 = LongToDayLong(Str2Long("11:40", "HH:mm"))
+        val period5 = LongToDayLong(Str2Long("13:45", "HH:mm"))
+        val period6 = LongToDayLong(Str2Long("14:40", "HH:mm"))
+        val period7 = LongToDayLong(Str2Long("15:45", "HH:mm"))
+        val period8 = LongToDayLong(Str2Long("16:40", "HH:mm"))
+        val period9 = LongToDayLong(Str2Long("18:45", "HH:mm"))
+        val period10 = LongToDayLong(Str2Long("19:40", "HH:mm"))
         if (endTime <= period1) {
             return 1
         } else if (endTime <= period2) {
@@ -108,16 +108,16 @@ object TimeUtil {
     @Throws(ParseException::class)
     fun getStartPeriod(lessonItem: LessonItem): Int {
         val startTime = lessonItem.startTime
-        val period1 = Str2Long("08:00", "HH:mm")
-        val period2 = Str2Long("08:55", "HH:mm")
-        val period3 = Str2Long("10:00", "HH:mm")
-        val period4 = Str2Long("10:55", "HH:mm")
-        val period5 = Str2Long("13:00", "HH:mm")
-        val period6 = Str2Long("13:55", "HH:mm")
-        val period7 = Str2Long("15:00", "HH:mm")
-        val period8 = Str2Long("15:55", "HH:mm")
-        val period9 = Str2Long("18:00", "HH:mm")
-        val period10 = Str2Long("18:55", "HH:mm")
+        val period1 = LongToDayLong(Str2Long("08:00", "HH:mm"))
+        val period2 = LongToDayLong(Str2Long("08:55", "HH:mm"))
+        val period3 = LongToDayLong(Str2Long("10:00", "HH:mm"))
+        val period4 = LongToDayLong(Str2Long("10:55", "HH:mm"))
+        val period5 = LongToDayLong(Str2Long("13:00", "HH:mm"))
+        val period6 = LongToDayLong(Str2Long("13:55", "HH:mm"))
+        val period7 = LongToDayLong(Str2Long("15:00", "HH:mm"))
+        val period8 = LongToDayLong(Str2Long("15:55", "HH:mm"))
+        val period9 = LongToDayLong(Str2Long("18:00", "HH:mm"))
+        val period10 = LongToDayLong(Str2Long("18:55", "HH:mm"))
         if (startTime == period1) {
             return 1
         } else if (startTime == period2) {
