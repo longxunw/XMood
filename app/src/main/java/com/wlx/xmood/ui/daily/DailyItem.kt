@@ -8,5 +8,6 @@ data class DailyItem(
     var endTime: Long,
     var event: String,
     var isAlarm: Boolean,
+    var alarmTime: Long = 0L,
     var isFinish: Boolean
 )
