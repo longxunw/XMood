@@ -16,7 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.memorandum.edit.MemorandumEditActivity
+import com.wlx.xmood.ui.schedule.ScheduleDataGet.startDate
 import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity
+import com.wlx.xmood.ui.schedule.edit.SemesterDateSetActivity
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
 import java.util.*
@@ -46,6 +49,8 @@ class ScheduleFragment : Fragment() {
         scheduleViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
         scheduleViewModel.searchSchedule(calendar.get(Calendar.DAY_OF_WEEK) - 1)
         val root = inflater.inflate(R.layout.fragment_schedule, container, false)
+        initSemesterDate()
+
         val toAllBtn: Button = root.findViewById(R.id.schedule_to_all_btn)
         toAllBtn.setOnClickListener {
             Utils.replaceFragmentToActivity(
@@ -113,5 +118,14 @@ class ScheduleFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         scheduleViewModel.searchSchedule(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1)
+    }
+
+    private fun initSemesterDate() {
+        if (startDate.isEmpty()) {
+            val intent = Intent(context, SemesterDateSetActivity::class.java)
+            intent.putExtra("data", "refresh")
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context?.startActivity(intent)
+        }
     }
 }

@@ -22,6 +22,10 @@ object TimeUtil {
         return dateFormat.parse(string) as Date
     }
 
+    fun Long2Str(timestamp: Long, pattern: String): String {
+        return SimpleDateFormat(pattern, Locale.CHINA).format(Date(timestamp))
+    }
+
     fun Str2Long(string: String, pattern: String): Long {
         val dateFormat = SimpleDateFormat(pattern, Locale.ENGLISH)
         return dateFormat.parse(string)?.time as Long
@@ -74,25 +78,25 @@ object TimeUtil {
         val period8 = Str2Long("16:40", "HH:mm")
         val period9 = Str2Long("18:45", "HH:mm")
         val period10 = Str2Long("19:40", "HH:mm")
-        if (endTime == period1) {
+        if (endTime <= period1) {
             return 1
-        } else if (endTime == period2) {
+        } else if (endTime <= period2) {
             return 2
-        } else if (endTime == period3) {
+        } else if (endTime <= period3) {
             return 3
-        } else if (endTime == period4) {
+        } else if (endTime <= period4) {
             return 4
-        } else if (endTime == period5) {
+        } else if (endTime <= period5) {
             return 5
-        } else if (endTime == period6) {
+        } else if (endTime <= period6) {
             return 6
-        } else if (endTime == period7) {
+        } else if (endTime <= period7) {
             return 7
-        } else if (endTime == period8) {
+        } else if (endTime <= period8) {
             return 8
-        } else if (endTime == period9) {
+        } else if (endTime <= period9) {
             return 9
-        } else if (endTime == period10) {
+        } else if (endTime <= period10) {
             return 10
         }
         return 0

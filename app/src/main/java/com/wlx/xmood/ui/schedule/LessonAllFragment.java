@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -22,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.wlx.xmood.R;
 import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity;
+import com.wlx.xmood.ui.schedule.edit.SemesterDateSetActivity;
 import com.wlx.xmood.utils.DensityUtil;
 import com.wlx.xmood.utils.TimeUtil;
 import com.wlx.xmood.utils.Utils;
@@ -32,6 +34,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class LessonAllFragment extends Fragment {
     private LessonAllViewModel viewModel;
@@ -48,6 +51,7 @@ public class LessonAllFragment extends Fragment {
     private final int margin = 4;
     private Context context;
     private Toolbar.OnMenuItemClickListener onMenuItemClickListener = null;
+    private int[] colors = {0xEEFF9CD7, 0xEE85AFFE, 0xEEFF9291, 0xEEFFC44D, 0xEE6FEB54, 0xEEAA90FF};
 
 
     private static LessonAllFragment lessonAllFragment;
@@ -97,6 +101,7 @@ public class LessonAllFragment extends Fragment {
         }
 
         initDate();
+
         TextView weekText = view.findViewById(R.id.schedule_week_text);
         weekText.setText("第 " + TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getStartDate()) + " 周");
 
@@ -126,23 +131,10 @@ public class LessonAllFragment extends Fragment {
                 viewModel.getScheduleList().addAll(scheduleList);
             }
             clearAllLesson();
-            long week = TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getStartDate());
+
             for (LessonItem lessonItem : viewModel.getScheduleList()) {
                 try {
-                    if (lessonItem.getStartWeek() > week || lessonItem.getEndWeek() < week) {
-                        continue;
-                    }
-                    if (lessonItem.getWeekType() == 0) {
-                        // 没有单双周 判断在起始周范围内
-                        addLesson(lessonItem);
-                    } else if (lessonItem.getWeekType() == 1 && week % 2 == 1L) {
-                        // 单周 判断当前周是不是单周
-                        addLesson(lessonItem);
-                    } else if (lessonItem.getWeekType() == 2 && week % 2 == 0L) {
-                        // 双周
-                        addLesson(lessonItem);
-                    }
-
+                    addLesson(lessonItem);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -150,6 +142,26 @@ public class LessonAllFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    @Override
+    public void onResume() {
+        ArrayList<LessonItem> scheduleList = ScheduleDataGet.INSTANCE.getScheduleList();
+        if (scheduleList != null) {
+            viewModel.getScheduleList().clear();
+            viewModel.getScheduleList().addAll(scheduleList);
+        }
+        clearAllLesson();
+
+        for (LessonItem lessonItem : viewModel.getScheduleList()) {
+            try {
+                addLesson(lessonItem);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        super.onResume();
     }
 
     private void initDate() {
@@ -160,7 +172,7 @@ public class LessonAllFragment extends Fragment {
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private TextView createTextView(int start, int end, LessonItem lessonItem) {
+    private TextView createTextView(int start, int end, LessonItem lessonItem, boolean inThisWeek) {
         TextView tv = new TextView(this.getActivity());
         int marginHeight = 4;
         if (start >= 5) {
@@ -178,8 +190,16 @@ public class LessonAllFragment extends Fragment {
         tv.setLayoutParams(params);
         tv.setGravity(Gravity.CENTER);
         tv.setTextSize(13);
-        tv.setTextColor(0xff333333);
-        tv.setBackground(getResources().getDrawable(R.drawable.shape_lesson_item));
+
+        if (inThisWeek) {
+            tv.setTextColor(0xffffffff);
+            tv.setBackground(getResources().getDrawable(R.drawable.shape_lesson_item_dark));
+            GradientDrawable background = (GradientDrawable) tv.getBackground();
+            background.setColor(colors[new Random().nextInt(colors.length)]);
+        } else {
+            tv.setTextColor(0xff333333);
+            tv.setBackground(getResources().getDrawable(R.drawable.shape_lesson_item_light));
+        }
         tv.setText(lessonItem.getName());
         tv.setEllipsize(TextUtils.TruncateAt.valueOf("END"));
 
@@ -222,10 +242,19 @@ public class LessonAllFragment extends Fragment {
             default:
                 throw new IllegalStateException("Unexpected value: " + lessonItem.getWeekDay());
         }
+        boolean inThisWeek = false;
+        long week = TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getStartDate());
+        if (lessonItem.getStartWeek() <= week && lessonItem.getEndWeek() >= week) {
+            if (lessonItem.getWeekType() == 0 ||
+                    lessonItem.getWeekType() == 1 && week % 2 == 1L ||
+                    lessonItem.getWeekType() == 2 && week % 2 == 0L) {
+                inThisWeek = true;
+            }
+        }
 
         int start = TimeUtil.INSTANCE.getStartPeriod(lessonItem);
         int end = TimeUtil.INSTANCE.getEndPeriod(lessonItem);
-        tv = createTextView(start, end, lessonItem);
+        tv = createTextView(start, end, lessonItem, inThisWeek);
         layout.addView(tv);
     }
 
@@ -262,22 +291,14 @@ public class LessonAllFragment extends Fragment {
         contentView.setLayoutParams(layoutParams);
         lessonInfoDialog.getWindow().setGravity(Gravity.CENTER);
         TextView cancel = lessonInfoDialog.getWindow().findViewById(R.id.dialog_lesson_info_cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lessonInfoDialog.dismiss();
-            }
-        });
+        cancel.setOnClickListener(v -> lessonInfoDialog.dismiss());
         TextView edit = lessonInfoDialog.getWindow().findViewById(R.id.dialog_lesson_info_edit);
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ScheduleEditActivity.class);
-                intent.putExtra("id", lessonItem.getId());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-                lessonInfoDialog.dismiss();
-            }
+        edit.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ScheduleEditActivity.class);
+            intent.putExtra("id", lessonItem.getId());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+            lessonInfoDialog.dismiss();
         });
         lessonInfoDialog.show();
     }
