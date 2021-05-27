@@ -1,6 +1,7 @@
 package com.wlx.xmood.ui.mood.edit
 
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -53,10 +54,12 @@ class CategoryItemAdapter(
                     if(list[position].selected == 0){
                         list[position].selected = 1
                         viewHolder.category.setBackgroundResource(R.drawable.category_item_selected)
+                        viewHolder.category.setTypeface(Typeface.DEFAULT_BOLD)
                     }
                     else{
                         list[position].selected = 0
                         viewHolder.category.setBackgroundResource(R.drawable.category_item_unselected)
+                        viewHolder.category.setTypeface(Typeface.DEFAULT)
                     }
                 }
         })

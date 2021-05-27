@@ -16,12 +16,14 @@
     <color name="light_cyan">#CBF3F0</color>
     <color name="editbg">#D9000104</color>
     <color name="ghost_white">#F8F8FF</color>
+    <color name="light_orange">#FAEDCA</color>
     <color name="mandarin">#EF8354</color>
     <color name="isabelline">#F8EDEB</color>
     <color name="light_pink">#FA709A</color>
     <color name="imperial_red">#E63946</color>
     <color name="rufous">#AD1C11</color>
     <color name="independence">#4F5D75</color>
+    <color name="primary_btn_bg">#8d99ae</color>
     <color name="dark_electric_black">#657184</color>
     <color name="lili_gray">#F6F7F9</color>
 

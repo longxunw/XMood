@@ -88,8 +88,8 @@ class MemorandumFragment : Fragment() {
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        noteListTitle = root.findViewById(R.id.memorandum_note_list_title)
-        navView = root.findViewById(R.id.memorandum_navView)
+        noteListTitle = root.findViewById(R.id.memorandum_note_list_title) //标题 《所有笔记》
+        navView = root.findViewById(R.id.memorandum_navView) //侧边栏
         val menu = navView.menu
         for (i in 0 until memorandumViewModel.navTitleList.size) {
             menu.add(1, i, i, memorandumViewModel.navTitleList[i]).setIcon(R.drawable.ic_point_24)

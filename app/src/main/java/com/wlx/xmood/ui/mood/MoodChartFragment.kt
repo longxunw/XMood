@@ -1,5 +1,6 @@
 package com.wlx.xmood.ui.mood
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.wlx.xmood.R
 import lecho.lib.hellocharts.gesture.ZoomType
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener
@@ -19,6 +22,7 @@ import kotlin.math.roundToInt
 
 class MoodChartFragment(private val timeType: Int) : Fragment() {
 
+    // private val view: View
     companion object {
         fun newInstance(timeType: Int) = MoodChartFragment(timeType)
         val HOUR_TYPE = 0
@@ -27,7 +31,7 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         val MONTH_TYPE = 3
     }
 
-    private lateinit var viewModel: MoodChartViewModel
+    private lateinit var moodChartViewModel: MoodChartViewModel
     private lateinit var root: View
     private lateinit var text: TextView
 
@@ -35,7 +39,7 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
     private lateinit var lineChartData: LineChartData
     private val numOfLines = 1
     private val maxNumOfLines = 4
-    private val numOfPoints = 12
+    private val numOfPoints = 10
 
     var randomNumbersTab = Array(maxNumOfLines) {
         FloatArray(
@@ -50,21 +54,56 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
     private val shape = ValueShape.CIRCLE
     private val isFilled = false  //是否对线的下方进行填充
     private val hasLabels = false  //是否显示标签
-    private val isCubic = true  //是否是平滑曲线
+    private val isCubic = false  //是否是平滑曲线
     private val hasLabelForSelected = false
     private val pointsHaveDifferentColor = false
     private val hasGradientToTransparent = false
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        //绑定ViewModel
+        moodChartViewModel =
+            ViewModelProvider(this).get(MoodChartViewModel::class.java)
+
+        //初始化root
         root = inflater.inflate(R.layout.mood_chart_fragment, container, false)
 
+        //初始化折线图
         lineChartView = root.findViewById(R.id.mood_linechart)
-
         lineChartView.onValueTouchListener = ValueTouchListener()
+
+//        generateValues()
+
+        when(timeType){
+            HOUR_TYPE->{
+                moodChartViewModel.searchNode(HOUR_TYPE)
+            }
+            DAY_TYPE->{
+                moodChartViewModel.searchNode(DAY_TYPE)
+            }
+            WEEK_TYPE->{
+                moodChartViewModel.searchNode(WEEK_TYPE)
+            }
+            MONTH_TYPE->{
+                moodChartViewModel.searchNode(MONTH_TYPE)
+            }
+        }
+
+        moodChartViewModel.nodeLiveData.observe(viewLifecycleOwner, Observer { result ->
+            val notes = result.getOrNull()
+            if (notes != null) {
+                moodChartViewModel.nodeList.clear()
+                for(note in notes){
+                    moodChartViewModel.nodeList.add(note)
+                    moodChartViewModel.nodeRateList.add(note.rating)
+                }
+                generateValues()
+                generateData()
+            }
+        })
 
         generateValues()
         generateData()
@@ -73,17 +112,33 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         lineChartView.isViewportCalculationEnabled = false
 
         resetViewport()
-
 //        text = root.findViewById(R.id.mood_chart_test_text)
         return root
     }
 
 
-
     private fun generateValues() {
         for (i in 0 until maxNumOfLines) {
-            for (j in 0 until numOfPoints) {
-                randomNumbersTab[i][j] = (Math.random() * 5f + 1).roundToInt().toFloat()
+            for (j in 0 until moodChartViewModel.nodeRateList.size) {
+                randomNumbersTab[i][j] = moodChartViewModel.nodeRateList[j].toFloat()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        when(timeType){
+            HOUR_TYPE->{
+                moodChartViewModel.searchNode(HOUR_TYPE)
+            }
+            DAY_TYPE->{
+                moodChartViewModel.searchNode(DAY_TYPE)
+            }
+            WEEK_TYPE->{
+                moodChartViewModel.searchNode(WEEK_TYPE)
+            }
+            MONTH_TYPE->{
+                moodChartViewModel.searchNode(MONTH_TYPE)
             }
         }
     }
@@ -112,16 +167,17 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
             lines.add(line)
         }
         lineChartData = LineChartData(lines)
+
         val time = Date()
         val rightnow = Calendar.getInstance()
         rightnow.time = time
-        rightnow.add(Calendar.DAY_OF_YEAR, -1)
         val sdf = SimpleDateFormat("MM-dd")
+        val mysdf = SimpleDateFormat("HH")
         val mAxisXValues: MutableList<AxisValue> = ArrayList()
-        for (i in 0..11) {
-            rightnow.add(Calendar.DAY_OF_YEAR, 1)
+        for (i in 0..7) {
+            rightnow.add(Calendar.HOUR, i)
             var axisValue = AxisValue(i.toFloat())
-            mAxisXValues.add(axisValue.setLabel(sdf.format(rightnow.time)))
+            mAxisXValues.add(axisValue.setLabel(mysdf.format(rightnow.time)))
         }
         if (hasAxes) {
             val axisX = Axis()
@@ -153,8 +209,8 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         val v = Viewport(lineChartView.maximumViewport)
         v.bottom = 0f
         v.top = 7f
-        v.left = 1f
-        v.right = (numOfPoints - 1).toFloat()
+        v.left = 0f
+        v.right = 5f
         lineChartView.maximumViewport = v
         lineChartView.currentViewport = v
     }
