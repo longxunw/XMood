@@ -232,6 +232,8 @@ class DailyEditActivity : BaseActivity() {
 
     private fun save() {
         val newDaily = getNewDaily()
+        Log.d(TAG, "save: ${newDaily.startTime} ${newDaily.endTime}")
+        Log.d(TAG, "save: ${TimeUtil.Long2Str(newDaily.startTime, "yyyy-MM-dd HH:mm")} ${TimeUtil.Long2Str(newDaily.endTime, "yyyy-MM-dd HH:mm")}")
         if (newDaily.event.isEmpty()) {
             Utils.makeToast(this, "日程名不能为空")
             return

@@ -26,6 +26,7 @@
     <color name="primary_btn_bg">#8d99ae</color>
     <color name="dark_electric_black">#657184</color>
     <color name="lili_gray">#F6F7F9</color>
+    <color name="gray">#FF888888</color>
 
     <color name="date_picker_bg">#FFFFFF</color>
     <color name="date_picker_divider">#11112233</color>

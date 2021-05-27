@@ -50,6 +50,10 @@ class DailyItemAdapter(
             holder.isFinish.visibility = View.VISIBLE
             holder.confirmBtn.visibility = View.GONE
         } else {
+            holder.eventText.paintFlags = holder.eventText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            holder.eventText.setTextColor(context.resources.getColor(R.color.gray))
+            holder.eventTime.paintFlags = holder.eventTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            holder.eventTime.setTextColor(context.resources.getColor(R.color.gray))
             holder.isFinish.visibility = View.GONE
             holder.confirmBtn.visibility = View.VISIBLE
         }
