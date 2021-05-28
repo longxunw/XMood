@@ -24,6 +24,9 @@
         <item name="colorControlActivated">@color/mandarin</item>
     </style>
 
+    <style name="MyViewPagerTheme">
+        <item name="colorPrimary">@color/light_gray</item>
+    </style>
 
     <style name="MySwitchTheme">
         <item name="colorControlActivated">@color/mandarin</item>

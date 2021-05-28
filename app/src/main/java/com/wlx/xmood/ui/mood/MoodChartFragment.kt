@@ -3,6 +3,7 @@ package com.wlx.xmood.ui.mood
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import lecho.lib.hellocharts.util.ChartUtils
 import lecho.lib.hellocharts.view.LineChartView
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 class MoodChartFragment(private val timeType: Int) : Fragment() {
@@ -37,15 +39,6 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
 
     private lateinit var lineChartView: LineChartView
     private lateinit var lineChartData: LineChartData
-    private val numOfLines = 1
-    private val maxNumOfLines = 4
-    private val numOfPoints = 10
-
-    var randomNumbersTab = Array(maxNumOfLines) {
-        FloatArray(
-            numOfPoints
-        )
-    }
 
     private val hasAxes = true
     private val hasAxesNames = true
@@ -63,7 +56,6 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         //绑定ViewModel
         moodChartViewModel =
             ViewModelProvider(this).get(MoodChartViewModel::class.java)
@@ -74,8 +66,6 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         //初始化折线图
         lineChartView = root.findViewById(R.id.mood_linechart)
         lineChartView.onValueTouchListener = ValueTouchListener()
-
-//        generateValues()
 
         when(timeType){
             HOUR_TYPE->{
@@ -93,20 +83,16 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         }
 
         moodChartViewModel.nodeLiveData.observe(viewLifecycleOwner, Observer { result ->
-            val notes = result.getOrNull()
-            if (notes != null) {
+            val nodes = result.getOrNull()
+            if (nodes != null) {
                 moodChartViewModel.nodeList.clear()
-                for(note in notes){
-                    moodChartViewModel.nodeList.add(note)
-                    moodChartViewModel.nodeRateList.add(note.rating)
+                for(node in nodes){
+                    moodChartViewModel.nodeList.add(node)
+                    moodChartViewModel.nodeRateList.add(node.rating)
                 }
-                generateValues()
-                generateData()
+                drawLineChart()
             }
         })
-
-        generateValues()
-        generateData()
 
         // Disable viewport recalculations, see toggleCubic() method for more info.
         lineChartView.isViewportCalculationEnabled = false
@@ -116,56 +102,28 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         return root
     }
 
-
-    private fun generateValues() {
-        for (i in 0 until maxNumOfLines) {
-            for (j in 0 until moodChartViewModel.nodeRateList.size) {
-                randomNumbersTab[i][j] = moodChartViewModel.nodeRateList[j].toFloat()
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        when(timeType){
-            HOUR_TYPE->{
-                moodChartViewModel.searchNode(HOUR_TYPE)
-            }
-            DAY_TYPE->{
-                moodChartViewModel.searchNode(DAY_TYPE)
-            }
-            WEEK_TYPE->{
-                moodChartViewModel.searchNode(WEEK_TYPE)
-            }
-            MONTH_TYPE->{
-                moodChartViewModel.searchNode(MONTH_TYPE)
-            }
-        }
-    }
-
-    private fun generateData() {
+    private fun drawLineChart() {
         val lines: MutableList<Line> = ArrayList()
-        for (i in 0 until numOfLines) {
-            val values: MutableList<PointValue> = ArrayList()
-            for (j in 0 until numOfPoints) {
-                values.add(PointValue(j.toFloat(), randomNumbersTab[i][j]))
-            }
-            val line = Line(values)
-            line.color = Color.parseColor("#EF8354")
-            line.pointColor = Color.parseColor("#EF8354")
-            line.shape = shape
-            line.isCubic = isCubic
-            line.isFilled = isFilled
-            line.setHasLabels(hasLabels)
-            line.setHasLabelsOnlyForSelected(hasLabelForSelected)
-            line.setHasLines(hasLines)
-            line.setHasPoints(hasPoints)
-            line.setHasLabelsOnlyForSelected(true)
-            if (pointsHaveDifferentColor) {
-                line.pointColor = ChartUtils.COLORS[(i + 1) % ChartUtils.COLORS.size]
-            }
-            lines.add(line)
+        val values: MutableList<PointValue> = ArrayList()
+        for(i in 0 until moodChartViewModel.nodeList.size){
+            values.add(PointValue(i.toFloat(),moodChartViewModel.nodeRateList[i].toFloat()))
         }
+        val line = Line(values)
+        line.color = Color.parseColor("#EF8354")
+        line.pointColor = Color.parseColor("#EF8354")
+        line.shape = shape
+        line.isCubic = isCubic
+        line.isFilled = isFilled
+        line.setHasLabels(hasLabels)
+        line.setHasLabelsOnlyForSelected(hasLabelForSelected)
+        line.setHasLines(hasLines)
+        line.setHasPoints(hasPoints)
+        line.setHasLabelsOnlyForSelected(true)
+        if (pointsHaveDifferentColor) {
+            line.pointColor = ChartUtils.COLORS[(lines.size + 1) % ChartUtils.COLORS.size]
+        }
+        lines.add(line)
+
         lineChartData = LineChartData(lines)
 
         val time = Date()
@@ -202,6 +160,24 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         lineChartData.baseValue = Float.NEGATIVE_INFINITY
         lineChartView.zoomType = ZoomType.HORIZONTAL
         lineChartView.lineChartData = lineChartData
+    }
+
+    override fun onResume() {
+        super.onResume()
+        when(timeType){
+            HOUR_TYPE->{
+                moodChartViewModel.searchNode(HOUR_TYPE)
+            }
+            DAY_TYPE->{
+                moodChartViewModel.searchNode(DAY_TYPE)
+            }
+            WEEK_TYPE->{
+                moodChartViewModel.searchNode(WEEK_TYPE)
+            }
+            MONTH_TYPE->{
+                moodChartViewModel.searchNode(MONTH_TYPE)
+            }
+        }
     }
 
     private fun resetViewport() {

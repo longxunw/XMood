@@ -54,6 +54,7 @@
             app:layout_constraintTop_toTopOf="@id/mood_edit_cstlay" />
 
         <com.wlx.xmood.widget.TimePicker
+            android:id="@+id/mood_node_timepicker"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="40dp"

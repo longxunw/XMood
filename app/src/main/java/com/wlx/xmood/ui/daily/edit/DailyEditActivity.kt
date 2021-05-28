@@ -101,8 +101,8 @@ class DailyEditActivity : BaseActivity() {
 
         day.setType(Type.YEAR_MONTH_DAY)
         day.setOnClickListener {
-            day.pickerBuilder.setCurrentMillseconds(day.current).build()
-                .show(supportFragmentManager, "日程日期")
+            day.pickerBuilder.setMinMillseconds(TimeUtil.Str2Long("2021-01-01 00:01","yyyy-MM-dd HH:mm")).
+                setCurrentMillseconds(day.current).build().show(supportFragmentManager, "日程日期")
         }
 
         startTime.setType(Type.HOURS_MINS)
@@ -119,7 +119,7 @@ class DailyEditActivity : BaseActivity() {
 
         alarmTime.setType(Type.ALL)
         alarmTime.setOnClickListener {
-            alarmTime.pickerBuilder.setCurrentMillseconds(alarmTime.current).build()
+            alarmTime.pickerBuilder.setMinMillseconds(alarmTime.current).build()
                 .show(supportFragmentManager, "日程提醒时间")
         }
 

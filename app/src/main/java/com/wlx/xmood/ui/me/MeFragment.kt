@@ -240,5 +240,6 @@ class MeFragment : Fragment() {
             PendingIntent.FLAG_CANCEL_CURRENT
         )
         alarm.set(AlarmManager.RTC_WAKEUP, time, sender)
+        Log.d(TAG, "setAlarm: ")
     }
 }
