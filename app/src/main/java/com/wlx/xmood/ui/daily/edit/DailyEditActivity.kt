@@ -283,6 +283,7 @@ class DailyEditActivity : BaseActivity() {
     }
 
     private fun getNewDaily(): DailyItem {
+        Log.d(TAG, "getNewDaily: ${applicationContext.toString()}")
         return DailyItem(
             id,
             day.getTime(),
@@ -290,7 +291,7 @@ class DailyEditActivity : BaseActivity() {
             TimeUtil.LongToDayLong(endTime.getTime()),
             event.text.toString(),
             isAlarm.isChecked,
-            if (isAlarm.isChecked) TimeUtil.LongToDayLong(alarmTime.getTime()) else 0L,
+            if (isAlarm.isChecked) alarmTime.getTime() else 0L,
             false,
             if (status == ADD) PendingIntent.getBroadcast(
                 applicationContext,
@@ -320,6 +321,7 @@ class DailyEditActivity : BaseActivity() {
     }
 
     private fun setAlarm(newDaily: DailyItem) {
+        Log.d(TAG, "setAlarm: 1111")
         val time = newDaily.alarmTime
         val alarm: AlarmManager =
             applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -331,7 +333,8 @@ class DailyEditActivity : BaseActivity() {
 //            intent,
 //            PendingIntent.FLAG_CANCEL_CURRENT
 //        )
-        alarm.set(AlarmManager.RTC_WAKEUP, time, dailyItem.alarmIntent)
+        alarm.set(AlarmManager.RTC_WAKEUP, time, newDaily.alarmIntent)
+//        Log.d(TAG, "setAlarm: ${dailyItem.alarmIntent.toString()}")
     }
 
     private fun cancelAlarm(newDaily: DailyItem) {
