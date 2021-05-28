@@ -24,15 +24,18 @@ class MoodTabItem(mContext: Context, attr: AttributeSet? = null, def: Int = 0) :
             setMargins(0, 10, 0, 10)
         }
     }
-
+    var selectedBg = ContextCompat.getDrawable(context,R.drawable.mood_tab_item_bg_selected)
+    var defaultBg = ContextCompat.getDrawable(context,R.drawable.mood_tab_item_bg)
     var selectedColor = ContextCompat.getColor(context, R.color.black)
     var defaultColor = ContextCompat.getColor(context, R.color.light_gray)
 
     override fun setSelected(isSelected: Boolean) {
         super.setSelected(isSelected)
         if (isSelected) {
+            this.background = selectedBg
             this.setTextColor(selectedColor)
         } else {
+            this.background = defaultBg
             this.setTextColor(defaultColor)
         }
     }
