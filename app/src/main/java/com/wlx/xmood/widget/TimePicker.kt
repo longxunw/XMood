@@ -39,6 +39,9 @@ class TimePicker(context: Context, attr: AttributeSet? = null) : AppCompatEditTe
             Type.YEAR_MONTH_DAY -> {
                 timeStr = TimeUtil.Long2Str(millseconds, "yyyy-MM-dd")
             }
+            Type.ALL -> {
+                timeStr = TimeUtil.Long2Str(millseconds, "yyyy-MM-dd HH:mm")
+            }
         }
         this.setText(timeStr)
     }
@@ -50,6 +53,9 @@ class TimePicker(context: Context, attr: AttributeSet? = null) : AppCompatEditTe
             }
             Type.HOURS_MINS -> {
                 timeLong = TimeUtil.Str2Long(string, "HH:mm")
+            }
+            Type.ALL -> {
+                timeLong = TimeUtil.Str2Long(string, "yyyy-MM-dd HH:mm")
             }
         }
         current = timeLong
@@ -66,6 +72,9 @@ class TimePicker(context: Context, attr: AttributeSet? = null) : AppCompatEditTe
             }
             Type.HOURS_MINS -> {
                 timeStr = TimeUtil.Long2Str(long, "HH:mm")
+            }
+            Type.ALL ->{
+                timeStr = TimeUtil.Long2Str(long, "yyyy-MM-dd HH:mm")
             }
         }
         this.setText(timeStr)

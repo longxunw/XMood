@@ -45,6 +45,7 @@ class MoodFragment : Fragment() {
         adapter = MoodTabFragmentAdapter(this)
         timeTab = root.findViewById(R.id.mood_time_tab)
         viewPager = root.findViewById(R.id.mood_viewpager)
+        viewPager.isUserInputEnabled = false
 //        initTab()
         return root
     }

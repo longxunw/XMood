@@ -12,17 +12,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.widget.addTextChangedListener
+import com.jzxiang.pickerview.data.Type
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.ui.daily.edit.TimePickerFragment
 import com.wlx.xmood.utils.DensityUtil
 import com.wlx.xmood.utils.Utils
+import com.wlx.xmood.widget.TimePicker
 
 
 class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private var list: ArrayList<CategoryItem> = ArrayList()
     private var texts = arrayOf<String>("Happy", "Sad", "Angry", "Lonely")
     private var hasContent = false
+    private lateinit var time: TimePicker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +35,27 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
         }
 
-        //时间选择器触发事件
-        val timeText : TextView = findViewById(R.id.mood_edit_text_time)
-        timeText.setOnClickListener {
-            TimePickerFragment().show(supportFragmentManager,"timepicker")
+        //时间选择器
+        time = findViewById(R.id.mood_node_timepicker)
+        time.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                hasContent = true
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        time.setType(Type.ALL)
+        time.setOnClickListener {
+            time.pickerBuilder.setMinMillseconds(time.current).build()
+                .show(supportFragmentManager,"时间")
         }
+
 
         //下拉栏
         val spinner: Spinner = findViewById(R.id.rating_spinner)
-
         ArrayAdapter.createFromResource(
             this,R.array.rating_spinner_items,
             android.R.layout.simple_spinner_item)
