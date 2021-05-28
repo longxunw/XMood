@@ -48,9 +48,6 @@
             android:name=".settings.setting.SettingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".settings.share.ShareActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".settings.feedback.FeedBackActivity"
             android:screenOrientation="portrait" />
         <activity
