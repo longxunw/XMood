@@ -167,4 +167,5 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
     override fun onCalendarOutOfRange(calendar: Calendar?) {
         context?.let { Utils.makeToast(it, "超出日期范围") }
     }
+
 }

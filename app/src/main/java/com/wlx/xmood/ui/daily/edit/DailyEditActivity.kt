@@ -1,6 +1,10 @@
 package com.wlx.xmood.ui.daily.edit
 
+import android.app.AlarmManager
 import android.app.Dialog
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,7 +19,6 @@ import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import com.wlx.xmood.widget.TimePicker
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import com.jzxiang.pickerview.data.Type
@@ -26,6 +29,7 @@ import com.wlx.xmood.ui.daily.DailyItem
 import com.wlx.xmood.utils.DensityUtil
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
+import com.wlx.xmood.widget.TimePicker
 
 
 class DailyEditActivity : BaseActivity() {
@@ -41,6 +45,7 @@ class DailyEditActivity : BaseActivity() {
     private lateinit var isAlarm: SwitchCompat
     private lateinit var alarmTime: TimePicker
     private lateinit var alarmTimeView: View
+    private lateinit var dailyItem: DailyItem
     private val TAG = "DailyEditActivity"
     private var isEditted = false
     private val handler = Handler(Looper.getMainLooper())
@@ -119,14 +124,14 @@ class DailyEditActivity : BaseActivity() {
         }
 
 
-        val dailyItem = DailyDataGet.getEventDayById(id)
+
         if (id == -1) {
             title.text = "添加日程"
             status = ADD
             setAlarmView()
         } else {
             title.text = "编辑日程"
-
+            dailyItem = DailyDataGet.getEventDayById(id)
             status = UPDATE
             dailyItem?.let {
                 day.setTime(dailyItem.day)
@@ -261,6 +266,15 @@ class DailyEditActivity : BaseActivity() {
 
         val result = DailyDataGet.addDaily(newDaily)
         if (result) {
+            if (status == ADD && newDaily.isAlarm) {
+                setAlarm(newDaily)
+            } else if (status == UPDATE) {
+                if (newDaily.isAlarm && !dailyItem.isAlarm) {
+                    setAlarm(newDaily)
+                } else if (!newDaily.isAlarm && dailyItem.isAlarm) {
+                    cancelAlarm(newDaily)
+                }
+            }
             Utils.makeToast(this, "已保存")
             finish()
         }
@@ -277,7 +291,23 @@ class DailyEditActivity : BaseActivity() {
             event.text.toString(),
             isAlarm.isChecked,
             if (isAlarm.isChecked) TimeUtil.LongToDayLong(alarmTime.getTime()) else 0L,
-            false
+            false,
+            if (status == ADD) PendingIntent.getBroadcast(
+                applicationContext,
+                id,
+                Intent("android.xmood.daily.alarm").apply { setPackage("com.wlx.xmood") },
+                PendingIntent.FLAG_CANCEL_CURRENT
+            )
+            else if (dailyItem.alarmIntent == null) {
+                PendingIntent.getBroadcast(
+                    applicationContext,
+                    id,
+                    Intent("android.xmood.daily.alarm").apply { setPackage("com.wlx.xmood") },
+                    PendingIntent.FLAG_CANCEL_CURRENT
+                )
+            } else {
+                dailyItem.alarmIntent
+            }
         )
     }
 
@@ -287,6 +317,27 @@ class DailyEditActivity : BaseActivity() {
         } else {
             alarmTimeView.visibility = View.GONE
         }
+    }
+
+    private fun setAlarm(newDaily: DailyItem) {
+        val time = newDaily.alarmTime
+        val alarm: AlarmManager =
+            applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//        val intent = Intent("android.xmood.daily.alarm")
+//        intent.setPackage("com.wlx.xmood")
+//        val sender = PendingIntent.getBroadcast(
+//            applicationContext,
+//            newDaily.id,
+//            intent,
+//            PendingIntent.FLAG_CANCEL_CURRENT
+//        )
+        alarm.set(AlarmManager.RTC_WAKEUP, time, dailyItem.alarmIntent)
+    }
+
+    private fun cancelAlarm(newDaily: DailyItem) {
+        val alarm: AlarmManager =
+            applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarm.cancel(newDaily.alarmIntent)
     }
 
 }
