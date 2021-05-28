@@ -66,7 +66,11 @@ object TimeUtil {
     }
 
     //对一个时间Long只保留小时和分钟
-    fun LongToDayLong(long: Long) = (long % (1000 * 60 * 60 * 24)) + (1000 * 60 * 60 * 24)
+    fun LongToDayLong(long: Long) : Long {
+        val calendar =  Calendar.getInstance().apply {  timeInMillis = long}
+        calendar.set(2020,1,1)
+        return calendar.timeInMillis
+    }
 
     @Throws(ParseException::class)
     fun getEndPeriod(lessonItem: LessonItem): Int {
