@@ -17,7 +17,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d(TAG, "onReceive: ")
+        Log.d(TAG, "onReceive: ${intent.toString()}")
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 //        val notificationLayout = RemoteViews("com.wlx.xmood", R.layout.daily_alarm_notification)
@@ -27,9 +27,9 @@ class AlarmReceiver : BroadcastReceiver() {
         )
             .setSmallIcon(R.drawable.ic_daily_24)
             .setContentTitle("XMood日程提醒")
-            .setContentText("完成项目PPT")
+            .setContentText(intent.getStringExtra("event"))
             .build()
-        notificationManager.notify(3, notification)
+        notificationManager.notify(intent.getIntExtra("id", 0), notification)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
