@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -63,7 +62,6 @@ class ScheduleFragment : Fragment() {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.add_schedule -> {
-                    Toast.makeText(context, "add_schedule", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, ScheduleEditActivity::class.java)
                     intent.putExtra("id", -1)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

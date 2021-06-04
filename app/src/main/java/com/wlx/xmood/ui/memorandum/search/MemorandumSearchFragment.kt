@@ -67,7 +67,6 @@ class MemorandumSearchFragment : Fragment() {
     }
 
     private fun search() {
-        Utils.makeToast(requireContext(), "search")
         adapter.notifyDataSetChanged()
     }
 }

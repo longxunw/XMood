@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import android.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -70,10 +69,8 @@ class MemorandumFragment : Fragment() {
                     val intent = Intent(context, MemorandumEditActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context?.startActivity(intent)
-                    Toast.makeText(context, "add_memorandum", Toast.LENGTH_SHORT).show()
                 }
                 R.id.search_memorandum -> {
-                    Toast.makeText(context, "search_memorandum", Toast.LENGTH_SHORT).show()
                     Utils.replaceFragmentToActivity(
                         fragmentManager,
                         MemorandumSearchFragment.newInstance(),

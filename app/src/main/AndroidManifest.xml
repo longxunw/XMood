@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.XMood">
 
-        <receiver android:name=".ui.daily.alarm.AlarmReceiver">
+        <receiver
+            android:name=".ui.daily.alarm.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.xmood.daily.alarm" />
             </intent-filter>

@@ -1,9 +1,7 @@
 package com.wlx.xmood.ui.me
 
 import android.app.Activity
-import android.app.AlarmManager
 import android.app.Dialog
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -18,7 +16,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +29,6 @@ import com.wlx.xmood.sign.SignActivity
 import com.wlx.xmood.utils.DensityUtil
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
-import java.util.*
 
 class MeFragment : Fragment() {
     private var menuList = arrayListOf<MeMenuItem>()
@@ -85,10 +81,10 @@ class MeFragment : Fragment() {
         userFaceImg.setOnClickListener {
             showDialog()
         }
-        val alarmTest: Button = root.findViewById(R.id.alarm_test_btn)
-        alarmTest.setOnClickListener {
-            setAlarm(Date().time + 1000)
-        }
+//        val alarmTest: Button = root.findViewById(R.id.alarm_test_btn)
+//        alarmTest.setOnClickListener {
+//            setAlarm(Date().time + 1000)
+//        }
         return root
     }
 
@@ -228,18 +224,18 @@ class MeFragment : Fragment() {
             BitmapFactory.decodeFileDescriptor(it.fileDescriptor)
         }
 
-    private fun setAlarm(time: Long) {
-        val alarm: AlarmManager =
-            requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent("android.xmood.daily.alarm")
-        intent.setPackage("com.wlx.xmood")
-        val sender = PendingIntent.getBroadcast(
-            requireContext(),
-            0,
-            intent,
-            PendingIntent.FLAG_CANCEL_CURRENT
-        )
-        alarm.set(AlarmManager.RTC_WAKEUP, time, sender)
-        Log.d(TAG, "setAlarm: ")
-    }
+//    private fun setAlarm(time: Long) {
+//        val alarm: AlarmManager =
+//            requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//        val intent = Intent("android.xmood.daily.alarm")
+//        intent.setPackage("com.wlx.xmood")
+//        val sender = PendingIntent.getBroadcast(
+//            requireContext(),
+//            0,
+//            intent,
+//            PendingIntent.FLAG_CANCEL_CURRENT
+//        )
+//        alarm.set(AlarmManager.RTC_WAKEUP, time, sender)
+//        Log.d(TAG, "setAlarm: ")
+//    }
 }

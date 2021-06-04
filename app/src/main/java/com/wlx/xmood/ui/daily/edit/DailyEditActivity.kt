@@ -171,7 +171,7 @@ class DailyEditActivity : BaseActivity() {
         }
         handler.postDelayed(Runnable {
             isEditted = false
-        }, 1000)
+        }, 300)
 
     }
 

@@ -1,6 +1,8 @@
 package com.wlx.xmood
 
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -8,11 +10,16 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode
 
 class MainActivity : BaseActivity() {
 
+    private lateinit var navView: BottomNavigationView
+    private lateinit var selectedFragment: MenuItem
+
+    private val TAG = "MainActivity"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 //        supportActionBar?.hide()
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+        navView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
 //        val appBarConfiguration = AppBarConfiguration(
 //            setOf(
@@ -24,5 +31,23 @@ class MainActivity : BaseActivity() {
         navView.setupWithNavController(navController)
         navView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
         setTheme(R.style.Theme_XMood1)
+        Log.d(TAG, "onCreate: ${intent.getStringExtra("target")}")
+        when (intent.getStringExtra("target")) {
+            "daily" -> {
+                selectedFragment = navView.menu.getItem(1)
+                navView.selectedItemId = selectedFragment.itemId
+            }
+            else -> {
+//                selectedFragment = navView.menu.getItem(0)
+            }
+        }
+//        navView.setOnNavigationItemReselectedListener {
+//            selectedFragment = it
+//        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        navView.selectedItemId = selectedFragment.itemId
     }
 }
