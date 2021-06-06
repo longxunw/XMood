@@ -125,13 +125,14 @@
 
         <GridView
             android:id="@+id/grid_category"
+            android:theme="@style/MyGridViewTheme"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="180dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="40dp"
             android:horizontalSpacing="10dp"
-            android:numColumns="4"
+            android:numColumns="3"
             android:verticalSpacing="10dp"
             app:layout_constraintLeft_toLeftOf="@id/mood_edit_cstlay"
             app:layout_constraintTop_toBottomOf="@id/mood_edit_text_category" />
@@ -195,7 +196,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/universal_btn"
         android:text="保存"
-        android:textColor="@color/jet"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:layout_marginBottom="40dp"
         android:layout_marginEnd="40dp"

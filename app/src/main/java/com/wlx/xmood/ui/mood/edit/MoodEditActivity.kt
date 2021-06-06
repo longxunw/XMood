@@ -1,31 +1,42 @@
 package com.wlx.xmood.ui.mood.edit
 
 import android.app.Dialog
-import android.graphics.Color
-import android.media.Image
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.widget.addTextChangedListener
 import com.jzxiang.pickerview.data.Type
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
-import com.wlx.xmood.ui.daily.edit.TimePickerFragment
+import com.wlx.xmood.ui.mood.MoodChartItem
+import com.wlx.xmood.ui.mood.MoodDataGet
 import com.wlx.xmood.utils.DensityUtil
+import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
 import com.wlx.xmood.widget.TimePicker
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private var list: ArrayList<CategoryItem> = ArrayList()
-    private var texts = arrayOf<String>("Happy", "Sad", "Angry", "Lonely")
-    private var hasContent = false
+    private var texts = arrayOf<String>("Joyful", "Sorrowful", "Angry", "Lonely","Boring","Frightened"
+        ,"Disgusted","Missing","Wishing","Loving")
+    private var isEditted = false
     private lateinit var time: TimePicker
+    private lateinit var descriptionText : EditText
+    private var rating: Int = 0
+    private var id: Int = -1
+    private var category =  ArrayList<String>()
+
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +46,20 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
         }
 
+        id = intent.getIntExtra("id",-1)
+
         //时间选择器
         time = findViewById(R.id.mood_node_timepicker)
         time.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                hasContent = true
+                isEditted = true
+
+//                val c: Calendar = Calendar.getInstance()
+//                c.timeInMillis = time.getTime()
+//                val month = c.get(Calendar.MONTH)
+//                Log.d("timepicker",TimeUtil.Long2Str(time.getTime(),"yyyy-MM-dd") )
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -78,7 +96,7 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         //返回按钮
         val backBtn : ImageView = findViewById(R.id.mood_edit_back)
         backBtn.setOnClickListener {
-            if(hasContent){
+            if(isEditted){
                 showBackDialog()
             }
             else{
@@ -87,11 +105,11 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         }
 
         //备注描述
-        val descriptionText : EditText = findViewById(R.id.mood_description)
+        descriptionText = findViewById(R.id.mood_description)
         descriptionText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                hasContent = true //编辑过内容
+                isEditted = true //编辑过内容
             }
             override fun afterTextChanged(s: Editable?) { }
         })
@@ -101,22 +119,49 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         val saveBtn : Button = findViewById(R.id.mood_edit_save_btn)
         saveBtn.setOnClickListener {
             save()
-            Utils.makeToast(this,"已保存")
-            finish()
+//            Utils.makeToast(this,"已保存")
+//            finish()
         }
 
+        handler.postDelayed(Runnable {
+            isEditted = false
+        }, 300)
     }
 
     private fun initCategoryItem(){
-        for(i in 1..10){
-            val randomNum = (0..3).random()
-            list.add(CategoryItem(texts[randomNum],0))
+        for(i in 0 until 10){
+//            val randomNum = (0..3).random()
+            list.add(CategoryItem(texts[i],0))
         }
+    }
+
+    private fun getNewNode(): MoodChartItem{
+        //遍历分类标签列表
+//        Log.d("id:" , id.toString() )
+//        Log.d("time:" , time.getTime().toString() )
+//        Log.d("rating:" , rating.toString())
+//        Log.d("event:" , descriptionText.text.toString() )
+
+        for (node in list){
+            if(node.selected == 1){
+                category.add(node.category)
+            }
+        }
+        return MoodChartItem(id, time.getTime(), rating, descriptionText.text.toString(), category)
     }
 
     //保存心情节点
     private fun save(){
+        val newNode = getNewNode()
+        MoodDataGet.addNode(newNode)
+        Utils.makeToast(this,"添加成功")
 
+//        Log.d("id:" , newNode.id.toString() )
+//        Log.d("time:" , newNode.date.toString() )
+//        Log.d("rating:" , newNode.rating.toString())
+//        Log.d("event:" , newNode.event )
+//        Log.d("category:" , newNode.category[newNode.category.lastIndex] )
+        finish()
     }
 
     private fun showBackDialog() {
@@ -153,7 +198,8 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val rating = parent?.getItemAtPosition(position).toString()
+//        val rating = parent?.getItemAtPosition(position).toString()
+        rating = parent?.getItemAtPosition(position).toString().toInt()
         Utils.makeToast(this, "选择Rating: $rating")
     }
 
