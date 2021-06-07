@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class MyDatabaseHelper(val context: Context, name: String, version: Int) :
     SQLiteOpenHelper(context, name, null, version) {
-    private val createSchedule = "create table Schedule (" +
+    private val createDaily = "create table Daily (" +
             "id INTEGER primary key autoincrement," +
             " day INTEGER," +
             " startTime INTEGER," +
@@ -14,8 +14,7 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             " event TEXT," +
             " isAlarm INTEGER," +
             " alarmTime INTEGER," +
-            " isFinish INTEGER," +
-            " alarmIntent TEXT)"
+            " isFinish INTEGER)"
 
 //    private val createUser = "create table User (" +
 //            "id INTEGER primary key autoincrement, " +
@@ -34,13 +33,13 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
 
 
     private val createMood = "create table Mood (" +
-            "id INTEGER primary key autoincrement," +
-            " score INTEGER," +
-            " type TEXT," +
-            " time INTEGER," +
-            " event TEXT)"
+            "id INTEGER primary key autoincrement" +
+            ", date INTEGER" +
+            ", rating INTEGER" +
+            ", category TEXT" +
+            ", event TEXT)"
 
-    private val createTime = "create table Time (" +
+    private val createSchedule = "create table Schedule (" +
             "id INTEGER primary key autoincrement," +
             " name TEXT," +
             " location TEXT," +
@@ -59,7 +58,7 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
 //        db.execSQL(createUser)
             db.execSQL(createNote)
             db.execSQL(createMood)
-            db.execSQL(createTime)
+            db.execSQL(createDaily)
             db.execSQL(createInfo)
         }
     }

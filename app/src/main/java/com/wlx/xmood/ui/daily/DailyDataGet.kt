@@ -18,9 +18,8 @@ object DailyDataGet {
     private var id = 4
     private val TAG = "DailyDataGet"
     lateinit var dbHelper: MyDatabaseHelper
-    private val gson = Gson()
     private val pendingIntentType = object : TypeToken<PendingIntent>() {}.type
-    val dailyEvents = mutableMapOf<String, ArrayList<DailyItem>>(
+//    val dailyEvents = mutableMapOf<String, ArrayList<DailyItem>>(
 //        "2021-05-21" to arrayListOf(
 //            DailyItem(
 //                0,
@@ -45,12 +44,12 @@ object DailyDataGet {
 //                "完成项目展示ppt", false, 0L, false
 //            )
 //        )
-    )
+//    )
 
     fun getEvent(string: String) = fire(Dispatchers.IO) {
         val db = dbHelper.writableDatabase
         val dayLong = TimeUtil.Str2Long(string,"yyyy-MM-dd")
-        val sql = "select * from Schedule where day >= $dayLong and day < ${dayLong+1000*60*60*24} "
+        val sql = "select * from Daily where day >= $dayLong and day < ${dayLong+1000*60*60*24} "
         val cursor = db.rawQuery(sql,null)
         val result = ArrayList<DailyItem>()
         cursor.apply {
@@ -65,7 +64,6 @@ object DailyDataGet {
                         getInt(getColumnIndex("isAlarm")) != 0,
                         getLong(getColumnIndex("alarmTime")),
                         getInt(getColumnIndex("isFinish")) != 0,
-                        gson.fromJson(getString(getColumnIndex("alarmIntent")), pendingIntentType)
                     )
                     result.add(item)
                 }while (moveToNext())
@@ -75,17 +73,23 @@ object DailyDataGet {
     }
 
     fun getEventDay(string: String) = fire(Dispatchers.IO) {
-        val result = dailyEvents.keys
-        if (result == null) {
-            Result.success(null)
-        } else {
-            Result.success(result)
+        val db = dbHelper.writableDatabase
+        val sql = "select distinct day from Daily"
+        val cursor = db.rawQuery(sql, null)
+        val result = ArrayList<String>()
+        cursor.apply {
+            if(moveToFirst()){
+                do{
+                    result.add(TimeUtil.Long2Str(getLong(getColumnIndex("day")),"yyyy-MM-dd"))
+                }while(moveToNext())
+            }
         }
+        Result.success(result)
     }
 
     fun getEventDayById(id: Int): DailyItem {
         val db = dbHelper.writableDatabase
-        val sql = "select * from Schedule where id = $id"
+        val sql = "select * from Daily where id = $id"
         val cursor = db.rawQuery(sql,null)
         var dailyItem: DailyItem? = null
         cursor.apply {
@@ -99,7 +103,6 @@ object DailyDataGet {
                     getInt(getColumnIndex("isAlarm")) != 0,
                     getLong(getColumnIndex("alarmTime")),
                     getInt(getColumnIndex("isFinish")) != 0,
-                    gson.fromJson(getString(getColumnIndex("alarmIntent")), pendingIntentType)
                 )
             }
             close()
@@ -111,26 +114,33 @@ object DailyDataGet {
     fun addDaily(dailyItem: DailyItem): Boolean {
         Log.e(TAG, "addDaily: " + TimeUtil.Long2Str(dailyItem.day, "yyyy-MM-dd"))
         val value = ContentValues().apply {
-            put("day",dailyItem.day)
-            put("startTime",dailyItem.startTime)
-            put("endTime",dailyItem.endTime)
-            put("event",dailyItem.event)
-            put("isAlarm",dailyItem.isAlarm)
-            put("alarmTime",dailyItem.alarmTime)
-            put("alarmIntent",gson.toJson(dailyItem.alarmIntent))
+            put("day", dailyItem.day)
+            put("startTime", dailyItem.startTime)
+            put("endTime", dailyItem.endTime)
+            put("event", dailyItem.event)
+            put("isAlarm", dailyItem.isAlarm)
+            put("alarmTime", dailyItem.alarmTime)
         }
         val db = dbHelper.writableDatabase
         if (dailyItem.id >= 0) {
-            db.update("Schedule",value,"id = ?", arrayOf(dailyItem.id.toString()))
+            db.update("Daily",value,"id = ?", arrayOf(dailyItem.id.toString()))
         } else {
-            db.insert("Schedule",null,value)
+            db.insert("Daily",null,value)
         }
         return true
     }
 
     fun deleteDaily(id: Int) {
         val db = dbHelper.writableDatabase
-        db.delete("Schedule","id = ?", arrayOf(id.toString()))
+        db.delete("Daily","id = ?", arrayOf(id.toString()))
+    }
+
+    fun dailyFinish(id: Int){
+        val db = dbHelper.writableDatabase
+        val value = ContentValues().apply {
+            put("isFinish",true)
+        }
+        db.update("Daily",value,"id = ?", arrayOf(id.toString()))
     }
 
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =

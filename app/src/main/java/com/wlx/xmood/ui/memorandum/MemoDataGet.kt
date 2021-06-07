@@ -52,7 +52,7 @@ object MemoDataGet {
         "Android"
     )
 
-    //    fun deleteNote(id: Int) {
+//       fun deleteNote(id: Int) {
 //        for (memo in allnoteList) {
 //            if (id == memo.id) {
 //                allnoteList.remove(memo)

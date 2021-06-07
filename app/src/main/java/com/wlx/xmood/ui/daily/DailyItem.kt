@@ -1,6 +1,7 @@
 package com.wlx.xmood.ui.daily
 
 import android.app.PendingIntent
+import java.util.*
 
 //这里的time只使用其小时单位
 data class DailyItem(
@@ -12,5 +13,4 @@ data class DailyItem(
     var isAlarm: Boolean,
     var alarmTime: Long = 0L,
     var isFinish: Boolean,
-    var alarmIntent: PendingIntent? = null
 )

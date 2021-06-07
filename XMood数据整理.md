@@ -9,9 +9,9 @@
 | startTime | long   | HH:mm            |
 | endTime   | long   | HH:mm            |
 | event     | string |                  |
-| isAlarm   | bool   |                  |
+| isAlarm   | int    |                  |
 | alarmTime | long   | yyyy-MM-dd HH:mm |
-| isFinish  | bool   |                  |
+| isFinish  | int   |                  |
 
 
 
@@ -34,7 +34,7 @@
 | 数据名     | 类型   | 备注                        |
 | ---------- | ------ | --------------------------- |
 | head       | string |                             |
-| updateTime | Date   | yyyy年MM月dd日 最后更新时间 |
+| updateTime | long   | yyyy年MM月dd日 最后更新时间 |
 | catalog    | string | 归属目录                    |
 | body       | string | 具体内容                    |
 | id         | int    | primary key                 |
@@ -46,9 +46,9 @@
 | 数据名   | 类型   | 备注                            |
 | -------- | ------ | ------------------------------- |
 | id    | int    |                 primary key         |
-| score    | int    | 心情分数 分数越高心情越好 |
-| ==type== | string | 心情类型                        |
-| day      | Date   | yyyy-MM-dd HH:mm |
+| date    | long    |  |
+| rating | int | 心情类型                        |
+| category      | ArrayList<String>   | |
 | event    | string | 长文本                          |
 
 

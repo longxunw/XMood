@@ -65,7 +65,7 @@ class DailyItemAdapter(
             context.startActivity(intent)
         }
         holder.confirmBtn.setOnClickListener {
-            item.isFinish = true
+            DailyDataGet.dailyFinish(item.id)
             holder.eventText.paintFlags = holder.eventText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             holder.eventText.setTextColor(context.resources.getColor(R.color.pale_silver))
             holder.eventTime.paintFlags = holder.eventText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

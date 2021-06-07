@@ -290,31 +290,7 @@ class DailyEditActivity : BaseActivity() {
             event.text.toString(),
             isAlarm.isChecked,
             if (isAlarm.isChecked) alarmTime.getTime() else 0L,
-            false,
-            if (status == ADD) PendingIntent.getBroadcast(
-                applicationContext,
-                id,
-                Intent("android.xmood.daily.alarm").apply {
-                    setPackage("com.wlx.xmood")
-                    putExtra("event", event.text.toString())
-                    putExtra("id", id)
-                },
-                PendingIntent.FLAG_CANCEL_CURRENT
-            )
-            else if (dailyItem.alarmIntent == null) {
-                PendingIntent.getBroadcast(
-                    applicationContext,
-                    id,
-                    Intent("android.xmood.daily.alarm").apply {
-                        setPackage("com.wlx.xmood")
-                        putExtra("event", event.text.toString())
-                        putExtra("id", id)
-                    },
-                    PendingIntent.FLAG_CANCEL_CURRENT
-                )
-            } else {
-                dailyItem.alarmIntent
-            }
+            false
         )
     }
 
