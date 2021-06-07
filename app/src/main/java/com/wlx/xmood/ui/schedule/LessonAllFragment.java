@@ -51,7 +51,7 @@ public class LessonAllFragment extends Fragment {
     private final int margin = 4;
     private Context context;
     private Toolbar.OnMenuItemClickListener onMenuItemClickListener = null;
-    private int[] colors = {0xEEFF9CD7, 0xEE85AFFE, 0xEEFF9291, 0xEEFFC44D, 0xEE6FEB54, 0xEEAA90FF};
+    private final int[] colors = {0xEEFF9CD7, 0xEE85AFFE, 0xEEFF9291, 0xEEFFC44D, 0xEE6FEB54, 0xEEAA90FF};
 
 
     private static LessonAllFragment lessonAllFragment;
@@ -83,7 +83,7 @@ public class LessonAllFragment extends Fragment {
         if (viewModel == null) {
             viewModel = new ViewModelProvider(this).get(LessonAllViewModel.class);
         }
-        viewModel.searchSchedule(-1);
+
 
         if (onMenuItemClickListener == null) {
             onMenuItemClickListener = item -> {
@@ -148,21 +148,22 @@ public class LessonAllFragment extends Fragment {
 
     @Override
     public void onResume() {
-        ArrayList<LessonItem> scheduleList = ScheduleDataGet.INSTANCE.getScheduleList();
-        if (scheduleList != null) {
-            viewModel.getScheduleList().clear();
-            viewModel.getScheduleList().addAll(scheduleList);
-        }
-        clearAllLesson();
-//        Log.e(TAG, "onResume: " + viewModel.getScheduleList().size());
-        for (LessonItem lessonItem : viewModel.getScheduleList()) {
-            try {
-                addLesson(lessonItem);
-//                Log.e(TAG, "onResume: " + lessonItem.getId() + " " + lessonItem.getStartTime());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+        viewModel.searchSchedule(-1);
+//        ArrayList<LessonItem> scheduleList = ScheduleDataGet.INSTANCE.getScheduleList();
+//        if (scheduleList != null) {
+//            viewModel.getScheduleList().clear();
+//            viewModel.getScheduleList().addAll(scheduleList);
+//        }
+//        clearAllLesson();
+////        Log.e(TAG, "onResume: " + viewModel.getScheduleList().size());
+//        for (LessonItem lessonItem : viewModel.getScheduleList()) {
+//            try {
+//                addLesson(lessonItem);
+////                Log.e(TAG, "onResume: " + lessonItem.getId() + " " + lessonItem.getStartTime());
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
         super.onResume();
     }
 
