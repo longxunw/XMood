@@ -46,9 +46,9 @@
 | 数据名   | 类型   | 备注                            |
 | -------- | ------ | ------------------------------- |
 | id    | int    |                 primary key         |
-| score    | int    | 心情分数 分数越高心情越好 |
-| ==type== | string | 心情类型                        |
-| day      | long   | yyyy-MM-dd HH:mm |
+| date    | long    |  |
+| rating | int | 心情类型                        |
+| category      | ArrayList<String>   | |
 | event    | string | 长文本                          |
 
 
