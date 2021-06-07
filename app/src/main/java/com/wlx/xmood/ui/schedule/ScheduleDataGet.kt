@@ -1,7 +1,7 @@
 package com.wlx.xmood.ui.schedule
 
 import androidx.lifecycle.liveData
-import com.wlx.xmood.utils.TimeUtil
+import com.wlx.xmood.dao.MyDatabaseHelper
 import com.wlx.xmood.utils.TimeUtil.LongToDayLong
 import com.wlx.xmood.utils.TimeUtil.Str2Long
 import com.wlx.xmood.utils.TimeUtil.getWeekCount
@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
 object ScheduleDataGet {
+    lateinit var dbHelper: MyDatabaseHelper
     private var id = 10
     var startDate = "2021-03-01"
     val scheduleList = arrayListOf<LessonItem>(

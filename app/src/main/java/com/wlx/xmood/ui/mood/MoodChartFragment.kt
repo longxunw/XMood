@@ -1,10 +1,7 @@
 package com.wlx.xmood.ui.mood
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.wlx.xmood.R
-import com.wlx.xmood.utils.TimeUtil
 import lecho.lib.hellocharts.gesture.ZoomType
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.util.ChartUtils
 import lecho.lib.hellocharts.view.LineChartView
-import java.lang.StringBuilder
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.roundToInt
 
 class MoodChartFragment(private val timeType: Int) : Fragment() {
 
@@ -36,7 +29,7 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         val WEEK_TYPE = 2
         val MONTH_TYPE = 3
     }
-
+    constructor() : this(HOUR_TYPE)
     private lateinit var moodChartViewModel: MoodChartViewModel
     private lateinit var root: View
     private lateinit var text: TextView

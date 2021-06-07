@@ -49,8 +49,8 @@ class MemorandumFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_memorandum, container, false)
         val recyclerView: RecyclerView = root.findViewById(R.id.memorandum_list)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        memorandumViewModel.searchNote("__all")
-        memorandumViewModel.searchNavTitle("")
+//        memorandumViewModel.searchNote("__all")
+//        memorandumViewModel.searchNavTitle("")
         noteListAdapter = MemorandumAdapter(this, memorandumViewModel.noteList)
         recyclerView.adapter = noteListAdapter
         allnote = root.findViewById(R.id.memorandum_to_all_note)
@@ -88,13 +88,13 @@ class MemorandumFragment : Fragment() {
         noteListTitle = root.findViewById(R.id.memorandum_note_list_title) //标题 《所有笔记》
         navView = root.findViewById(R.id.memorandum_navView) //侧边栏
         val menu = navView.menu
-        for (i in 0 until memorandumViewModel.navTitleList.size) {
-            menu.add(1, i, i, memorandumViewModel.navTitleList[i]).setIcon(R.drawable.ic_point_24)
-                .setOnMenuItemClickListener {
-                    changeToCatalog(memorandumViewModel.navTitleList[i])
-                    true
-                }
-        }
+//        for (i in 0 until memorandumViewModel.navTitleList.size) {
+//            menu.add(1, i, i, memorandumViewModel.navTitleList[i]).setIcon(R.drawable.ic_point_24)
+//                .setOnMenuItemClickListener {
+//                    changeToCatalog(memorandumViewModel.navTitleList[i])
+//                    true
+//                }
+//        }
 
         memorandumViewModel.noteLiveData.observe(viewLifecycleOwner, Observer { result ->
             val notes = result.getOrNull()
@@ -102,6 +102,8 @@ class MemorandumFragment : Fragment() {
                 memorandumViewModel.noteList.clear()
                 memorandumViewModel.noteList.addAll(notes)
                 noteListAdapter.notifyDataSetChanged()
+            } else {
+                Log.d(TAG, "onCreateView: noteResult null!")
             }
         })
 
@@ -111,7 +113,7 @@ class MemorandumFragment : Fragment() {
             if (navTitles != null) {
                 memorandumViewModel.navTitleList.clear()
                 memorandumViewModel.navTitleList.addAll(navTitles)
-
+                menu.clear()
                 for (i in 0 until memorandumViewModel.navTitleList.size) {
                     menu.add(1, i, i, memorandumViewModel.navTitleList[i])
                         .setIcon(R.drawable.ic_point_24)
@@ -134,6 +136,7 @@ class MemorandumFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         memorandumViewModel.searchNote(MemoDataGet.mcatalog)
+        memorandumViewModel.searchNavTitle("")
     }
 
     private fun changeToCatalog(catalog: String) {

@@ -2,6 +2,7 @@ package com.wlx.xmood.ui.daily
 
 import android.util.Log
 import androidx.lifecycle.liveData
+import com.wlx.xmood.dao.MyDatabaseHelper
 import com.wlx.xmood.utils.TimeUtil
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
@@ -10,6 +11,7 @@ import kotlin.coroutines.CoroutineContext
 object DailyDataGet {
     private var id = 4
     private val TAG = "DailyDataGet"
+    lateinit var dbHelper: MyDatabaseHelper
     val dailyEvents = mutableMapOf<String, ArrayList<DailyItem>>(
 //        "2021-05-21" to arrayListOf(
 //            DailyItem(

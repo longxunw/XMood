@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class MemorandumEditActivity : BaseActivity() {
     private lateinit var catalogText: EditText
     private var isEditted = false
     private val handler = Handler(Looper.getMainLooper())
+    private val TAG = "MemorandumEditActivity"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -174,6 +176,7 @@ class MemorandumEditActivity : BaseActivity() {
             Utils.makeToast(this, "空备忘录无法保存")
             return
         }
+        Log.d(TAG, "save: 111")
         MemoDataGet.addNote(newNote)
         Utils.makeToast(this, "已保存")
         finish()

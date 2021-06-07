@@ -9,7 +9,9 @@ import com.wlx.xmood.utils.Utils
 open class BaseActivity : AppCompatActivity() {
 
     private var isExit = false
-    private val handler = Handler(Looper.getMainLooper(), Handler.Callback {
+
+    private
+    val handler = Handler(Looper.getMainLooper(), Handler.Callback {
         isExit = false
         true
     })

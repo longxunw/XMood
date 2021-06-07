@@ -1,12 +1,13 @@
 package com.wlx.xmood.ui.mood
 
 import androidx.lifecycle.liveData
+import com.wlx.xmood.dao.MyDatabaseHelper
 import com.wlx.xmood.utils.TimeUtil
 import kotlinx.coroutines.Dispatchers
-import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 
 object MoodDataGet {
+    lateinit var dbHelper: MyDatabaseHelper
 
     var id = 666
 

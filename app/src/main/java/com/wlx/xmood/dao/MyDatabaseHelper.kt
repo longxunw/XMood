@@ -9,12 +9,12 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
     private val createSchedule = "create table Schedule (" +
             "id INTEGER primary key autoincrement," +
             " day DATE," +
-            " startTime TIME," +
-            " endTime TIME," +
+            " startTime INTEGER," +
+            " endTime INTEGER," +
             " event TEXT," +
             " isAlarm INTEGER," +
-            " alarmTime TIMESTAMP," +
-            " isFinish INTEGER)";
+            " alarmTime INTEGER," +
+            " isFinish INTEGER)"
 
 //    private val createUser = "create table User (" +
 //            "id INTEGER primary key autoincrement, " +
@@ -27,37 +27,40 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
     private val createNote = "create table Note (" +
             "id INTEGER primary key autoincrement," +
             " head TEXT," +
-            " updateTIme DATE," +
+            " updateTime INTEGER," +
             " catalog TEXT," +
-            " body TEXT)";
+            " body TEXT)"
+
 
     private val createMood = "create table Mood (" +
             "id INTEGER primary key autoincrement," +
             " score INTEGER," +
             " type TEXT," +
-            " day DATESTAMP," +
-            " event TEXT)";
+            " time INTEGER," +
+            " event TEXT)"
 
     private val createTime = "create table Time (" +
             "id INTEGER primary key autoincrement," +
             " name TEXT," +
             " location TEXT," +
             " weekDay INTEGER," +
-            " startTime TIME," +
-            " endTime TIME," +
+            " startTime INTEGER," +
+            " endTime INTEGER," +
             " startWeek INTEGER," +
             " endWeek INTEGER," +
-            " weekType INTEGER";
+            " weekType INTEGER)"
 
     private val createInfo = "create table Info(semesterStartDate Date)";
 
     override fun onCreate(db: SQLiteDatabase?) {
-        db.execSQL(createSchedule)
+        db?.let {
+            db.execSQL(createSchedule)
 //        db.execSQL(createUser)
-        db.execSQL(createNote)
-        db.execSQL(createMood)
-        db.execSQL(createTime)
-        db.execSQL(createInfo)
+            db.execSQL(createNote)
+            db.execSQL(createMood)
+            db.execSQL(createTime)
+            db.execSQL(createInfo)
+        }
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
