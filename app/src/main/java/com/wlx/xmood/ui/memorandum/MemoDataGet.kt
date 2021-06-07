@@ -112,7 +112,7 @@ object MemoDataGet {
         } else {
             Log.d(TAG, "changeToCatalog: $catalog")
             mcatalog = catalog
-            val sql = "select * from Note where catalog = \"$catalog\" order by updateTime"
+            val sql = "select * from Note where catalog = '$catalog' order by updateTime"
             cursor = db.rawQuery(sql, null)
         }
         cursor.apply {
