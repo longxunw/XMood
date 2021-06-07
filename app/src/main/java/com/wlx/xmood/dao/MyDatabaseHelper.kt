@@ -8,13 +8,14 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
     SQLiteOpenHelper(context, name, null, version) {
     private val createSchedule = "create table Schedule (" +
             "id INTEGER primary key autoincrement," +
-            " day DATE," +
+            " day INTEGER," +
             " startTime INTEGER," +
             " endTime INTEGER," +
             " event TEXT," +
             " isAlarm INTEGER," +
             " alarmTime INTEGER," +
-            " isFinish INTEGER)"
+            " isFinish INTEGER," +
+            " alarmIntent TEXT)"
 
 //    private val createUser = "create table User (" +
 //            "id INTEGER primary key autoincrement, " +

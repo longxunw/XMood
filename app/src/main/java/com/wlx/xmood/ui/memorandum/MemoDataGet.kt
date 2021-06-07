@@ -73,7 +73,7 @@ object MemoDataGet {
 //        }
 //        return null
 //    }
-    fun getNoteById(id: Int): MemorandumItem? {
+    fun getNoteById(id: Int): MemorandumItem {
         val db = dbHelper.writableDatabase
         val sql = "select * from Note where id = $id"
         val cursor = db.rawQuery(sql, null)
@@ -90,7 +90,7 @@ object MemoDataGet {
             }
             close()
         }
-        return memorandumItem
+        return memorandumItem!!
     }
 
     //    private fun changeToCatalog(catalog: String) {
