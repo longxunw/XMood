@@ -48,7 +48,7 @@ class ScheduleFragment : Fragment() {
         instance = this
         val calendar = Calendar.getInstance()
         scheduleViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
-        scheduleViewModel.searchSchedule(calendar.get(Calendar.DAY_OF_WEEK) - 1)
+//        scheduleViewModel.searchSchedule(calendar.get(Calendar.DAY_OF_WEEK) - 1)
         val root = inflater.inflate(R.layout.fragment_schedule, container, false)
 
         val toAllBtn: Button = root.findViewById(R.id.schedule_to_all_btn)

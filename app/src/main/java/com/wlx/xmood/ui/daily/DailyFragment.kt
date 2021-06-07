@@ -49,8 +49,6 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         viewModel = ViewModelProvider(this).get(DailyViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_daily, container, false)
         noEventText = root.findViewById(R.id.daily_no_event)
-        viewModel.searchEvent(TimeUtil.Date2Str(Date(), "yyyy-MM-dd"))
-        viewModel.searchDay("")
         val toolbar: Toolbar = root.findViewById(R.id.toolbar_daily)
         toolbar.inflateMenu(R.menu.daily_tool_bar)
         toolbar.setOnMenuItemClickListener {

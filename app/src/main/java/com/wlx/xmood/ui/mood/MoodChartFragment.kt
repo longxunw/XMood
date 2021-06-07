@@ -75,26 +75,26 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         cRating = root.findViewById(R.id.rating_in_details)
         cDescription = root.findViewById(R.id.description_in_details)
 
-        when(timeType){
-            HOUR_TYPE->{
-                moodChartViewModel.searchNode(HOUR_TYPE)
-            }
-            DAY_TYPE->{
-                moodChartViewModel.searchNode(DAY_TYPE)
-            }
-            WEEK_TYPE->{
-                moodChartViewModel.searchNode(WEEK_TYPE)
-            }
-            MONTH_TYPE->{
-                moodChartViewModel.searchNode(MONTH_TYPE)
-            }
-        }
+//        when(timeType){
+//            HOUR_TYPE->{
+//                moodChartViewModel.searchNode(HOUR_TYPE)
+//            }
+//            DAY_TYPE->{
+//                moodChartViewModel.searchNode(DAY_TYPE)
+//            }
+//            WEEK_TYPE->{
+//                moodChartViewModel.searchNode(WEEK_TYPE)
+//            }
+//            MONTH_TYPE->{
+//                moodChartViewModel.searchNode(MONTH_TYPE)
+//            }
+//        }
 
         moodChartViewModel.nodeLiveData.observe(viewLifecycleOwner, Observer { result ->
             val nodes = result.getOrNull()
             if (nodes != null) {
                 moodChartViewModel.nodeList.clear()
-                for(node in nodes){
+                for (node in nodes) {
                     moodChartViewModel.nodeList.add(node)
                     moodChartViewModel.nodeRateList.add(node.rating)
                 }
