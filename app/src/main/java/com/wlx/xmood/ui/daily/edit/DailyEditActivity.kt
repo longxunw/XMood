@@ -1,9 +1,7 @@
 package com.wlx.xmood.ui.daily.edit
 
-import android.app.AlarmManager
 import android.app.Dialog
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -26,6 +24,7 @@ import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.ui.daily.DailyDataGet
 import com.wlx.xmood.ui.daily.DailyItem
+import com.wlx.xmood.utils.AlarmUtil
 import com.wlx.xmood.utils.DensityUtil
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
@@ -172,7 +171,7 @@ class DailyEditActivity : BaseActivity() {
         }
         handler.postDelayed(Runnable {
             isEditted = false
-        }, 1000)
+        }, 300)
 
     }
 
@@ -267,18 +266,17 @@ class DailyEditActivity : BaseActivity() {
         val result = DailyDataGet.addDaily(newDaily)
         if (result) {
             if (status == ADD && newDaily.isAlarm) {
-                setAlarm(newDaily)
+                AlarmUtil.setAlarm(applicationContext, newDaily)
             } else if (status == UPDATE) {
                 if (newDaily.isAlarm && !dailyItem.isAlarm) {
-                    setAlarm(newDaily)
+                    AlarmUtil.setAlarm(applicationContext, newDaily)
                 } else if (!newDaily.isAlarm && dailyItem.isAlarm) {
-                    cancelAlarm(newDaily)
+                    AlarmUtil.cancelAlarm(applicationContext, newDaily)
                 }
             }
             Utils.makeToast(this, "已保存")
             finish()
         }
-
 
     }
 
@@ -296,14 +294,22 @@ class DailyEditActivity : BaseActivity() {
             if (status == ADD) PendingIntent.getBroadcast(
                 applicationContext,
                 id,
-                Intent("android.xmood.daily.alarm").apply { setPackage("com.wlx.xmood") },
+                Intent("android.xmood.daily.alarm").apply {
+                    setPackage("com.wlx.xmood")
+                    putExtra("event", event.text.toString())
+                    putExtra("id", id)
+                },
                 PendingIntent.FLAG_CANCEL_CURRENT
             )
             else if (dailyItem.alarmIntent == null) {
                 PendingIntent.getBroadcast(
                     applicationContext,
                     id,
-                    Intent("android.xmood.daily.alarm").apply { setPackage("com.wlx.xmood") },
+                    Intent("android.xmood.daily.alarm").apply {
+                        setPackage("com.wlx.xmood")
+                        putExtra("event", event.text.toString())
+                        putExtra("id", id)
+                    },
                     PendingIntent.FLAG_CANCEL_CURRENT
                 )
             } else {
@@ -319,28 +325,4 @@ class DailyEditActivity : BaseActivity() {
             alarmTimeView.visibility = View.GONE
         }
     }
-
-    private fun setAlarm(newDaily: DailyItem) {
-        Log.d(TAG, "setAlarm: 1111")
-        val time = newDaily.alarmTime
-        val alarm: AlarmManager =
-            applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        val intent = Intent("android.xmood.daily.alarm")
-//        intent.setPackage("com.wlx.xmood")
-//        val sender = PendingIntent.getBroadcast(
-//            applicationContext,
-//            newDaily.id,
-//            intent,
-//            PendingIntent.FLAG_CANCEL_CURRENT
-//        )
-        alarm.set(AlarmManager.RTC_WAKEUP, time, newDaily.alarmIntent)
-//        Log.d(TAG, "setAlarm: ${dailyItem.alarmIntent.toString()}")
-    }
-
-    private fun cancelAlarm(newDaily: DailyItem) {
-        val alarm: AlarmManager =
-            applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarm.cancel(newDaily.alarmIntent)
-    }
-
 }

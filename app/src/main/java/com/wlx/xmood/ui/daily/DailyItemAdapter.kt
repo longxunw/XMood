@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.R
 import com.wlx.xmood.ui.daily.edit.DailyEditActivity
+import com.wlx.xmood.utils.AlarmUtil
 import com.wlx.xmood.utils.TimeUtil
 import java.util.*
 
@@ -71,6 +72,7 @@ class DailyItemAdapter(
             holder.eventTime.setTextColor(context.resources.getColor(R.color.pale_silver))
             holder.isFinish.visibility = View.VISIBLE
             holder.confirmBtn.visibility = View.GONE
+            AlarmUtil.cancelAlarm(context, item)
         }
     }
 

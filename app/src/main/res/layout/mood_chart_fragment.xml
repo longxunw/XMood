@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.mood.MoodChartFragment">
 
 <!--    <TextView-->
@@ -13,9 +14,111 @@
 <!--        android:gravity="center" />-->
 
     <lecho.lib.hellocharts.view.LineChartView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/mood_linechart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mood_moods"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/mood_linechart"
+        android:text="Moods"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mood_landing_card"
+        app:layout_constraintTop_toBottomOf="@+id/mood_moods"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        app:cardCornerRadius="5dp"
+        android:elevation="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Details"
+            android:textSize="20sp"
+            android:textColor="@color/gray"
+            />
+
+        <TextView
+            android:id="@+id/mood_detail_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="right"
+            android:layout_marginEnd="20dp"
+            android:text="6月4日"
+            android:textSize="18sp"
+            android:textColor="@color/light_gray"
+            />
+
+        <ProgressBar
+            android:id="@+id/rating_progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/rating_progressbar"
+            android:progress="4"
+            android:secondaryProgress="6"
+            android:max="6"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            />
+
+        <TextView
+            android:id="@+id/rating_in_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginStart="50dp"
+            android:text="6"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:layout_marginStart="70dp"
+            android:text="/6"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/description_in_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="40dp"
+            android:text="hhhhhhhhhhhhhhhhhhhhhhhh"
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:maxLines="1"
+            android:maxLength="20"
+            android:ellipsize="end"
+            />
+
+
+    </com.google.android.material.card.MaterialCardView>
     
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

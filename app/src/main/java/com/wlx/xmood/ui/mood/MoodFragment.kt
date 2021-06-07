@@ -25,11 +25,20 @@ class MoodFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: MoodTabFragmentAdapter
 
+    private val title = ArrayList<String>()
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        title.add("hour")
+        title.add("week")
+        title.add("day")
+        title.add("month")
+
         moodViewModel = ViewModelProvider(this).get(MoodViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_mood, container, false)
 //        val textView: TextView = root.findViewById(R.id.text_mood)
@@ -57,11 +66,12 @@ class MoodFragment : Fragment() {
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
                 tab.setCustomView(context?.let {
                     MoodTabItem(it).apply {
-                        text = "hour"
+                        text = title[position]
                         setTextColor(context.resources.getColor(R.color.black))
                     }
                 })
             }).attach()
+
     }
 
 //    override fun onResume() {

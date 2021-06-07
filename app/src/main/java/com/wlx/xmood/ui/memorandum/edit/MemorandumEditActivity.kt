@@ -94,7 +94,7 @@ class MemorandumEditActivity : BaseActivity() {
         }
         handler.postDelayed(Runnable {
             isEditted = false
-        }, 1000)
+        }, 300)
     }
 
     private fun showDeleteDialog() {
