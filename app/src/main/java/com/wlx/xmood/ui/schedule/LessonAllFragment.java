@@ -92,7 +92,14 @@ public class LessonAllFragment extends Fragment {
                     intent.putExtra("Id", -1);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
+                } else if (item.getItemId() == R.id.change_start_date) {
+                    Utils.INSTANCE.replaceFragmentToActivity(
+                            requireFragmentManager(),
+                            SemesterDateFragment.newInstance(),
+                            R.id.nav_host_fragment
+                    );
                 }
+
                 return true;
             };
             Toolbar toolbar = view.findViewById(R.id.toolbar_schedule);
