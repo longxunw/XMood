@@ -123,13 +123,13 @@ class ScheduleEditActivity : BaseActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        val lessonItem = ScheduleDataGet.getScheduleById(id)
         if (id == -1) {
             title.text = "添加课程"
             status = ADD
         } else {
             title.text = "编辑课程"
             status = UPDATE
+            val lessonItem = ScheduleDataGet.getScheduleById(id)
             lessonItem?.let {
                 name.setText(lessonItem.name)
                 location.setText(lessonItem.location)

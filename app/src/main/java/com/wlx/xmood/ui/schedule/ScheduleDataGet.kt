@@ -95,7 +95,7 @@ object ScheduleDataGet {
         }
     }
 
-    fun getScheduleById(id: Int): LessonItem? {
+    fun getScheduleById(id: Int): LessonItem {
         val db = dbHelper.writableDatabase
         val sql = "select * from Schedule where id = $id"
         val cursor = db.rawQuery(sql, null)
