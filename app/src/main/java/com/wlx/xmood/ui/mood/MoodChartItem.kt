@@ -8,5 +8,5 @@ data class MoodChartItem(
     var date: Long,
     var rating: Int,
     var event: String,
-    var category: ArrayList<String>
+    var category: String
 )
