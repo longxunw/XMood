@@ -47,7 +47,14 @@ class CategoryItemAdapter(
         }
 
         viewHolder.category.text = list[position].category
-
+        if(list[position].selected == 1){
+            viewHolder.category.setBackgroundResource(R.drawable.category_item_selected)
+            viewHolder.category.setTypeface(Typeface.DEFAULT_BOLD)
+        }
+        else{
+            viewHolder.category.setBackgroundResource(R.drawable.category_item_unselected)
+            viewHolder.category.setTypeface(Typeface.DEFAULT)
+        }
         viewHolder.category.setOnClickListener(
             View.OnClickListener { view ->
                 run {

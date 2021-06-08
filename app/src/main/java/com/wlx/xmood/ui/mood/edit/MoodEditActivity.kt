@@ -34,17 +34,19 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var descriptionText : EditText
     private var rating: Int = 0
     private var id: Int = -1
-    private var category =  ArrayList<String>()
+    private var isNew = true
+    private var category =  String
+//    private lateinit var category: String
 
     private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mood_edit)
-        val moodId = intent.getStringExtra("moodId")
-        if (moodId == null) {
-
-        }
+//        val moodId = intent.getStringExtra("moodId")
+//        if (moodId == null) {
+//
+//        }
 
         id = intent.getIntExtra("id",-1)
 
@@ -70,7 +72,6 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
             time.pickerBuilder.setMinMillseconds(time.current).build()
                 .show(supportFragmentManager,"时间")
         }
-
 
         //下拉栏
         val spinner: Spinner = findViewById(R.id.rating_spinner)
@@ -114,7 +115,23 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
             override fun afterTextChanged(s: Editable?) { }
         })
 
-
+        if (id == -1){
+            isNew = true
+        }
+        else{
+            isNew = false
+            val moodChartItem = MoodDataGet.getChartNodeById(id)
+            if(moodChartItem != null){
+                Log.d("isNULL","isnull")
+                time.setTime(moodChartItem.date)
+                descriptionText.setText(moodChartItem.event)
+                val categoryFromDB = moodChartItem.category
+                highlightCategoryItem(categoryFromDB.split(",") as ArrayList<String>)
+                spinner.setSelection(moodChartItem.rating-1)
+            }else{
+                Log.d("isNULL?","isnotnull")
+            }
+        }
         //保存按钮
         val saveBtn : Button = findViewById(R.id.mood_edit_save_btn)
         saveBtn.setOnClickListener {
@@ -135,6 +152,20 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    private fun highlightCategoryItem(clist: ArrayList<String>){
+        list.clear()
+        var cnt = 0
+        for(i in 0 until 10){
+            if(cnt<clist.size && clist[cnt].isNotEmpty() && clist[cnt] == texts[i]){
+                list.add(CategoryItem(texts[i],1))
+                cnt++
+            }
+            else{
+                list.add(CategoryItem(texts[i],0))
+            }
+        }
+    }
+
     private fun getNewNode(): MoodChartItem{
         //遍历分类标签列表
 //        Log.d("id:" , id.toString() )
@@ -142,12 +173,13 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 //        Log.d("rating:" , rating.toString())
 //        Log.d("event:" , descriptionText.text.toString() )
 
+        val str = StringBuilder()
         for (node in list){
             if(node.selected == 1){
-                category.add(node.category)
+                str.append(node.category).append(",")
             }
         }
-        return MoodChartItem(id, time.getTime(), rating, descriptionText.text.toString(), category)
+        return MoodChartItem(id, time.getTime(), rating, descriptionText.text.toString(), str.toString())
     }
 
     //保存心情节点
@@ -200,7 +232,7 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 //        val rating = parent?.getItemAtPosition(position).toString()
         rating = parent?.getItemAtPosition(position).toString().toInt()
-        Utils.makeToast(this, "选择Rating: $rating")
+//        Utils.makeToast(this, "选择Rating: $rating")
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

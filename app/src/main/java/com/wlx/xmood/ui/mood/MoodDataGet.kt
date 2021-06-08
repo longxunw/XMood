@@ -15,23 +15,21 @@ object MoodDataGet {
 
     var allNodeList = arrayListOf<MoodChartItem>(
         MoodChartItem(0, TimeUtil.Str2Long("2021年5月25日 13:00","yyyy年MM月dd日 HH:mm"),
-            1,"Android真的好难好难好难好难好难好难好难", "Happy,Sad"),
+            1,"Android真的好难好难好难好难好难好难好难", "Joyful,Angry"),
         MoodChartItem(1, TimeUtil.Str2Long("2021年5月26日 13:00","yyyy年MM月dd日 HH:mm"),
-            3,"1111", "Happy,Sad"),
+            3,"1111", "Joyful,Angry"),
         MoodChartItem(2, TimeUtil.Str2Long("2021年5月27日 13:00","yyyy年MM月dd日 HH:mm"),
-            3,"1111", "Happy,Sad"),
+            3,"1111", "Joyful,Angry"),
         MoodChartItem(3, TimeUtil.Str2Long("2021年5月28日 13:00","yyyy年MM月dd日 HH:mm"),
-            4,"1111", "Happy,Sad"),
+            4,"1111", "Joyful,Angry"),
         MoodChartItem(4, TimeUtil.Str2Long("2021年5月29日 13:00","yyyy年MM月dd日 HH:mm"),
-            2,"1111", "Happy,Sad"),
+            2,"1111", "Joyful,Angry"),
         MoodChartItem(5, TimeUtil.Str2Long("2021年5月30日 13:00","yyyy年MM月dd日 HH:mm"),
-            6,"Android真的好难好难好难好难好难好难好难", "Happy,Sad")
+            6,"Android真的好难好难好难好难好难好难好难", "Joyful,Angry")
 
     )
 
     val nodeList = ArrayList<MoodChartItem>()
-
-
 
 
     fun addNode(moodChartItem: MoodChartItem){
@@ -41,12 +39,15 @@ object MoodDataGet {
             put("date", moodChartItem.date)
             put("rating", moodChartItem.rating)
             put("event",moodChartItem.event)
-            put("category", moodChartItem.category))
+            put("category", moodChartItem.category)
         }
         db.insert("Mood", null, value)
     }
 
     fun getAllChartNodes(query: Int) = fire(Dispatchers.IO){
+        //Result.success(allNodeList)
+        // Just for test --- with mock data
+
         nodeList.clear()
         val db = dbHelper.writableDatabase
         val sql = "select * from Mood"
@@ -68,11 +69,11 @@ object MoodDataGet {
         Result.success(nodeList)
     }
 
-    fun getChartNodeById(query: Int) = fire(Dispatchers.IO) {
+    fun getChartNodeById(query: Int) : MoodChartItem? {
         val db = dbHelper.writableDatabase
-        val sql = "select * from Mood where id = $id"
+        val sql = "select * from Mood where id = $query"
         val cursor = db.rawQuery(sql, null)
-        val moodChartItem: MoodChartItem? = null
+        var moodChartItem: MoodChartItem? = null
         cursor.apply {
             if(moveToFirst()) {
                 moodChartItem = MoodChartItem(
@@ -85,7 +86,15 @@ object MoodDataGet {
             }
             close()
         }
-        Result.success(moodChartItem)
+        return moodChartItem!!
+
+        //Just for test --- with mock data
+//        for (node in allNodeList) {
+//            if (query == node.id) {
+//                return node
+//            }
+//        }
+//        return null
     }
 
 

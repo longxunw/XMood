@@ -10,10 +10,10 @@ class MoodChartViewModel : ViewModel() {
     private val searchNodeLiveData = MutableLiveData<Int>()
 
     val nodeList = ArrayList<MoodChartItem>()
-    val nodeRateList = ArrayList<Int>()
+//    val nodeRateList = ArrayList<Int>()
 
     val nodeLiveData = Transformations.switchMap(searchNodeLiveData){ query ->
-        MoodDataGet.getChartNode(query)
+        MoodDataGet.getAllChartNodes(query)
     }
 
     fun searchNode(query: Int){

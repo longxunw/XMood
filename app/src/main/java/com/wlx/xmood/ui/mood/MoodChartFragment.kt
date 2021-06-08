@@ -1,7 +1,9 @@
 package com.wlx.xmood.ui.mood
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.mood.edit.MoodEditActivity
 import lecho.lib.hellocharts.gesture.ZoomType
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener
 import lecho.lib.hellocharts.model.*
@@ -41,6 +44,7 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
     private lateinit var progressBar: ProgressBar //卡片内容---进度条
     private lateinit var cRating: TextView //卡片内容---rating值
     private lateinit var cDescription: TextView //卡片内容---事情描述
+    private lateinit var cDetailTitle: TextView //卡片Detail
 
     private val hasAxes = true
     private val hasAxesNames = true
@@ -74,6 +78,8 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         progressBar = root.findViewById(R.id.rating_progressbar)
         cRating = root.findViewById(R.id.rating_in_details)
         cDescription = root.findViewById(R.id.description_in_details)
+        cDetailTitle = root.findViewById(R.id.detail_to_edit)
+
 
 //        when(timeType){
 //            HOUR_TYPE->{
@@ -96,7 +102,7 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
                 moodChartViewModel.nodeList.clear()
                 for (node in nodes) {
                     moodChartViewModel.nodeList.add(node)
-                    moodChartViewModel.nodeRateList.add(node.rating)
+//                    moodChartViewModel.nodeRateList.add(node.rating)
                 }
                 drawLineChart()
                 resetViewport()
@@ -122,7 +128,7 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
 
         //Y轴 values
         for(i in 0 until moodChartViewModel.nodeList.size){
-            values.add(PointValue(i.toFloat(),moodChartViewModel.nodeRateList[i].toFloat()))
+            values.add(PointValue(i.toFloat(),moodChartViewModel.nodeList[i].rating.toFloat()))
         }
 
         val line = Line(values)
@@ -185,8 +191,23 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
 
     private fun initCard() {
         //获取最近时间的一个节点
-        val recentNode = moodChartViewModel.nodeList[moodChartViewModel.nodeList.lastIndex]
+        val recentNodeIndex = moodChartViewModel.nodeList.lastIndex
+        if(recentNodeIndex < 0){
+            cardDateText.text = ""
+            progressBar.progress = 0
+            cRating.text = "0"
+            cDescription.text = "Nothing! Add one!"
+//            cDetailTitle.setOnClickListener {
+//                val intent = Intent(context, MoodEditActivity::class.java)
+//                intent.putExtra("id", -1);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context?.startActivity(intent);
+//            }
+            return
+        }
 
+        val recentNode = moodChartViewModel.nodeList[moodChartViewModel.nodeList.lastIndex]
+//        Log.d("recentid: ",recentNode.id.toString())
 //        Log.d("size: ", moodChartViewModel.nodeList.size.toString() )
 //        Log.d("lastindex: ", moodChartViewModel.nodeList.lastIndex.toString() )
 
@@ -205,7 +226,13 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         cRating.text = recentNode.rating.toString()
         //初始化event具体描述
         cDescription.text = recentNode.event
-
+        //初始化Detail进入编辑界面事件
+        cDetailTitle.setOnClickListener {
+            val intent = Intent(context, MoodEditActivity::class.java)
+            intent.putExtra("id", recentNode.id);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context?.startActivity(intent);
+        }
     }
 
     override fun onResume() {
@@ -237,6 +264,17 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         lineChartView.maximumViewport = v
         lineChartView.currentViewport = v
     }
+
+//    private fun initEntranceToEdit() {
+//        //初始化Detail进入编辑界面事件
+//        cDetailTitle = root.findViewById(R.id.detail_to_edit)
+//        cDetailTitle.setOnClickListener {
+//            val intent = Intent(context, MoodEditActivity::class.java)
+//            intent.putExtra("id", recentNode.id);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context?.startActivity(intent);
+//        }
+//    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -278,6 +316,12 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
             cRating.text = moodChartViewModel.nodeList[pointIndex].rating.toString()
             //修改event具体描述
             cDescription.text = moodChartViewModel.nodeList[pointIndex].event
+            cDetailTitle.setOnClickListener {
+                val intent = Intent(context, MoodEditActivity::class.java)
+                intent.putExtra("id", moodChartViewModel.nodeList[pointIndex].id);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context?.startActivity(intent);
+            }
         }
 
         override fun onValueDeselected() {
