@@ -1,8 +1,10 @@
 package com.wlx.xmood.ui.schedule
 
 import android.content.ContentValues
+import android.util.Log
 import androidx.lifecycle.liveData
 import com.wlx.xmood.dao.MyDatabaseHelper
+import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.TimeUtil.LongToDayLong
 import com.wlx.xmood.utils.TimeUtil.Str2Long
 import com.wlx.xmood.utils.TimeUtil.getWeekCount
@@ -12,6 +14,7 @@ import kotlin.coroutines.CoroutineContext
 object ScheduleDataGet {
     lateinit var dbHelper: MyDatabaseHelper
     private var id = 10
+    private val TAG = "ScheduleDataGet"
     var startDate = "2021-03-01"
     val scheduleList = arrayListOf<LessonItem>(
 //        LessonItem(
@@ -68,7 +71,7 @@ object ScheduleDataGet {
         if (query == -1) {
             scheduleList.clear()
             val db = dbHelper.writableDatabase
-            val sql = "select * from Schdule"
+            val sql = "select * from Schedule"
             val cursor = db.rawQuery(sql, null)
             cursor.apply {
                 if(moveToFirst()) {
@@ -88,6 +91,9 @@ object ScheduleDataGet {
                     } while(moveToNext())
                 }
             }
+            Log.d(TAG, "getSchedule: ${TimeUtil.Long2Str(scheduleList[0].startTime, "HH-mm")}")
+            Log.d(TAG, "getSchedule: ${TimeUtil.Long2Str(scheduleList[0].endTime, "HH-mm")}")
+
             Result.success(scheduleList)
         } else {
             val result = getWeekDaySchedule(query)
