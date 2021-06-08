@@ -174,6 +174,27 @@ object ScheduleDataGet {
         return result
     }
 
+    //update
+    fun updateSemesterStartTime(str: String) {
+        val db = dbHelper.writableDatabase
+        val sql = "update Info set semesterStartDate = '$str'"
+        db.execSQL(sql)
+    }
+
+    fun getSemesterStartTime() : String {
+        val db = dbHelper.writableDatabase
+        val sql = "select * from Info"
+        val cursor = db.rawQuery(sql, null)
+        var result = ""
+        cursor.apply {
+            if(cursor.moveToFirst()) {
+                result = getString(getColumnIndex("semesterStartDate"))
+            }
+            close()
+        }
+        return result
+    }
+
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =
         liveData<Result<T>>(context) {
             val result = try {

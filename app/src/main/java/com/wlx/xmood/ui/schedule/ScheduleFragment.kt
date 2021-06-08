@@ -77,9 +77,11 @@ class ScheduleFragment : Fragment() {
             }
             true
         }
-        if (ScheduleDataGet.startDate.isNotEmpty()) {
+        val startDate = ScheduleDataGet.getSemesterStartTime()
+        Log.d(TAG, "onCreateView: ${startDate.isNotEmpty().toString()}")
+        if (startDate.isNotEmpty()) {
             val weekCount: TextView = root.findViewById(R.id.schedule_week_text)
-            val weekCountStr = "第 ${TimeUtil.getWeekCount(ScheduleDataGet.startDate)} 周"
+            val weekCountStr = "第 ${TimeUtil.getWeekCount(startDate)} 周"
             weekCount.text = weekCountStr
         }
 
@@ -128,7 +130,7 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun initSemesterDate() {
-        if (ScheduleDataGet.startDate.isEmpty()) {
+        if (ScheduleDataGet.getSemesterStartTime().isEmpty()) {
             Utils.replaceFragmentToActivity(
                 requireFragmentManager(),
                 SemesterDateFragment.newInstance(),

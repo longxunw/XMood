@@ -65,7 +65,7 @@ class SemesterDateFragment : Fragment() {
                     Utils.makeToast(requireContext(), "只能选择周一")
                 }
                 else -> {
-                    ScheduleDataGet.startDate = timeStr
+                    ScheduleDataGet.updateSemesterStartTime(timeStr)
                     com.wlx.xmood.utils.Utils.replaceFragmentToActivity(
                         requireFragmentManager(),
                         ScheduleFragment.newInstance(),

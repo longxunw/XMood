@@ -1,5 +1,6 @@
 package com.wlx.xmood.dao
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -50,7 +51,9 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             " endWeek INTEGER," +
             " weekType INTEGER)"
 
-    private val createInfo = "create table Info(semesterStartDate Date)";
+    private val createInfo = "create table Info(" +
+            "semesterStartDate TEXT)"
+
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.let {
@@ -60,6 +63,10 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             db.execSQL(createMood)
             db.execSQL(createDaily)
             db.execSQL(createInfo)
+            val value = ContentValues().apply {
+                put("semesterStartDate", "")
+            }
+            db.insert("Info", null, value)
         }
     }
 

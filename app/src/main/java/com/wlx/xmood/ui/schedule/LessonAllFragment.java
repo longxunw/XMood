@@ -103,7 +103,7 @@ public class LessonAllFragment extends Fragment {
         initDate();
 
         TextView weekText = view.findViewById(R.id.schedule_week_text);
-        weekText.setText("第 " + TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getStartDate()) + " 周");
+        weekText.setText("第 " + TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getSemesterStartTime()) + " 周");
 
         view.post(() -> {
             if (isFirst) {
@@ -246,7 +246,7 @@ public class LessonAllFragment extends Fragment {
                 throw new IllegalStateException("Unexpected value: " + lessonItem.getWeekDay());
         }
         boolean inThisWeek = false;
-        long week = TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getStartDate());
+        long week = TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getSemesterStartTime());
         if (lessonItem.getStartWeek() <= week && lessonItem.getEndWeek() >= week) {
             if (lessonItem.getWeekType() == 0 ||
                     lessonItem.getWeekType() == 1 && week % 2 == 1L ||
