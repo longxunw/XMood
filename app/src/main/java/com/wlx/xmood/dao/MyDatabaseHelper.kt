@@ -53,6 +53,12 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             " endWeek INTEGER," +
             " weekType INTEGER)"
 
+
+    private val insertData1 = "insert into Note(head, updateTime, catalog, body)" +
+            " values('示例标题', 1, '默认分类', '示例内容')"
+
+    private val insertData2 = "insert into Note(head, updateTime, catalog, body)" +
+            " values('示例标题2', 2, '默认分类', '示例内容2')"
 //    private val createInfo = "create table Info(" +
 //            "semesterStartDate TEXT)"
 
@@ -64,6 +70,8 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             db.execSQL(createNote)
             db.execSQL(createMood)
             db.execSQL(createDaily)
+            db.execSQL(insertData1)
+            db.execSQL(insertData2)
 //            db.execSQL(createInfo)
             val profileImg =
                 BitmapFactory.decodeResource(context.resources, R.mipmap.me_face__example_img)
