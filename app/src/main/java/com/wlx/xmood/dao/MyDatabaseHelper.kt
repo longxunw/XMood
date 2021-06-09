@@ -59,6 +59,25 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
 
     private val insertData2 = "insert into Note(head, updateTime, catalog, body)" +
             " values('示例标题2', 2, '默认分类', '示例内容2')"
+
+    private val insertData3 = "insert into Daily" +
+            "(day, startTime, endTime, event, isAlarm, alarmTime, isFinish)" +
+            " values(1623168000000, 1580569080000, 1580569140000, '写作业', 0, 0, 0)"
+
+    private val insertData4 = "insert into Daily" +
+            "(day, startTime, endTime, event, isAlarm, alarmTime, isFinish)" +
+            " values(1623859200000, 1580569440000, 1580569440000, '交作业', 0, 0, 0)"
+
+    private val insertData5 = "insert into Daily" +
+            "(day, startTime, endTime, event, isAlarm, alarmTime, isFinish)" +
+            " values(1624204800000, 1580569440000, 1580569440000, '考试', 0, 0, 0)"
+
+    private val insertData6 = "insert into Daily" +
+            "(day, startTime, endTime, event, isAlarm, alarmTime, isFinish)" +
+            " values(1623340800000, 1580522400000, 1580523060000, '项目展示', 0, 0, 0)"
+
+
+
 //    private val createInfo = "create table Info(" +
 //            "semesterStartDate TEXT)"
 
@@ -72,6 +91,10 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             db.execSQL(createDaily)
             db.execSQL(insertData1)
             db.execSQL(insertData2)
+            db.execSQL(insertData3)
+            db.execSQL(insertData4)
+            db.execSQL(insertData5)
+            db.execSQL(insertData6)
 //            db.execSQL(createInfo)
             val profileImg =
                 BitmapFactory.decodeResource(context.resources, R.mipmap.me_face__example_img)
