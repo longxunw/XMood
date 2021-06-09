@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -86,7 +87,7 @@ public class LessonAllFragment extends Fragment {
 
         if (viewModel == null) {
             viewModel = new ViewModelProvider(this).get(LessonAllViewModel.class);
-            viewModel.setBackground(getResources().getDrawable(R.drawable.schedule_all_background_bingbing));
+            viewModel.setBackground(new BitmapDrawable(getResources(), ScheduleDataGet.INSTANCE.getAllBgImg()));
         }
 
         if (onMenuItemClickListener == null) {

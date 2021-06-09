@@ -18,15 +18,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
-import com.wlx.xmood.ui.schedule.LessonAllFragment
 import com.wlx.xmood.ui.schedule.ScheduleDataGet
 import com.wlx.xmood.utils.DensityUtil
-import com.wlx.xmood.utils.Utils
 import java.io.File
 
 class CurrencyActivity : BaseActivity() {
@@ -105,16 +102,22 @@ class CurrencyActivity : BaseActivity() {
             fromCamera -> {
                 if (resultCode == Activity.RESULT_OK) {
                     bitmap =
-                        rotateIfRequired(BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri)))
-                    imageView.setImageBitmap(bitmap)
+                        rotateIfRequired(
+                            BitmapFactory.decodeStream(
+                                contentResolver.openInputStream(
+                                    imageUri
+                                )
+                            )
+                        )
+                    ScheduleDataGet.setAllBgImg(bitmap)
 
                 }
             }
             fromPhoto -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     data.data?.let {
-                        bitmap = getBitmapFromUri(it)!!
-                        imageView.setImageBitmap(bitmap)
+                        bitmap = getBitmapFromUri(it)
+                        bitmap?.let { it1 -> ScheduleDataGet.setAllBgImg(it1) }
                     }
                 }
             }

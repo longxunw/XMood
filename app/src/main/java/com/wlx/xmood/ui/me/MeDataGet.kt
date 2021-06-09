@@ -11,7 +11,7 @@ object MeDataGet {
     fun getProfileImg(): Bitmap {
         val db = dbHelper.writableDatabase
         lateinit var bitmap: Bitmap
-        val sql = "select * from User"
+        val sql = "select profileImg from User"
         val cursor = db.rawQuery(sql, null, null)
         cursor.apply {
             if (moveToFirst()) {
@@ -25,7 +25,7 @@ object MeDataGet {
 
     fun getUserName(): String {
         val db = dbHelper.writableDatabase
-        val sql = "select * from User"
+        val sql = "select username from User"
         var str = ""
         val cursor = db.rawQuery(sql, null, null)
         cursor.apply {
@@ -39,7 +39,7 @@ object MeDataGet {
 
     fun getAutograph(): String {
         val db = dbHelper.writableDatabase
-        val sql = "select * from User"
+        val sql = "select autograph from User"
         var str = ""
         val cursor = db.rawQuery(sql, null, null)
         cursor.apply {
@@ -53,7 +53,7 @@ object MeDataGet {
 
     fun getStartDate(): String {
         val db = dbHelper.writableDatabase
-        val sql = "select * from User"
+        val sql = "select semesterStartDate from User"
         var str = ""
         val cursor = db.rawQuery(sql, null, null)
         cursor.apply {

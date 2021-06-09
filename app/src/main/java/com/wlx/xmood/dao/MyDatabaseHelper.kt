@@ -4,10 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.wlx.xmood.R
-import java.io.ByteArrayOutputStream
+import com.wlx.xmood.utils.ImageUtil
 
 class MyDatabaseHelper(val context: Context, name: String, version: Int) :
     SQLiteOpenHelper(context, name, null, version) {
@@ -25,7 +24,8 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             "username TEXT," +
             "profileImg BLOB, " +
             "autograph TEXT," +
-            "semesterStartDate TEXT)"
+            "semesterStartDate TEXT," +
+            "lessonImg BLOB)"
 
     private val createNote = "create table Note (" +
             "id INTEGER primary key autoincrement," +
@@ -65,15 +65,19 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             db.execSQL(createMood)
             db.execSQL(createDaily)
 //            db.execSQL(createInfo)
-            val bitmap =
+            val profileImg =
                 BitmapFactory.decodeResource(context.resources, R.mipmap.me_face__example_img)
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+            val lessonImg =
+                BitmapFactory.decodeResource(
+                    context.resources,
+                    R.drawable.schedule_all_background_bingbing
+                )
             val userValue = ContentValues().apply {
                 put("username", "XMooder")
                 put("autograph", "A XMooder!")
-                put("profileImg", baos.toByteArray())
+                put("profileImg", ImageUtil.bitmap2ByteArray(profileImg))
                 put("semesterStartDate", "")
+                put("lessonImg", ImageUtil.bitmap2ByteArray(lessonImg))
             }
             db.insert("User", null, userValue)
         }

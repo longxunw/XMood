@@ -1,10 +1,13 @@
 package com.wlx.xmood.ui.schedule
 
 import android.content.ContentValues
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.liveData
 import com.wlx.xmood.dao.MyDatabaseHelper
+import com.wlx.xmood.ui.me.MeDataGet
+import com.wlx.xmood.utils.ImageUtil
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.TimeUtil.getWeekCount
 import kotlinx.coroutines.Dispatchers
@@ -74,7 +77,7 @@ object ScheduleDataGet {
             val sql = "select * from Schedule"
             val cursor = db.rawQuery(sql, null)
             cursor.apply {
-                if(moveToFirst()) {
+                if (moveToFirst()) {
                     do {
                         val item = LessonItem(
                             getInt(getColumnIndex("id")),
@@ -88,7 +91,7 @@ object ScheduleDataGet {
                             getInt(getColumnIndex("endWeek"))
                         )
                         scheduleList.add(item)
-                    } while(moveToNext())
+                    } while (moveToNext())
                 }
             }
             Log.d(TAG, "getSchedule: ${TimeUtil.Long2Str(scheduleList[0].startTime, "HH-mm")}")
@@ -107,7 +110,7 @@ object ScheduleDataGet {
         val cursor = db.rawQuery(sql, null)
         var lessonItem: LessonItem? = null
         cursor.apply {
-            if(cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 lessonItem = LessonItem(
                     getInt(getColumnIndex("id")),
                     getString(getColumnIndex("name")),
@@ -130,7 +133,7 @@ object ScheduleDataGet {
         return true
     }
 
-    fun getBackground(id :Int) = fire(Dispatchers.IO) {
+    fun getBackground(id: Int) = fire(Dispatchers.IO) {
         val result = background
         if (result == null) {
             Result.success(null)
@@ -188,26 +191,28 @@ object ScheduleDataGet {
         return result
     }
 
-//    //update
-//    fun updateSemesterStartTime(str: String) {
-//        val db = dbHelper.writableDatabase
-//        val sql = "update Info set semesterStartDate = '$str'"
-//        db.execSQL(sql)
-//    }
-//
-//    fun getSemesterStartTime() : String {
-//        val db = dbHelper.writableDatabase
-//        val sql = "select * from Info"
-//        val cursor = db.rawQuery(sql, null)
-//        var result = ""
-//        cursor.apply {
-//            if(cursor.moveToFirst()) {
-//                result = getString(getColumnIndex("semesterStartDate"))
-//            }
-//            close()
-//        }
-//        return result
-//    }
+    fun getAllBgImg(): Bitmap {
+        val db = dbHelper.writableDatabase
+        val sql = "select lessonImg from User"
+        val cursor = db.rawQuery(sql, null, null)
+        lateinit var bitmap: Bitmap
+        cursor.apply {
+            if (moveToFirst()) {
+                bitmap = ImageUtil.byteArray2Bitmap(getBlob(getColumnIndex("lessonImg")))
+            }
+            close()
+        }
+        return bitmap
+    }
+
+    fun setAllBgImg(bitmap: Bitmap) {
+        val db = MeDataGet.dbHelper.writableDatabase
+        val value = ContentValues().apply {
+            put("lessonImg", ImageUtil.bitmap2ByteArray(bitmap))
+        }
+        db.update("User", value, "", arrayOf())
+
+    }
 
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =
         liveData<Result<T>>(context) {
