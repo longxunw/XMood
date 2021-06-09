@@ -1,9 +1,13 @@
 package com.wlx.xmood.ui.schedule
 
 import android.content.ContentValues
+import android.database.CursorWindow
+import android.database.sqlite.SQLiteCursor
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.liveData
 import com.wlx.xmood.dao.MyDatabaseHelper
 import com.wlx.xmood.ui.me.MeDataGet
@@ -191,10 +195,13 @@ object ScheduleDataGet {
         return result
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     fun getAllBgImg(): Bitmap {
         val db = dbHelper.writableDatabase
         val sql = "select lessonImg from User"
-        val cursor = db.rawQuery(sql, null, null)
+        val cursor = db.rawQuery(sql, null, null) as SQLiteCursor
+        val cf = CursorWindow("cursorWindow", 1024 * 1024 * 20)
+        cursor.window = cf
         lateinit var bitmap: Bitmap
         cursor.apply {
             if (moveToFirst()) {
@@ -211,7 +218,6 @@ object ScheduleDataGet {
             put("lessonImg", ImageUtil.bitmap2ByteArray(bitmap))
         }
         db.update("User", value, "", arrayOf())
-
     }
 
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =

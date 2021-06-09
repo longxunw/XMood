@@ -24,6 +24,7 @@ import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 import com.wlx.xmood.ui.schedule.ScheduleDataGet
 import com.wlx.xmood.utils.DensityUtil
+import com.wlx.xmood.utils.Utils
 import java.io.File
 
 class CurrencyActivity : BaseActivity() {
@@ -110,6 +111,7 @@ class CurrencyActivity : BaseActivity() {
                             )
                         )
                     ScheduleDataGet.setAllBgImg(bitmap)
+                    Utils.makeToast(applicationContext, "设置成功")
 
                 }
             }
@@ -117,7 +119,11 @@ class CurrencyActivity : BaseActivity() {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     data.data?.let {
                         bitmap = getBitmapFromUri(it)
-                        bitmap?.let { it1 -> ScheduleDataGet.setAllBgImg(it1) }
+                        bitmap?.let { it1 ->
+                            ScheduleDataGet.setAllBgImg(it1)
+                            Utils.makeToast(applicationContext, "设置成功")
+                        }
+
                     }
                 }
             }
