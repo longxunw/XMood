@@ -51,16 +51,6 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         noEventText = root.findViewById(R.id.daily_no_event)
         val toolbar: Toolbar = root.findViewById(R.id.toolbar_daily)
         toolbar.inflateMenu(R.menu.daily_tool_bar)
-        toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.add_daily -> {
-                    val intent = Intent(context, DailyEditActivity::class.java) //添加日程activity
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context?.startActivity(intent)
-                }
-            }
-            true
-        }
         val calendar: CalendarView = root.findViewById(R.id.daily_calendar_view)
         calendar.setSchemeDate(schemeDate)
         calendar.setOnCalendarSelectListener(this)
@@ -111,6 +101,25 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
                 calendar.setSchemeDate(schemeDate)
             }
         })
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.add_daily -> {
+                    val intent = Intent(context, DailyEditActivity::class.java) //添加日程activity
+                    intent.putExtra(
+                        "nowDate",
+                        "${calendar.selectedCalendar.year}-${
+                            String.format(
+                                "%02d",
+                                calendar.selectedCalendar.month
+                            )
+                        }-${String.format("%02d", calendar.selectedCalendar.day)}"
+                    )
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context?.startActivity(intent)
+                }
+            }
+            true
+        }
         return root
     }
 

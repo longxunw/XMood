@@ -1,8 +1,6 @@
 package com.wlx.xmood.ui.daily.edit
 
 import android.app.Dialog
-import android.app.PendingIntent
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -127,12 +125,17 @@ class DailyEditActivity : BaseActivity() {
         if (id == -1) {
             title.text = "添加日程"
             status = ADD
+            val nowDate = intent.getStringExtra("nowDate") ?: ""
+            if (nowDate.isNotEmpty()) {
+                day.setTime(nowDate)
+//                Log.d(TAG, "onCreate: $nowDate")
+            }
             setAlarmView()
         } else {
             title.text = "编辑日程"
             dailyItem = DailyDataGet.getEventDayById(id)
             status = UPDATE
-            dailyItem?.let {
+            dailyItem.let {
                 day.setTime(dailyItem.day)
                 startTime.setTime(dailyItem.startTime)
                 endTime.setTime(dailyItem.endTime)
