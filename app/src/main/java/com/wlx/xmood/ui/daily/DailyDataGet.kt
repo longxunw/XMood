@@ -129,12 +129,12 @@ object DailyDataGet {
         db.delete("Daily","id = ?", arrayOf(id.toString()))
     }
 
-    fun dailyFinish(id: Int){
+    fun dailyFinish(id: Int, boolean: Boolean) {
         val db = dbHelper.writableDatabase
         val value = ContentValues().apply {
-            put("isFinish",true)
+            put("isFinish", boolean)
         }
-        db.update("Daily",value,"id = ?", arrayOf(id.toString()))
+        db.update("Daily", value, "id = ?", arrayOf(id.toString()))
     }
 
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =

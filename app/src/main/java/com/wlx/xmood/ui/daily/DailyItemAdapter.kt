@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.R
@@ -28,7 +27,7 @@ class DailyItemAdapter(
         val eventText: TextView = view.findViewById(R.id.daily_item_event)
         val eventTime: TextView = view.findViewById(R.id.daily_item_time)
         val confirmBtn: Button = view.findViewById(R.id.daily_finish_btn)
-        val isFinish: ImageView = view.findViewById(R.id.daily_is_finish_img)
+        val isFinish: TextView = view.findViewById(R.id.daily_is_finish)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -65,7 +64,7 @@ class DailyItemAdapter(
             context.startActivity(intent)
         }
         holder.confirmBtn.setOnClickListener {
-            DailyDataGet.dailyFinish(item.id)
+            DailyDataGet.dailyFinish(item.id, true)
             holder.eventText.paintFlags = holder.eventText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             holder.eventText.setTextColor(context.resources.getColor(R.color.pale_silver))
             holder.eventTime.paintFlags = holder.eventText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -73,6 +72,17 @@ class DailyItemAdapter(
             holder.isFinish.visibility = View.VISIBLE
             holder.confirmBtn.visibility = View.GONE
             AlarmUtil.cancelAlarm(context, item)
+        }
+        holder.isFinish.setOnClickListener {
+            DailyDataGet.dailyFinish(item.id, false)
+            holder.eventText.paintFlags =
+                holder.eventText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            holder.eventText.setTextColor(context.resources.getColor(R.color.gray))
+            holder.eventTime.paintFlags =
+                holder.eventTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            holder.eventTime.setTextColor(context.resources.getColor(R.color.gray))
+            holder.isFinish.visibility = View.GONE
+            holder.confirmBtn.visibility = View.VISIBLE
         }
     }
 
