@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.me.MeDataGet
 import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
@@ -77,7 +78,7 @@ class ScheduleFragment : Fragment() {
             }
             true
         }
-        val startDate = ScheduleDataGet.getSemesterStartTime()
+        val startDate = MeDataGet.getStartDate()
         Log.d(TAG, "onCreateView: ${startDate.isNotEmpty().toString()}")
         if (startDate.isNotEmpty()) {
             val weekCount: TextView = root.findViewById(R.id.schedule_week_text)
@@ -130,7 +131,7 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun initSemesterDate() {
-        if (ScheduleDataGet.getSemesterStartTime().isEmpty()) {
+        if (MeDataGet.getStartDate().isEmpty()) {
             Utils.replaceFragmentToActivity(
                 requireFragmentManager(),
                 SemesterDateFragment.newInstance(),

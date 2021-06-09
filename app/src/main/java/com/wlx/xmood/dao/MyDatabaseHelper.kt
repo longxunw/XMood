@@ -4,6 +4,10 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import com.wlx.xmood.R
+import java.io.ByteArrayOutputStream
 
 class MyDatabaseHelper(val context: Context, name: String, version: Int) :
     SQLiteOpenHelper(context, name, null, version) {
@@ -17,13 +21,11 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             " alarmTime INTEGER," +
             " isFinish INTEGER)"
 
-//    private val createUser = "create table User (" +
-//            "id INTEGER primary key autoincrement, " +
-//            "username TEXT, password TEXT, " +
-//            "token TEXT, " +
-//            "profileImg BLOB, " +
-//            "scheduleBackground BLOB, " +
-//            "theme TEXT)";
+    private val createUser = "create table User (" +
+            "username TEXT," +
+            "profileImg BLOB, " +
+            "autograph TEXT," +
+            "semesterStartDate TEXT)"
 
     private val createNote = "create table Note (" +
             "id INTEGER primary key autoincrement," +
@@ -51,22 +53,29 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             " endWeek INTEGER," +
             " weekType INTEGER)"
 
-    private val createInfo = "create table Info(" +
-            "semesterStartDate TEXT)"
+//    private val createInfo = "create table Info(" +
+//            "semesterStartDate TEXT)"
 
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.let {
             db.execSQL(createSchedule)
-//        db.execSQL(createUser)
+            db.execSQL(createUser)
             db.execSQL(createNote)
             db.execSQL(createMood)
             db.execSQL(createDaily)
-            db.execSQL(createInfo)
-            val value = ContentValues().apply {
+//            db.execSQL(createInfo)
+            val bitmap =
+                BitmapFactory.decodeResource(context.resources, R.mipmap.me_face__example_img)
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+            val userValue = ContentValues().apply {
+                put("username", "XMooder")
+                put("autograph", "A XMooder!")
+                put("profileImg", baos.toByteArray())
                 put("semesterStartDate", "")
             }
-            db.insert("Info", null, value)
+            db.insert("User", null, userValue)
         }
     }
 

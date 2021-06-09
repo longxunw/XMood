@@ -11,7 +11,6 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.ActivityCollector
 import com.wlx.xmood.R
-import com.wlx.xmood.sign.SignActivity
 import com.wlx.xmood.utils.DensityUtil
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
@@ -42,6 +40,8 @@ class MeFragment : Fragment() {
     private lateinit var imageUri: Uri
     private lateinit var outputImage: File
     private lateinit var userFaceImg: CircleImageView
+    private lateinit var username: TextView
+    private lateinit var autograph: TextView
 
     private val TAG = "MeFragment"
 
@@ -53,22 +53,16 @@ class MeFragment : Fragment() {
         init()
         myContext = requireContext()
         val root = inflater.inflate(R.layout.fragment_me, container, false)
-        Log.d(TAG, "onCreateView: ${ActivityCollector.isLogin}")
+//        Log.d(TAG, "onCreateView: ${ActivityCollector.isLogin}")
         val meHeaderLogged: ConstraintLayout = root.findViewById(R.id.me_header_logged)
         val meHeaderNotLogged: RelativeLayout = root.findViewById(R.id.me_header_not_logged)
-        if (!ActivityCollector.isLogin) {
-            meHeaderLogged.visibility = View.GONE
-            meHeaderNotLogged.visibility = View.VISIBLE
-        } else {
-            meHeaderLogged.visibility = View.VISIBLE
-            meHeaderNotLogged.visibility = View.GONE
-        }
-        val toSignBtn: TextView = root.findViewById(R.id.to_sign_btn)
-        toSignBtn.setOnClickListener {
-            val intent = Intent(context, SignActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            this.startActivity(intent)
-        }
+//        if (!ActivityCollector.isLogin) {
+//            meHeaderLogged.visibility = View.GONE
+//            meHeaderNotLogged.visibility = View.VISIBLE
+//        } else {
+//            meHeaderLogged.visibility = View.VISIBLE
+//            meHeaderNotLogged.visibility = View.GONE
+//        }
         val recyclerView: RecyclerView = root.findViewById(R.id.me_menu_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         adapter = MeMenuAdapter(this, menuList)
@@ -78,14 +72,29 @@ class MeFragment : Fragment() {
             ActivityCollector.finishAll()
         }
         userFaceImg = root.findViewById(R.id.me_face_img)
+
         userFaceImg.setOnClickListener {
             showDialog()
         }
+
+        username = root.findViewById(R.id.me_nickname)
+        autograph = root.findViewById(R.id.me_autograph)
+
+        username.text = MeDataGet.getUserName()
+        autograph.text = MeDataGet.getAutograph()
+        userFaceImg.setImageBitmap(MeDataGet.getProfileImg())
 //        val alarmTest: Button = root.findViewById(R.id.alarm_test_btn)
 //        alarmTest.setOnClickListener {
 //            setAlarm(Date().time + 1000)
 //        }
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        username.text = MeDataGet.getUserName()
+        autograph.text = MeDataGet.getAutograph()
+        userFaceImg.setImageBitmap(MeDataGet.getProfileImg())
     }
 
     private fun init() {
@@ -113,15 +122,15 @@ class MeFragment : Fragment() {
                 R.drawable.ic_me_arrow_24, "SettingActivity"
             )
         )
-        Log.d(TAG, "isLogin: ${ActivityCollector.isLogin}")
-        if (ActivityCollector.isLogin) {
-            menuList.add(
-                MeMenuItem(
-                    R.drawable.ic_exit_24, R.string.me_menu_logout,
-                    R.drawable.ic_me_arrow_24, "Logout"
-                )
-            )
-        }
+//        Log.d(TAG, "isLogin: ${ActivityCollector.isLogin}")
+//        if (ActivityCollector.isLogin) {
+//            menuList.add(
+//                MeMenuItem(
+//                    R.drawable.ic_exit_24, R.string.me_menu_logout,
+//                    R.drawable.ic_me_arrow_24, "Logout"
+//                )
+//            )
+//        }
     }
 
     fun showDialog() {
@@ -178,19 +187,27 @@ class MeFragment : Fragment() {
             fromCamera -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val bitmap =
-                        BitmapFactory.decodeStream(
-                            myContext.contentResolver.openInputStream(
-                                imageUri
+                        rotateIfRequired(
+                            BitmapFactory.decodeStream(
+                                requireContext().contentResolver.openInputStream(
+                                    imageUri
+                                )
                             )
                         )
-                    userFaceImg.setImageBitmap(rotateIfRequired(bitmap))
+                    bitmap.let {
+                        userFaceImg.setImageBitmap(bitmap)
+                        MeDataGet.setProfileImg(bitmap)
+                    }
                 }
             }
             fromPhoto -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     data.data?.let {
                         val bitmap = getBitmapFromUri(it)
-                        userFaceImg.setImageBitmap(bitmap)
+                        bitmap?.let {
+                            userFaceImg.setImageBitmap(bitmap)
+                            MeDataGet.setProfileImg(bitmap)
+                        }
                     }
 
                 }

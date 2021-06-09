@@ -125,7 +125,6 @@ object MemoDataGet {
                         Date(getLong(getColumnIndex("updateTime"))),
                         getString(getColumnIndex("catalog"))
                     )
-//                    if (!noteIdList.contains(item.id)) {
                     noteList.add(item)
                     Log.d(TAG, "changeToCatalog: ${item.head}")
 //                        noteIdList.add(item.id)
@@ -224,6 +223,31 @@ object MemoDataGet {
         }
         Log.d(TAG, "getNavTitle: size ${navTitleList.size}")
         Result.success(navTitleList)
+    }
+
+    fun searchNote(query: String) = fire(Dispatchers.IO) {
+        val db = dbHelper.writableDatabase
+        val sql =
+            "select * from Note where head like '%$query%' or body like '%$query%' order by updateTime"
+        val cursor = db.rawQuery(sql, null, null)
+        val noteList = ArrayList<MemorandumItem>()
+        cursor.apply {
+            if (moveToFirst()) {
+                do {
+                    val item = MemorandumItem(
+                        getInt(getColumnIndex("id")),
+                        getString(getColumnIndex("head")),
+                        getString(getColumnIndex("body")),
+                        Date(getLong(getColumnIndex("updateTime"))),
+                        getString(getColumnIndex("catalog"))
+                    )
+                    noteList.add(item)
+                } while (moveToNext())
+            }
+            close()
+        }
+        Log.d(TAG, "searchNote: ${noteList.size}")
+        Result.success(noteList)
     }
 
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =

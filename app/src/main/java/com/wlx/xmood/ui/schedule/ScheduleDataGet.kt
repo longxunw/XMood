@@ -1,17 +1,11 @@
 package com.wlx.xmood.ui.schedule
 
 import android.content.ContentValues
-import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.liveData
-import com.wlx.xmood.R
 import com.wlx.xmood.dao.MyDatabaseHelper
 import com.wlx.xmood.utils.TimeUtil
-import com.wlx.xmood.utils.TimeUtil.LongToDayLong
-import com.wlx.xmood.utils.TimeUtil.Str2Long
 import com.wlx.xmood.utils.TimeUtil.getWeekCount
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
@@ -194,26 +188,26 @@ object ScheduleDataGet {
         return result
     }
 
-    //update
-    fun updateSemesterStartTime(str: String) {
-        val db = dbHelper.writableDatabase
-        val sql = "update Info set semesterStartDate = '$str'"
-        db.execSQL(sql)
-    }
-
-    fun getSemesterStartTime() : String {
-        val db = dbHelper.writableDatabase
-        val sql = "select * from Info"
-        val cursor = db.rawQuery(sql, null)
-        var result = ""
-        cursor.apply {
-            if(cursor.moveToFirst()) {
-                result = getString(getColumnIndex("semesterStartDate"))
-            }
-            close()
-        }
-        return result
-    }
+//    //update
+//    fun updateSemesterStartTime(str: String) {
+//        val db = dbHelper.writableDatabase
+//        val sql = "update Info set semesterStartDate = '$str'"
+//        db.execSQL(sql)
+//    }
+//
+//    fun getSemesterStartTime() : String {
+//        val db = dbHelper.writableDatabase
+//        val sql = "select * from Info"
+//        val cursor = db.rawQuery(sql, null)
+//        var result = ""
+//        cursor.apply {
+//            if(cursor.moveToFirst()) {
+//                result = getString(getColumnIndex("semesterStartDate"))
+//            }
+//            close()
+//        }
+//        return result
+//    }
 
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =
         liveData<Result<T>>(context) {

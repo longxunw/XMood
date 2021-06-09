@@ -10,7 +10,7 @@ object ActivityCollector {
     var onlyLocal = true
     var token = ""
     var username = ""
-    var isLogin = false
+//    var isLogin = false
     lateinit var tokenSP: SharedPreferences
 
     private val activityList = ArrayList<BaseActivity>()

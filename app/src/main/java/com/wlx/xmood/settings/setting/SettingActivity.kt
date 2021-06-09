@@ -1,11 +1,9 @@
 package com.wlx.xmood.settings.setting
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.wlx.xmood.ActivityCollector
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
 
@@ -31,14 +29,12 @@ class SettingActivity : BaseActivity() {
     }
 
     private fun init() {
-        Log.d(TAG, "isLogin: ${ActivityCollector.isLogin}")
-        if (ActivityCollector.isLogin) {
-            menuList.add(
-                SetMenuItem(
-                    R.string.set_userpsw, true, "UserInfoActivity"
-                )
+//        Log.d(TAG, "isLogin: ${ActivityCollector.isLogin}")
+        menuList.add(
+            SetMenuItem(
+                R.string.set_userpsw, true, "UserInfoActivity"
             )
-        }
+        )
 
         menuList.add(
             SetMenuItem(

@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.jzxiang.pickerview.data.Type
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.me.MeDataGet
 import com.wlx.xmood.utils.Utils
 import com.wlx.xmood.widget.TimePicker
 import java.util.*
@@ -35,8 +36,8 @@ class SemesterDateFragment : Fragment() {
         val picker: TimePicker = root.findViewById(R.id.edit_semester_start_date_picker)
         picker.setType(Type.YEAR_MONTH_DAY)
         picker.pickerBuilder.setTitleStringId("学期开始日期")
-        if (ScheduleDataGet.getSemesterStartTime().isNotEmpty()) {
-            picker.setTime(ScheduleDataGet.getSemesterStartTime())
+        if (MeDataGet.getStartDate().isNotEmpty()) {
+            picker.setTime(MeDataGet.getStartDate())
             val backBtn: ImageView = root.findViewById(R.id.back)
             backBtn.visibility = View.VISIBLE
             backBtn.setOnClickListener {
@@ -65,7 +66,7 @@ class SemesterDateFragment : Fragment() {
                     Utils.makeToast(requireContext(), "只能选择周一")
                 }
                 else -> {
-                    ScheduleDataGet.updateSemesterStartTime(timeStr)
+                    MeDataGet.setStartDate(timeStr)
                     com.wlx.xmood.utils.Utils.replaceFragmentToActivity(
                         requireFragmentManager(),
                         ScheduleFragment.newInstance(),

@@ -4,14 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +20,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.wlx.xmood.R;
+import com.wlx.xmood.ui.me.MeDataGet;
 import com.wlx.xmood.ui.schedule.edit.ScheduleEditActivity;
 import com.wlx.xmood.utils.DensityUtil;
 import com.wlx.xmood.utils.TimeUtil;
@@ -118,7 +114,7 @@ public class LessonAllFragment extends Fragment {
         initDate();
 
         TextView weekText = view.findViewById(R.id.schedule_week_text);
-        weekText.setText("第 " + TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getSemesterStartTime()) + " 周");
+        weekText.setText("第 " + TimeUtil.INSTANCE.getWeekCount(MeDataGet.INSTANCE.getStartDate()) + " 周");
 
         view.post(() -> {
             if (isFirst) {
@@ -277,7 +273,7 @@ public class LessonAllFragment extends Fragment {
                 throw new IllegalStateException("Unexpected value: " + lessonItem.getWeekDay());
         }
         boolean inThisWeek = false;
-        long week = TimeUtil.INSTANCE.getWeekCount(ScheduleDataGet.INSTANCE.getSemesterStartTime());
+        long week = TimeUtil.INSTANCE.getWeekCount(MeDataGet.INSTANCE.getStartDate());
         if (lessonItem.getStartWeek() <= week && lessonItem.getEndWeek() >= week) {
             if (lessonItem.getWeekType() == 0 ||
                     lessonItem.getWeekType() == 1 && week % 2 == 1L ||
