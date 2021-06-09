@@ -6,21 +6,27 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.graphics.drawable.BitmapDrawable
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.schedule.LessonAllFragment
+import com.wlx.xmood.ui.schedule.ScheduleDataGet
 import com.wlx.xmood.utils.DensityUtil
+import com.wlx.xmood.utils.Utils
 import java.io.File
 
 class CurrencyActivity : BaseActivity() {
@@ -94,24 +100,32 @@ class CurrencyActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        var bitmap: Bitmap? = null
         when (requestCode) {
             fromCamera -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    val bitmap =
-                        BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri))
-                    imageView.setImageBitmap(rotateIfRequired(bitmap))
+                    bitmap =
+                        rotateIfRequired(BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri)))
+                    imageView.setImageBitmap(bitmap)
+
                 }
             }
             fromPhoto -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     data.data?.let {
-                        val bitmap = getBitmapFromUri(it)
+                        bitmap = getBitmapFromUri(it)!!
                         imageView.setImageBitmap(bitmap)
                     }
-
                 }
             }
         }
+        Log.d(TAG, "onActivityResult: Before " + ScheduleDataGet.background.toString())
+        ScheduleDataGet.updateBackground(BitmapDrawable(bitmap))
+        Log.d(TAG, "onActivityResult: After " + ScheduleDataGet.background.toString())
+//        val bundle = Bundle()
+//        bundle.putParcelable("background", bitmap)
+//        LessonAllFragment.newInstance().arguments = bundle
+
     }
 
     private fun rotateIfRequired(bitmap: Bitmap): Bitmap {

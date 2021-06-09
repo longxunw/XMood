@@ -1,5 +1,6 @@
 package com.wlx.xmood.ui.schedule
 
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -12,16 +13,16 @@ class ScheduleViewModel : ViewModel() {
     }
     val text: LiveData<String> = _text
 
-    private val searchLiveData = MutableLiveData<Int>()
+    private val searchScheduleLiveData = MutableLiveData<Int>()
 
     val scheduleList = ArrayList<LessonItem>()
 
-    val scheduleLiveData = Transformations.switchMap(searchLiveData) { query ->
+    val scheduleLiveData = Transformations.switchMap(searchScheduleLiveData) { query ->
         ScheduleDataGet.getSchedule(query)
     }
 
     fun searchSchedule(query: Int) {
-        searchLiveData.value = query
+        searchScheduleLiveData.value = query
     }
 
 }

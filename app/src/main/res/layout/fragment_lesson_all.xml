@@ -57,8 +57,7 @@
         android:id="@+id/schedule_all_lesson_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/schedule_line"
-        android:background="@drawable/schedule_all_background_bingbing">
+        android:layout_below="@id/schedule_line">
 
         <RelativeLayout
             android:id="@+id/schedule_all_lesson"

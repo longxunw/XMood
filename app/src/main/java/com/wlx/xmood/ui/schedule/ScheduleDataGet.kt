@@ -1,8 +1,13 @@
 package com.wlx.xmood.ui.schedule
 
 import android.content.ContentValues
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.liveData
+import com.wlx.xmood.R
 import com.wlx.xmood.dao.MyDatabaseHelper
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.TimeUtil.LongToDayLong
@@ -16,6 +21,7 @@ object ScheduleDataGet {
     private var id = 10
     private val TAG = "ScheduleDataGet"
     var startDate = "2021-03-01"
+    var background = Drawable.createFromPath("src/main/res/drawable/all_lesson_background.jpg")
     val scheduleList = arrayListOf<LessonItem>(
 //        LessonItem(
 //            0, "计算理论基础1", "田家炳教育书院236", 1,
@@ -123,6 +129,20 @@ object ScheduleDataGet {
             close()
         }
         return lessonItem!!
+    }
+
+    fun updateBackground(bg: Drawable): Boolean {
+        background = bg
+        return true
+    }
+
+    fun getBackground(id :Int) = fire(Dispatchers.IO) {
+        val result = background
+        if (result == null) {
+            Result.success(null)
+        } else {
+            Result.success(result)
+        }
     }
 
     //若出现时间冲突 则返回false，此处这一逻辑省略

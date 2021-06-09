@@ -4,9 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.wlx.xmood.R;
@@ -39,6 +45,7 @@ public class LessonAllFragment extends Fragment {
     private static final String TAG = "LessonAllFragment";
     private LessonAllViewModel viewModel;
     private View view;
+
     private int gridWidth, gridHeight;
     private RelativeLayout monLayout;
     private RelativeLayout tuesLayout;
@@ -47,12 +54,12 @@ public class LessonAllFragment extends Fragment {
     private RelativeLayout friLayout;
     private RelativeLayout satLayout;
     private RelativeLayout sunLayout;
+    private RelativeLayout backgroundLayout;
     private static boolean isFirst = true;
     private final int margin = 4;
     private Context context;
     private Toolbar.OnMenuItemClickListener onMenuItemClickListener = null;
     private final int[] colors = {0xEEFF9CD7, 0xEE85AFFE, 0xEEFF9291, 0xEEFFC44D, 0xEE6FEB54, 0xEEAA90FF};
-
 
     private static LessonAllFragment lessonAllFragment;
 
@@ -78,12 +85,13 @@ public class LessonAllFragment extends Fragment {
             friLayout = view.findViewById(R.id.schedule_all_lesson_fri_col);
             satLayout = view.findViewById(R.id.schedule_all_lesson_sat_col);
             sunLayout = view.findViewById(R.id.schedule_all_lesson_sun_col);
+            backgroundLayout = view.findViewById(R.id.schedule_all_lesson_background);
         }
 
         if (viewModel == null) {
             viewModel = new ViewModelProvider(this).get(LessonAllViewModel.class);
+            viewModel.setBackground(getResources().getDrawable(R.drawable.schedule_all_background_bingbing));
         }
-
 
         if (onMenuItemClickListener == null) {
             onMenuItemClickListener = item -> {
@@ -128,6 +136,7 @@ public class LessonAllFragment extends Fragment {
 
         });
 
+
         Button toTodayBtn = view.findViewById(R.id.schedule_to_today_btn);
         toTodayBtn.setOnClickListener(view -> Utils.INSTANCE.replaceFragmentToActivity(getFragmentManager(), ScheduleFragment.instance, R.id.nav_host_fragment));
 
@@ -149,6 +158,20 @@ public class LessonAllFragment extends Fragment {
             }
         });
 
+//        Bundle bundle = getArguments();
+//        Bitmap backgroundBitmap = bundle.getParcelable("background");
+//        RelativeLayout backgroundLayout = view.findViewById(R.id.schedule_all_lesson_background);
+//        backgroundLayout.setBackground(new BitmapDrawable(backgroundBitmap));
+
+        viewModel.getBackgroundLiveData().observe(getViewLifecycleOwner(), result -> {
+            Drawable background = ScheduleDataGet.INSTANCE.getBackground();
+            // Log.d(TAG, "onCreateView: " + background.toString());
+            if (background != null) {
+                viewModel.setBackground(background);
+            }
+            backgroundLayout.setBackground(viewModel.getBackground());
+
+        });
         return view;
     }
 
@@ -156,6 +179,7 @@ public class LessonAllFragment extends Fragment {
     @Override
     public void onResume() {
         viewModel.searchSchedule(-1);
+        viewModel.searchBackground(0);
 //        ArrayList<LessonItem> scheduleList = ScheduleDataGet.INSTANCE.getScheduleList();
 //        if (scheduleList != null) {
 //            viewModel.getScheduleList().clear();
