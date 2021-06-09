@@ -1,16 +1,11 @@
 package com.wlx.xmood.ui.daily
 
-import android.app.PendingIntent
 import android.content.ContentValues
-import android.media.session.MediaSession
 import android.util.Log
 import androidx.lifecycle.liveData
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.wlx.xmood.dao.MyDatabaseHelper
 import com.wlx.xmood.utils.TimeUtil
 import kotlinx.coroutines.Dispatchers
-import java.lang.reflect.Type
 import kotlin.coroutines.CoroutineContext
 
 // 仅为测试用，编写数据库模块后使用数据库模块
@@ -18,7 +13,6 @@ object DailyDataGet {
     private var id = 4
     private val TAG = "DailyDataGet"
     lateinit var dbHelper: MyDatabaseHelper
-    private val pendingIntentType = object : TypeToken<PendingIntent>() {}.type
 //    val dailyEvents = mutableMapOf<String, ArrayList<DailyItem>>(
 //        "2021-05-21" to arrayListOf(
 //            DailyItem(

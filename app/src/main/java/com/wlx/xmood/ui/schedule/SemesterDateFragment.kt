@@ -35,8 +35,8 @@ class SemesterDateFragment : Fragment() {
         val picker: TimePicker = root.findViewById(R.id.edit_semester_start_date_picker)
         picker.setType(Type.YEAR_MONTH_DAY)
         picker.pickerBuilder.setTitleStringId("学期开始日期")
-        if (ScheduleDataGet.startDate.isNotEmpty()) {
-            picker.setTime(ScheduleDataGet.startDate)
+        if (ScheduleDataGet.getSemesterStartTime().isNotEmpty()) {
+            picker.setTime(ScheduleDataGet.getSemesterStartTime())
             val backBtn: ImageView = root.findViewById(R.id.back)
             backBtn.visibility = View.VISIBLE
             backBtn.setOnClickListener {
