@@ -77,7 +77,7 @@ object ScheduleDataGet {
     fun getSchedule(query: Int) = fire(Dispatchers.IO) {
         scheduleList.clear()
         val db = dbHelper.writableDatabase
-        val sql = "select * from Schedule"
+        val sql = "select * from Schedule order by startTime"
         val cursor = db.rawQuery(sql, null)
         cursor.apply {
             if (moveToFirst()) {
