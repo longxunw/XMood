@@ -19,8 +19,6 @@ import com.wlx.xmood.R
 import com.wlx.xmood.ui.daily.edit.DailyEditActivity
 import com.wlx.xmood.utils.TimeUtil
 import com.wlx.xmood.utils.Utils
-import java.util.*
-import kotlin.collections.HashMap
 
 
 class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
@@ -38,6 +36,7 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DailyItemAdapter
     private lateinit var noEventText: TextView
+    private lateinit var calendar: CalendarView
     private val TAG = "DailyFragment"
 
 
@@ -51,7 +50,7 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
         noEventText = root.findViewById(R.id.daily_no_event)
         val toolbar: Toolbar = root.findViewById(R.id.toolbar_daily)
         toolbar.inflateMenu(R.menu.daily_tool_bar)
-        val calendar: CalendarView = root.findViewById(R.id.daily_calendar_view)
+        calendar = root.findViewById(R.id.daily_calendar_view)
         calendar.setSchemeDate(schemeDate)
         calendar.setOnCalendarSelectListener(this)
         dayText = root.findViewById(R.id.daily_day_text)
@@ -125,22 +124,29 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
 
     override fun onResume() {
         super.onResume()
-        viewModel.searchEvent(TimeUtil.Date2Str(Date(), "yyyy-MM-dd"))
+        viewModel.searchEvent(
+            "${calendar.selectedCalendar.year}-${
+                String.format(
+                    "%02d",
+                    calendar.selectedCalendar.month
+                )
+            }-${String.format("%02d", calendar.selectedCalendar.day)}"
+        )
         viewModel.searchDay("")
     }
 
-    private fun init() {
-        schemeDate[getSchemeCalendar(2021, 5, 20, R.color.purple_500, "事").toString()] =
-            getSchemeCalendar(2021, 5, 20, R.color.purple_500, "事")
-        schemeDate[getSchemeCalendar(2021, 5, 10, R.color.purple_500, "事").toString()] =
-            getSchemeCalendar(2021, 5, 10, R.color.purple_500, "事")
-        schemeDate[getSchemeCalendar(2021, 5, 2, R.color.purple_500, "事").toString()] =
-            getSchemeCalendar(2021, 5, 2, R.color.purple_500, "事")
-        schemeDate[getSchemeCalendar(2021, 5, 25, R.color.purple_500, "日").toString()] =
-            getSchemeCalendar(2021, 5, 25, R.color.purple_500, "日")
-        schemeDate[getSchemeCalendar(2021, 5, 17, R.color.purple_500, "日").toString()] =
-            getSchemeCalendar(2021, 5, 17, R.color.purple_500, "日")
-    }
+//    private fun init() {
+//        schemeDate[getSchemeCalendar(2021, 5, 20, R.color.purple_500, "事").toString()] =
+//            getSchemeCalendar(2021, 5, 20, R.color.purple_500, "事")
+//        schemeDate[getSchemeCalendar(2021, 5, 10, R.color.purple_500, "事").toString()] =
+//            getSchemeCalendar(2021, 5, 10, R.color.purple_500, "事")
+//        schemeDate[getSchemeCalendar(2021, 5, 2, R.color.purple_500, "事").toString()] =
+//            getSchemeCalendar(2021, 5, 2, R.color.purple_500, "事")
+//        schemeDate[getSchemeCalendar(2021, 5, 25, R.color.purple_500, "日").toString()] =
+//            getSchemeCalendar(2021, 5, 25, R.color.purple_500, "日")
+//        schemeDate[getSchemeCalendar(2021, 5, 17, R.color.purple_500, "日").toString()] =
+//            getSchemeCalendar(2021, 5, 17, R.color.purple_500, "日")
+//    }
 
     private fun getSchemeCalendar(
         year: Int,
@@ -168,6 +174,7 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
             val weekday = "星期${TimeUtil.getWeekDayChinese(it.week)}"
             weekdayText.text = weekday
             viewModel.searchEvent("${it.year}-${String.format("%02d", it.month)}-$day")
+            Log.d(TAG, "onCalendarSelect: ${it.year}-${String.format("%02d", it.month)}-$day")
         }
     }
 
