@@ -2,7 +2,6 @@ package com.wlx.xmood.ui.mood
 
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -91,11 +89,9 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
                 moodChartViewModel.nodeList.clear()
                 for (node in nodes) {
                     moodChartViewModel.nodeList.add(node)
-//                    moodChartViewModel.nodeRateList.add(node.rating)
                 }
                 drawLineChart()
                 resetViewport(timeType)
-//                lineChartView.isViewportCalculationEnabled = true
                 initCard()
 
                 // Disable viewport recalculations, see toggleCubic() method for more info.
@@ -111,10 +107,6 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
     private fun drawLineChart() {
         val lines: MutableList<Line> = ArrayList()
         val values: MutableList<PointValue> = ArrayList()
-
-//        val startIndex = if(moodChartViewModel.nodeList.size >= 6){
-//            moodChartViewModel.nodeList.lastIndex -5
-//        } else{ 0 }  //只显示最近的几个节点
 
         //Y轴 values
         for(i in 0 until moodChartViewModel.nodeList.size){
@@ -274,8 +266,11 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         localCalendar.timeInMillis = date
         val month = localCalendar.get(Calendar.MONTH) + 1
         val day = localCalendar.get(Calendar.DAY_OF_MONTH)
+        val hour = localCalendar.get(Calendar.HOUR_OF_DAY)
+        val minute = localCalendar.get(Calendar.MINUTE)
         val str = StringBuilder()
         str.append(month.toString()).append("月").append(day.toString()).append("日")
+            .append(hour.toString()).append("时").append(minute.toString()).append("分")
         cardDateText.text = str.toString()
         //初始化进度条
         progressBar.progress = recentNode.rating
@@ -294,18 +289,59 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        val current : Calendar = Calendar.getInstance()
+
         when(timeType){
             HOUR_TYPE->{
-                moodChartViewModel.searchNode(HOUR_TYPE)
+                current.set(Calendar.HOUR_OF_DAY, current.get(Calendar.HOUR_OF_DAY))
+                current.set(Calendar.MINUTE,0)
+                current.set(Calendar.SECOND,0)
+                current.set(Calendar.MILLISECOND,0)  //设置到 当前h0min0s
+
+                val startTime = current.timeInMillis
+                current.add(Calendar.HOUR, 1) //设置到 下一h0min0s
+                val endTime = current.timeInMillis
+                moodChartViewModel.searchNode(startTime, endTime)
             }
+
             DAY_TYPE->{
-                moodChartViewModel.searchNode(DAY_TYPE)
+                current.set(Calendar.HOUR_OF_DAY, 0)
+                current.set(Calendar.MINUTE,0)
+                current.set(Calendar.SECOND,0)
+                current.set(Calendar.MILLISECOND,0)  //设置到 今天当前h0min0s
+
+                val startTime = current.timeInMillis
+                current.set(Calendar.HOUR_OF_DAY, 23)
+                current.set(Calendar.MINUTE, 59)  //设置到 今天29h59min0s
+                val endTime = current.timeInMillis
+                moodChartViewModel.searchNode(startTime, endTime)
             }
             WEEK_TYPE->{
-                moodChartViewModel.searchNode(WEEK_TYPE)
+                current.set(Calendar.DAY_OF_WEEK, 1)
+                current.set(Calendar.HOUR_OF_DAY, 0)
+                current.set(Calendar.MINUTE, 0)
+                current.set(Calendar.SECOND, 0)
+                current.set(Calendar.MILLISECOND, 0)  //设置到 本周第一天0h0min0s
+
+                val startTime = current.timeInMillis
+                current.set(Calendar.DAY_OF_WEEK,7)
+                current.set(Calendar.HOUR_OF_DAY, 23)
+                current.set(Calendar.MINUTE, 59) //设置到 本周第7天23h59min0s
+                val endTime = current.timeInMillis
+                moodChartViewModel.searchNode(startTime, endTime)
             }
             MONTH_TYPE->{
-                moodChartViewModel.searchNode(MONTH_TYPE)
+                current.set(Calendar.DAY_OF_MONTH, 1)
+                current.set(Calendar.HOUR_OF_DAY, 0)
+                current.set(Calendar.MINUTE, 0)
+                current.set(Calendar.SECOND, 0)
+                current.set(Calendar.MILLISECOND, 0)  //设置到 本月第一天0h0min0s
+
+                val startTime = current.timeInMillis
+                current.add(Calendar.MONTH, 1)
+                current.add(Calendar.MINUTE, -1) //设置到 下月第一天0h0min0s 减去一分钟
+                val endTime = current.timeInMillis
+                moodChartViewModel.searchNode(startTime, endTime)
             }
         }
     }
@@ -354,9 +390,12 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
 
             val month = localCalendar.get(Calendar.MONTH) + 1
             val day = localCalendar.get(Calendar.DAY_OF_MONTH)
+            val hour = localCalendar.get(Calendar.HOUR_OF_DAY)
+            val minute = localCalendar.get(Calendar.MINUTE)
 
             val str = StringBuilder()
             str.append(month.toString()).append("月").append(day.toString()).append("日")
+                .append(hour.toString()).append("时").append(minute.toString()).append("分")
             cardDateText.text = str.toString()
 
             progressBar.progress = moodChartViewModel.nodeList[pointIndex].rating
