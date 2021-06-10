@@ -88,6 +88,7 @@ public class LessonAllFragment extends Fragment {
         if (viewModel == null) {
             viewModel = new ViewModelProvider(this).get(LessonAllViewModel.class);
             viewModel.setBackground(new BitmapDrawable(getResources(), ScheduleDataGet.INSTANCE.getAllBgImg()));
+            viewModel.setBackground(getResources().getDrawable(R.drawable.test1));
         }
 
         if (onMenuItemClickListener == null) {
