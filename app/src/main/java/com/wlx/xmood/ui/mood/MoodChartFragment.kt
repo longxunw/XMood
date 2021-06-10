@@ -2,6 +2,7 @@ package com.wlx.xmood.ui.mood
 
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,18 +10,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.wlx.xmood.R
 import com.wlx.xmood.ui.mood.edit.MoodEditActivity
+import lecho.lib.hellocharts.gesture.ContainerScrollType
 import lecho.lib.hellocharts.gesture.ZoomType
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.util.ChartUtils
 import lecho.lib.hellocharts.view.LineChartView
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.min
 
 class MoodChartFragment(private val timeType: Int) : Fragment() {
 
@@ -54,7 +59,7 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
     private val isFilled = false  //是否对线的下方进行填充
     private val hasLabels = false  //是否显示标签
     private val isCubic = false  //是否是平滑曲线
-    private val hasLabelForSelected = false
+    private val hasLabelForSelected = true
     private val pointsHaveDifferentColor = false
     private val hasGradientToTransparent = false
 
@@ -80,22 +85,6 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         cDescription = root.findViewById(R.id.description_in_details)
         cDetailTitle = root.findViewById(R.id.detail_to_edit)
 
-
-//        when(timeType){
-//            HOUR_TYPE->{
-//                moodChartViewModel.searchNode(HOUR_TYPE)
-//            }
-//            DAY_TYPE->{
-//                moodChartViewModel.searchNode(DAY_TYPE)
-//            }
-//            WEEK_TYPE->{
-//                moodChartViewModel.searchNode(WEEK_TYPE)
-//            }
-//            MONTH_TYPE->{
-//                moodChartViewModel.searchNode(MONTH_TYPE)
-//            }
-//        }
-
         moodChartViewModel.nodeLiveData.observe(viewLifecycleOwner, Observer { result ->
             val nodes = result.getOrNull()
             if (nodes != null) {
@@ -105,15 +94,16 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
 //                    moodChartViewModel.nodeRateList.add(node.rating)
                 }
                 drawLineChart()
-                resetViewport()
+                resetViewport(timeType)
+//                lineChartView.isViewportCalculationEnabled = true
                 initCard()
+
+                // Disable viewport recalculations, see toggleCubic() method for more info.
+                lineChartView.isViewportCalculationEnabled = false
+                lineChartView.isScrollEnabled = true
+
             }
         })
-
-        // Disable viewport recalculations, see toggleCubic() method for more info.
-        lineChartView.isViewportCalculationEnabled = false
-
-//        text = root.findViewById(R.id.mood_chart_test_text)
 
         return root
     }
@@ -128,7 +118,50 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
 
         //Y轴 values
         for(i in 0 until moodChartViewModel.nodeList.size){
-            values.add(PointValue(i.toFloat(),moodChartViewModel.nodeList[i].rating.toFloat()))
+
+//            val current = LocalDateTime.now()
+            val current : Calendar = Calendar.getInstance()
+
+            val loc_calendar : Calendar = Calendar.getInstance()
+            loc_calendar.timeInMillis = moodChartViewModel.nodeList[i].date
+            val month = loc_calendar.get(Calendar.MONTH) + 1
+            val week = loc_calendar.get(Calendar.DAY_OF_WEEK)
+            val day = loc_calendar.get(Calendar.DAY_OF_MONTH)
+            val hour = loc_calendar.get(Calendar.HOUR_OF_DAY)
+            val minute = loc_calendar.get(Calendar.MINUTE)
+
+            Log.d("loc_calendar: ", "$month $week $day $hour $minute")
+
+            when(timeType){
+                HOUR_TYPE->{
+                    if(current.get(Calendar.DAY_OF_MONTH) == day
+                        && current.get(Calendar.MONTH) + 1 == month
+                        && current.get(Calendar.HOUR_OF_DAY) == hour) {
+                            val x = minute.toFloat()
+                            values.add(PointValue(x, moodChartViewModel.nodeList[i].rating.toFloat()))
+                    }
+                }
+                DAY_TYPE->{
+                    if(current.get(Calendar.DAY_OF_MONTH) == day
+                        && current.get(Calendar.MONTH) + 1 == month) {
+                        val x = hour.toFloat()*60 + minute.toFloat()
+                        values.add(PointValue(x, moodChartViewModel.nodeList[i].rating.toFloat()))
+                    }
+                }
+                WEEK_TYPE->{
+                    if(current.get(Calendar.WEEK_OF_MONTH)  == loc_calendar.get(Calendar.WEEK_OF_MONTH)
+                        && current.get(Calendar.MONTH) + 1 == month) {
+                        val x = week.toFloat()*24*60 + hour.toFloat()*60 + minute.toFloat()
+                        values.add(PointValue(x, moodChartViewModel.nodeList[i].rating.toFloat()))
+                    }
+                }
+                MONTH_TYPE->{
+                    if(current.get(Calendar.MONTH) + 1 == month) {
+                        val x = day.toFloat()*24*60 + hour.toFloat()*60 + minute.toFloat()
+                        values.add(PointValue(x ,moodChartViewModel.nodeList[i].rating.toFloat()))
+                    }
+                }
+            }
         }
 
         val line = Line(values)
@@ -141,34 +174,67 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         line.setHasLabelsOnlyForSelected(hasLabelForSelected)
         line.setHasLines(hasLines)
         line.setHasPoints(hasPoints)
-        line.setHasLabelsOnlyForSelected(true)
+        line.pointRadius = 3
+        line.strokeWidth = 2
+//        line.setHasLabelsOnlyForSelected(true)
         if (pointsHaveDifferentColor) {
             line.pointColor = ChartUtils.COLORS[(lines.size + 1) % ChartUtils.COLORS.size]
         }
         lines.add(line)
+
         lineChartData = LineChartData(lines)
 
         //X轴 values
         val mAxisXValues: MutableList<AxisValue> = ArrayList()
-        for (i in 0 until moodChartViewModel.nodeList.size){
-            var axisValue = AxisValue(i.toFloat())
-
-//            mAxisXValues.add(axisValue.setLabel("1月1日"))
-//            Log.d("timepicker", TimeUtil.Long2Str(moodChartViewModel.nodeList[i].date,"yyyy-MM-dd") )
-
-            var loc_calendar : Calendar = Calendar.getInstance()
-            loc_calendar.timeInMillis = moodChartViewModel.nodeList[i].date
-            var month = loc_calendar.get(Calendar.MONTH) + 1
-            var day = loc_calendar.get(Calendar.DAY_OF_MONTH)
-//            Log.d("added date: ","$month.$day")
-            mAxisXValues.add(axisValue.setLabel("$month.$day"))
+        when(timeType){
+            HOUR_TYPE->{
+                for (i in 0 until 60){
+                    val axisValue = AxisValue(i.toFloat())
+                    mAxisXValues.add(axisValue.setLabel(i.toString()))
+                }
+            }
+            DAY_TYPE->{
+                for (i in 0 until 1440){
+                    val axisValue = AxisValue(i.toFloat())
+                    mAxisXValues.add(axisValue.setLabel((i/60).toString()))
+                }
+            }
+            WEEK_TYPE->{
+                for (i in 0 until 10080){
+                    val axisValue = AxisValue(i.toFloat())
+                    mAxisXValues.add(axisValue.setLabel((i/1440).toString()))
+                }
+            }
+            MONTH_TYPE->{
+                for (i in 0 until 302400){
+                    val axisValue = AxisValue(i.toFloat())
+                    mAxisXValues.add(axisValue.setLabel((i/10080).toString()))
+                }
+            }
         }
 
         if (hasAxes) {
             val axisX = Axis()
             val axisY = Axis().setHasLines(true)
             if (hasAxesNames) {
-                axisX.name = "Date"
+                when(timeType){
+                    HOUR_TYPE->{
+                        axisX.name = "Hour"
+                        axisX.maxLabelChars = 7 //相当于设置X轴刻度
+                    }
+                    DAY_TYPE->{
+                        axisX.name = "Day"
+                        axisX.maxLabelChars = 6 //相当于设置X轴刻度
+                    }
+                    WEEK_TYPE->{
+                        axisX.name = "Week"
+                        axisX.maxLabelChars = 7 //相当于设置X轴刻度
+                    }
+                    MONTH_TYPE->{
+                        axisX.name = "Month"
+                        axisX.maxLabelChars = 6 //相当于设置X轴刻度
+                    }
+                }
                 axisY.name = "Rating"
             }
             axisX.values = mAxisXValues
@@ -185,7 +251,7 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         lineChartData.valueLabelTextSize = 6
         lineChartData.setValueLabelsTextColor(Color.WHITE)
         lineChartData.baseValue = Float.NEGATIVE_INFINITY
-        lineChartView.zoomType = ZoomType.HORIZONTAL
+        lineChartView.zoomType = ZoomType.HORIZONTAL_AND_VERTICAL
         lineChartView.lineChartData = lineChartData
     }
 
@@ -197,19 +263,10 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
             progressBar.progress = 0
             cRating.text = "0"
             cDescription.text = "Nothing! Add one!"
-//            cDetailTitle.setOnClickListener {
-//                val intent = Intent(context, MoodEditActivity::class.java)
-//                intent.putExtra("id", -1);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context?.startActivity(intent);
-//            }
             return
         }
 
         val recentNode = moodChartViewModel.nodeList[moodChartViewModel.nodeList.lastIndex]
-//        Log.d("recentid: ",recentNode.id.toString())
-//        Log.d("size: ", moodChartViewModel.nodeList.size.toString() )
-//        Log.d("lastindex: ", moodChartViewModel.nodeList.lastIndex.toString() )
 
 //        初始化card的时间
         val date = recentNode.date
@@ -253,39 +310,37 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         }
     }
 
-    private fun resetViewport() {
+    private fun resetViewport(timeType: Int) {
         // Reset viewport height range to [1,6]
         val v = Viewport(lineChartView.maximumViewport)
         v.bottom = 0f
         v.top = 7f
         v.left = 0f
-        v.right = moodChartViewModel.nodeList.size.toFloat()
-
+        when(timeType){
+            HOUR_TYPE->{
+                v.right = 61f
+            }
+            DAY_TYPE->{
+                v.right = 1440f
+            }
+            WEEK_TYPE->{
+                v.right = 10080f
+            }
+            MONTH_TYPE->{
+                v.right = 302400f
+            }
+        }
+//        v.right = moodChartViewModel.nodeList.size.toFloat()-1
+//        v.right = 60f
         lineChartView.maximumViewport = v
         lineChartView.currentViewport = v
+        lineChartView.isScrollContainer = true
     }
 
-//    private fun initEntranceToEdit() {
-//        //初始化Detail进入编辑界面事件
-//        cDetailTitle = root.findViewById(R.id.detail_to_edit)
-//        cDetailTitle.setOnClickListener {
-//            val intent = Intent(context, MoodEditActivity::class.java)
-//            intent.putExtra("id", recentNode.id);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            context?.startActivity(intent);
-//        }
-//    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(MoodChartViewModel::class.java)
-//        when (timeType) {
-//            0 -> text.text = "this is Hour Chart"
-//            1 -> text.text = "this is Day Chart"
-//            2 -> text.text = "this is Week Chart"
-//            3 -> text.text = "this is Month Chart"
-//            else -> text.text = "this is Hour Chart"
-//        }
+
     }
 
     private inner class ValueTouchListener : LineChartOnValueSelectListener {
@@ -300,13 +355,6 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
             val month = localCalendar.get(Calendar.MONTH) + 1
             val day = localCalendar.get(Calendar.DAY_OF_MONTH)
 
-//            Log.d("pointIndex: ",pointIndex.toString())
-//            Log.d("date:",moodChartViewModel.nodeList[pointIndex].date.toString())
-//            Log.d("day in date: ", day.toString())
-//            Log.d("month in date: ", month.toString())
-//            Log.d("rating: ",moodChartViewModel.nodeRateList[pointIndex].toString())
-
-//            cardDateText.text = month.toString() + "月" + day.toString() + "日"
             val str = StringBuilder()
             str.append(month.toString()).append("月").append(day.toString()).append("日")
             cardDateText.text = str.toString()

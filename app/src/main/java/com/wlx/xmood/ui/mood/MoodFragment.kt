@@ -35,8 +35,8 @@ class MoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         title.add("hour")
-        title.add("week")
         title.add("day")
+        title.add("week")
         title.add("month")
 
         moodViewModel = ViewModelProvider(this).get(MoodViewModel::class.java)
