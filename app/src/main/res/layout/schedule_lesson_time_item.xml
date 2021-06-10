@@ -8,9 +8,10 @@
     <TextView
         android:id="@+id/schedule_all_lesson_blank"
         style="@style/scheduleAllLessonDayItem"
-        android:layout_height="wrap_content"
         android:background="#aaffffff"
+        android:layout_height="33dp"
         android:layout_marginBottom="1dp"
+        android:textSize="12sp"
         android:text="\n"/>
 
     <LinearLayout
