@@ -68,6 +68,7 @@ class MemorandumFragment : Fragment() {
                 R.id.add_memorandum -> {
                     val intent = Intent(context, MemorandumEditActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.putExtra("catalog",MemoDataGet.mcatalog)
                     context?.startActivity(intent)
                 }
                 R.id.search_memorandum -> {

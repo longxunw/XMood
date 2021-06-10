@@ -12,9 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import com.jzxiang.pickerview.data.Type
 import com.wlx.xmood.BaseActivity
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.memorandum.MemoDataGet
 import com.wlx.xmood.ui.mood.MoodChartItem
 import com.wlx.xmood.ui.mood.MoodDataGet
 import com.wlx.xmood.utils.DensityUtil
@@ -36,6 +38,7 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private var id: Int = -1
     private var isNew = true
     private var category =  String
+    private val TAG = "MoodEditActivity"
 //    private lateinit var category: String
 
     private val handler = Handler(Looper.getMainLooper())
@@ -49,7 +52,20 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 //        }
 
         id = intent.getIntExtra("id",-1)
-
+        Log.d(TAG, "onCreate: id: ${id}")
+        val toolbar: Toolbar = findViewById(R.id.mood_toolbar)
+        toolbar.inflateMenu(R.menu.memorandum_edit_menu)
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.edit_save -> {
+                    save()
+                }
+                R.id.edit_delete -> {
+                    showDeleteDialog()
+                }
+            }
+            true
+        }
         //时间选择器
         time = findViewById(R.id.mood_node_timepicker)
         time.addTextChangedListener(object : TextWatcher{
@@ -238,6 +254,33 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
         Utils.makeToast(this, "nothing select!")
     }
-
+    private fun showDeleteDialog() {
+        val bottomDialog = Dialog(this, R.style.MyDialogTheme);
+        val contentView = LayoutInflater.from(this).inflate(
+            R.layout.delete_memorandum_dialog_content,
+            null
+        )
+        bottomDialog.setContentView(contentView)
+        val layoutParams: ViewGroup.MarginLayoutParams =
+            contentView.layoutParams as ViewGroup.MarginLayoutParams;
+        layoutParams.width =
+            this.resources.displayMetrics.widthPixels - DensityUtil.dp2px(this, 40f)
+//        layoutParams.bottomMargin = DensityUtil.dp2px(this, 16f)
+        contentView.layoutParams = layoutParams
+        bottomDialog.window?.setGravity(Gravity.CENTER)
+//        bottomDialog.window?.setWindowAnimations(R.style.BottomDialog_Animation)
+        bottomDialog.window?.findViewById<TextView>(R.id.confirm_delete)
+            ?.setOnClickListener {
+                MoodDataGet.deleteNode(id)
+                Utils.makeToast(this, "已删除")
+                bottomDialog.dismiss()
+                finish()
+            }
+        bottomDialog.window?.findViewById<TextView>(R.id.cancel)
+            ?.setOnClickListener {
+                bottomDialog.dismiss()
+            }
+        bottomDialog.show()
+    }
 
 }

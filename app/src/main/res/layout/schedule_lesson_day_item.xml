@@ -3,6 +3,7 @@
 <TextView
     android:id="@+id/schedule_all_lesson_item"
     android:background="#aafcfcfc"
+    android:layout_height="35dp"
     style="@style/scheduleAllLessonDayItem"
     android:layout_weight="1"
     xmlns:android="http://schemas.android.com/apk/res/android" />

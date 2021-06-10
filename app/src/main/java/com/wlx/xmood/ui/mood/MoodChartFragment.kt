@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -36,13 +37,16 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         val MONTH_TYPE = 3
     }
     constructor() : this(HOUR_TYPE)
+    private val TAG ="MoodCharFragment"
     private lateinit var moodChartViewModel: MoodChartViewModel
     private lateinit var root: View
     private lateinit var text: TextView
+    private var mid = -1
 
     private lateinit var lineChartView: LineChartView
     private lateinit var lineChartData: LineChartData
 
+    private lateinit var moodCard : CardView
     private lateinit var cardDateText : TextView //卡片内容---日期
     private lateinit var progressBar: ProgressBar //卡片内容---进度条
     private lateinit var cRating: TextView //卡片内容---rating值
@@ -77,6 +81,7 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         lineChartView.onValueTouchListener = ValueTouchListener()
 
         //初始化Card
+        moodCard = root.findViewById(R.id.mood_landing_card)
         cardDateText = root.findViewById(R.id.mood_detail_date)
         progressBar = root.findViewById(R.id.rating_progressbar)
         cRating = root.findViewById(R.id.rating_in_details)
@@ -260,6 +265,8 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
 
         val recentNode = moodChartViewModel.nodeList[moodChartViewModel.nodeList.lastIndex]
 
+        mid = recentNode.id
+
 //        初始化card的时间
         val date = recentNode.date
         val localCalendar : Calendar = Calendar.getInstance()
@@ -279,9 +286,9 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
         //初始化event具体描述
         cDescription.text = recentNode.event
         //初始化Detail进入编辑界面事件
-        cDetailTitle.setOnClickListener {
+        moodCard.setOnClickListener {
             val intent = Intent(context, MoodEditActivity::class.java)
-            intent.putExtra("id", recentNode.id);
+            intent.putExtra("id", mid)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context?.startActivity(intent);
         }
@@ -398,17 +405,20 @@ class MoodChartFragment(private val timeType: Int) : Fragment() {
                 .append(hour.toString()).append("时").append(minute.toString()).append("分")
             cardDateText.text = str.toString()
 
+
             progressBar.progress = moodChartViewModel.nodeList[pointIndex].rating
             //修改rating数值
             cRating.text = moodChartViewModel.nodeList[pointIndex].rating.toString()
             //修改event具体描述
             cDescription.text = moodChartViewModel.nodeList[pointIndex].event
-            cDetailTitle.setOnClickListener {
-                val intent = Intent(context, MoodEditActivity::class.java)
-                intent.putExtra("id", moodChartViewModel.nodeList[pointIndex].id);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context?.startActivity(intent);
-            }
+            Log.d(TAG, "onValueSelected: ${moodChartViewModel.nodeList[pointIndex].id}")
+            mid = moodChartViewModel.nodeList[pointIndex].id
+//            moodCard.setOnClickListener {
+//                val intent = Intent(context, MoodEditActivity::class.java)
+//                intent.putExtra("id", mid)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                context?.startActivity(intent)
+//            }
         }
 
         override fun onValueDeselected() {

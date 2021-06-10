@@ -3,6 +3,7 @@ package com.wlx.xmood.ui.mood
 import android.content.ContentValues
 import androidx.lifecycle.liveData
 import com.wlx.xmood.dao.MyDatabaseHelper
+import com.wlx.xmood.ui.memorandum.MemoDataGet
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
@@ -111,7 +112,7 @@ object MoodDataGet {
     fun getTimeTypeCharNode(startTime: Long, endTime: Long) = fire(Dispatchers.IO) {
         val result = ArrayList<MoodChartItem>()
         val db = dbHelper.writableDatabase
-        var sql = "select * from Mood where date >= $startTime and date < $endTime"
+        var sql = "select * from Mood where date >= $startTime and date < $endTime order by date"
         val cursor = db.rawQuery(sql, null, null)
         cursor.apply {
             if (moveToFirst()) {
@@ -129,6 +130,11 @@ object MoodDataGet {
             close()
         }
         Result.success(result)
+    }
+
+    fun deleteNode(id :Int){
+        val db = MemoDataGet.dbHelper.writableDatabase
+        db.delete("Mood", "id = ?", arrayOf(id.toString()))
     }
 
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =

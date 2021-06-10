@@ -107,12 +107,12 @@ object MemoDataGet {
         lateinit var cursor: Cursor
         if (catalog == "__all") {
             mcatalog = "__all"
-            val sql = "select * from Note order by updateTime"
+            val sql = "select * from Note order by updateTime desc"
             cursor = db.rawQuery(sql, null)
         } else {
             Log.d(TAG, "changeToCatalog: $catalog")
             mcatalog = catalog
-            val sql = "select * from Note where catalog = '$catalog' order by updateTime"
+            val sql = "select * from Note where catalog = '$catalog' order by updateTime desc"
             cursor = db.rawQuery(sql, null)
         }
         cursor.apply {
