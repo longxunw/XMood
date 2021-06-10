@@ -108,7 +108,7 @@ object MoodDataGet {
 //        return null
     }
 
-    private fun getTimeTypeCharNode(startTime: Long, endTime: Long) = fire(Dispatchers.IO) {
+    fun getTimeTypeCharNode(startTime: Long, endTime: Long) = fire(Dispatchers.IO) {
         val result = ArrayList<MoodChartItem>()
         val db = dbHelper.writableDatabase
         var sql = "select * from Mood where date >= $startTime and date < $endTime"

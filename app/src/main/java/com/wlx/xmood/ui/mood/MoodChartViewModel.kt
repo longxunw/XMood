@@ -7,16 +7,17 @@ import androidx.lifecycle.ViewModel
 class MoodChartViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 
-    private val searchNodeLiveData = MutableLiveData<Int>()
+    private val searchNodeLiveData = MutableLiveData<Pair<Long, Long>>()
 
     val nodeList = ArrayList<MoodChartItem>()
 //    val nodeRateList = ArrayList<Int>()
 
-    val nodeLiveData = Transformations.switchMap(searchNodeLiveData){ query ->
-        MoodDataGet.getAllChartNodes(query)
+    val nodeLiveData = Transformations.switchMap(searchNodeLiveData) { query ->
+//        MoodDataGet.getAllChartNodes(query)
+        MoodDataGet.getTimeTypeCharNode(query.first, query.second)
     }
 
-    fun searchNode(query: Int){
-        searchNodeLiveData.value = query
+    fun searchNode(startTime: Long, endTime: Long) {
+        searchNodeLiveData.value = Pair(startTime, endTime)
     }
 }
