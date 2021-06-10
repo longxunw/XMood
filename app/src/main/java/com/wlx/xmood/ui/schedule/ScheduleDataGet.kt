@@ -196,20 +196,36 @@ object ScheduleDataGet {
             for (schedule in scheduleList) {
                 // 不在同一天
                 if (schedule.weekDay != lessonItem.weekDay) continue;
+                var hasOverlappedWeek = false
+                val scheduleWeeks = mutableSetOf<Int>()
+                for (i in schedule.startWeek..schedule.endWeek) {
+                    if (schedule.weekType == 1 && i % 2 == 1 ||
+                        schedule.weekType == 2 && i % 2 == 0 ||
+                        schedule.weekType == 0) {
+                        scheduleWeeks.add(i)
+                    }
+                }
+
+                for (i in lessonItem.startWeek..lessonItem.endWeek) {
+                    if (scheduleWeeks.contains(i)) {
+                        if (lessonItem.weekType == 1 && i % 2 == 1 ||
+                            lessonItem.weekType == 2 && i % 2 == 0 ||
+                            lessonItem.weekType == 0) {
+                            hasOverlappedWeek = true
+                            break
+                        }
+                    }
+                }
+
                 // 没有重合周数
-                if (schedule.startWeek > lessonItem.endWeek || lessonItem.startWeek > schedule.endWeek) continue;
-                // 单双周
-                if ((schedule.weekType == 1 && lessonItem.weekType == 2)
-                    || (schedule.weekType == 2 && lessonItem.weekType == 1)
-                ) continue;
-
-                if (schedule.startTime <= lessonItem.startTime && schedule.endTime > lessonItem.startTime) {
-                    return false
+                if (hasOverlappedWeek) {
+                    if (schedule.startTime <= lessonItem.startTime && schedule.endTime > lessonItem.startTime) {
+                        return false
+                    }
+                    if (lessonItem.startTime <= schedule.startTime && lessonItem.endTime > schedule.startTime) {
+                        return false
+                    }
                 }
-                if (lessonItem.startTime <= schedule.startTime && lessonItem.endTime > schedule.startTime) {
-                    return false
-                }
-
             }
         }
         val value = ContentValues().apply {

@@ -268,7 +268,7 @@ public class LessonAllFragment extends Fragment {
             case 6:
                 layout = satLayout;
                 break;
-            case 7:
+            case 0:
                 layout = sunLayout;
                 break;
             default:
