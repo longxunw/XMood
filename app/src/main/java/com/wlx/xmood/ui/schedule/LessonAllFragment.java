@@ -90,7 +90,7 @@ public class LessonAllFragment extends Fragment {
 
         if (viewModel == null) {
             viewModel = new ViewModelProvider(this).get(LessonAllViewModel.class);
-            viewModel.setBackground(getResources().getDrawable(R.drawable.schedule_all_background_bingbing));
+            viewModel.setBackground(getResources().getDrawable(R.drawable.test1));
         }
 
         if (onMenuItemClickListener == null) {
