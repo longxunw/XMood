@@ -1,6 +1,8 @@
 package com.wlx.xmood.ui.me
 
 import android.content.ContentValues
+import android.database.CursorWindow
+import android.database.sqlite.SQLiteCursor
 import android.graphics.Bitmap
 import com.wlx.xmood.dao.MyDatabaseHelper
 import com.wlx.xmood.utils.ImageUtil
@@ -12,7 +14,9 @@ object MeDataGet {
         val db = dbHelper.writableDatabase
         lateinit var bitmap: Bitmap
         val sql = "select profileImg from User"
-        val cursor = db.rawQuery(sql, null, null)
+        val cursor = db.rawQuery(sql, null, null) as SQLiteCursor
+        val cf = CursorWindow("cursorWindow", 1024 * 1024 * 30)
+        cursor.window = cf
         cursor.apply {
             if (moveToFirst()) {
                 val byteArray = getBlob(getColumnIndex("profileImg"))

@@ -251,12 +251,11 @@ object ScheduleDataGet {
         db.delete("Schedule", "id = ?", arrayOf(id.toString()))
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     fun getAllBgImg(): Bitmap {
         val db = dbHelper.writableDatabase
         val sql = "select lessonImg from User"
         val cursor = db.rawQuery(sql, null, null) as SQLiteCursor
-        val cf = CursorWindow("cursorWindow", 1024 * 1024 * 20)
+        val cf = CursorWindow("cursorWindow", 1024 * 1024 * 30)
         cursor.window = cf
         lateinit var bitmap: Bitmap
         cursor.apply {
