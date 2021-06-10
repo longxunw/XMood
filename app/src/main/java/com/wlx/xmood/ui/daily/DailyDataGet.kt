@@ -60,9 +60,10 @@ object DailyDataGet {
                         getInt(getColumnIndex("isFinish")) != 0,
                     )
                     result.add(item)
-                }while (moveToNext())
+                } while (moveToNext())
             }
         }
+        Log.d(TAG, "getEvent: ${result.size}")
         Result.success(result)
     }
 
