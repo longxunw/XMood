@@ -42,6 +42,10 @@ class MemorandumEditActivity : BaseActivity() {
         catalogText = findViewById(R.id.memorandum_edit_note_catalog)
         if (id == -1) {
             isNew = true
+            val mcatalog = intent.getStringExtra("catalog") ?: "__all"
+            if(mcatalog!="__all"){
+                catalogText.setText(mcatalog)
+            }
         } else {
             isNew = false
             val memo = MemoDataGet.getNoteById(id)

@@ -43,7 +43,7 @@ object DailyDataGet {
     fun getEvent(string: String) = fire(Dispatchers.IO) {
         val db = dbHelper.writableDatabase
         val dayLong = TimeUtil.Str2Long(string,"yyyy-MM-dd")
-        val sql = "select * from Daily where day >= $dayLong and day < ${dayLong+1000*60*60*24} "
+        val sql = "select * from Daily where day >= $dayLong and day < ${dayLong+1000*60*60*24} order by startTime"
         val cursor = db.rawQuery(sql,null)
         val result = ArrayList<DailyItem>()
         cursor.apply {

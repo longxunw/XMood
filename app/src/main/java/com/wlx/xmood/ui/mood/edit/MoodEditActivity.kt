@@ -69,7 +69,7 @@ class MoodEditActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
         time.setType(Type.ALL)
         time.setOnClickListener {
-            time.pickerBuilder.setMinMillseconds(time.current).build()
+            time.pickerBuilder.setMaxMillseconds(time.current).build()
                 .show(supportFragmentManager,"时间")
         }
 

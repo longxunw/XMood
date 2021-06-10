@@ -116,7 +116,7 @@ class DailyEditActivity : BaseActivity() {
 
         alarmTime.setType(Type.ALL)
         alarmTime.setOnClickListener {
-            alarmTime.pickerBuilder.setMinMillseconds(alarmTime.current).build()
+            alarmTime.pickerBuilder.setCurrentMillseconds(alarmTime.current).build()
                 .show(supportFragmentManager, "日程提醒时间")
         }
 
