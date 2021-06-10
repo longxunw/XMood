@@ -70,8 +70,8 @@ object MoodDataGet {
                         getInt(getColumnIndex("id")),
                         getLong(getColumnIndex("date")),
                         getInt(getColumnIndex("rating")),
-                        getString(getColumnIndex("category")),
-                        getString(getColumnIndex("event"))
+                        getString(getColumnIndex("event")),
+                        getString(getColumnIndex("category"))
                     )
                     nodeList.add(item)
                 } while (moveToNext())
@@ -91,8 +91,8 @@ object MoodDataGet {
                     getInt(getColumnIndex("id")),
                     getLong(getColumnIndex("date")),
                     getInt(getColumnIndex("rating")),
-                    getString(getColumnIndex("category")),
-                    getString(getColumnIndex("event"))
+                    getString(getColumnIndex("event")),
+                    getString(getColumnIndex("category"))
                 )
             }
             close()
@@ -120,8 +120,8 @@ object MoodDataGet {
                         getInt(getColumnIndex("id")),
                         getLong(getColumnIndex("date")),
                         getInt(getColumnIndex("rating")),
-                        getString(getColumnIndex("category")),
-                        getString(getColumnIndex("event"))
+                        getString(getColumnIndex("event")),
+                        getString(getColumnIndex("category"))
                     )
                     result.add(item)
                 } while (moveToNext())

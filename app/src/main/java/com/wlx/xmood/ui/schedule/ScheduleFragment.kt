@@ -112,6 +112,7 @@ class ScheduleFragment : Fragment() {
         scheduleViewModel.scheduleLiveData.observe(viewLifecycleOwner, Observer { result ->
             val events = result.getOrNull()
             if (events != null) {
+                Log.d(TAG, "onCreateView: youke${events.size}")
                 noLessonText.visibility = View.GONE
                 scheduleViewModel.scheduleList.clear()
                 scheduleViewModel.scheduleList.addAll(events)

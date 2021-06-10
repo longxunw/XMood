@@ -75,35 +75,54 @@ object ScheduleDataGet {
     )
 
     fun getSchedule(query: Int) = fire(Dispatchers.IO) {
-        if (query == -1) {
-            scheduleList.clear()
-            val db = dbHelper.writableDatabase
-            val sql = "select * from Schedule"
-            val cursor = db.rawQuery(sql, null)
-            cursor.apply {
-                if (moveToFirst()) {
-                    do {
-                        val item = LessonItem(
-                            getInt(getColumnIndex("id")),
-                            getString(getColumnIndex("name")),
-                            getString(getColumnIndex("location")),
-                            getInt(getColumnIndex("weekDay")),
-                            getLong(getColumnIndex("startTime")),
-                            getLong(getColumnIndex("endTime")),
-                            getInt(getColumnIndex("weekType")),
-                            getInt(getColumnIndex("startWeek")),
-                            getInt(getColumnIndex("endWeek"))
-                        )
-                        scheduleList.add(item)
-                    } while (moveToNext())
-                }
+        scheduleList.clear()
+        val db = dbHelper.writableDatabase
+        val sql = "select * from Schedule"
+        val cursor = db.rawQuery(sql, null)
+        cursor.apply {
+            if (moveToFirst()) {
+                Log.d(TAG, "getSchedule: movetofirst")
+                do {
+                    val item = LessonItem(
+                        getInt(getColumnIndex("id")),
+                        getString(getColumnIndex("name")),
+                        getString(getColumnIndex("location")),
+                        getInt(getColumnIndex("weekDay")),
+                        getLong(getColumnIndex("startTime")),
+                        getLong(getColumnIndex("endTime")),
+                        getInt(getColumnIndex("weekType")),
+                        getInt(getColumnIndex("startWeek")),
+                        getInt(getColumnIndex("endWeek"))
+                    )
+                    scheduleList.add(item)
+                } while (moveToNext())
             }
-            Log.d(TAG, "getSchedule: ${TimeUtil.Long2Str(scheduleList[0].startTime, "HH-mm")}")
-            Log.d(TAG, "getSchedule: ${TimeUtil.Long2Str(scheduleList[0].endTime, "HH-mm")}")
-
+            close()
+        }
+        Log.d(TAG, "getSchedule: ${TimeUtil.Long2Str(scheduleList[0].startTime, "HH-mm")}")
+        Log.d(TAG, "getSchedule: ${TimeUtil.Long2Str(scheduleList[0].endTime, "HH-mm")}")
+        if (query == -1) {
             Result.success(scheduleList)
         } else {
-            val result = getWeekDaySchedule(query)
+            val week = getWeekCount(startDate)
+            val result = ArrayList<LessonItem>()
+            Log.d(TAG, "getWeekDaySchedule: ScheduleList size:${scheduleList.size}")
+            for (schedule in scheduleList) {
+                if (query == schedule.weekDay) {
+                    if (schedule.startWeek > week || schedule.endWeek < week) continue
+                    if (schedule.weekType == 0) {
+                        // 没有单双周 判断在起始周范围内
+                        result.add(schedule)
+                    } else if (schedule.weekType == 1 && week % 2 == 1L) {
+                        // 单周 判断当前周是不是单周
+                        result.add(schedule)
+                    } else if (schedule.weekType == 2 && week % 2 == 0L) {
+                        // 双周
+                        result.add(schedule)
+                    }
+                }
+            }
+            Log.d(TAG, "getWeekDaySchedule: ${result.size}")
             Result.success(result)
         }
     }
@@ -148,6 +167,51 @@ object ScheduleDataGet {
 
     //若出现时间冲突 则返回false，此处这一逻辑省略
     fun addLesson(lessonItem: LessonItem): Boolean {
+
+        val db = dbHelper.writableDatabase
+        scheduleList.clear()
+        val sql = "select * from Schedule"
+        val cursor = db.rawQuery(sql, null)
+        cursor.apply {
+            if (moveToFirst()) {
+                Log.d(TAG, "getSchedule: movetofirst")
+                do {
+                    val item = LessonItem(
+                        getInt(getColumnIndex("id")),
+                        getString(getColumnIndex("name")),
+                        getString(getColumnIndex("location")),
+                        getInt(getColumnIndex("weekDay")),
+                        getLong(getColumnIndex("startTime")),
+                        getLong(getColumnIndex("endTime")),
+                        getInt(getColumnIndex("weekType")),
+                        getInt(getColumnIndex("startWeek")),
+                        getInt(getColumnIndex("endWeek"))
+                    )
+                    scheduleList.add(item)
+                } while (moveToNext())
+            }
+            close()
+        }
+        if (lessonItem.id == -1) {
+            for (schedule in scheduleList) {
+                // 不在同一天
+                if (schedule.weekDay != lessonItem.weekDay) continue;
+                // 没有重合周数
+                if (schedule.startWeek > lessonItem.endWeek || lessonItem.startWeek > schedule.endWeek) continue;
+                // 单双周
+                if ((schedule.weekType == 1 && lessonItem.weekType == 2)
+                    || (schedule.weekType == 2 && lessonItem.weekType == 1)
+                ) continue;
+
+                if (schedule.startTime <= lessonItem.startTime && schedule.endTime > lessonItem.startTime) {
+                    return false
+                }
+                if (lessonItem.startTime <= schedule.startTime && lessonItem.endTime > schedule.startTime) {
+                    return false
+                }
+
+            }
+        }
         val value = ContentValues().apply {
             put("name", lessonItem.name)
             put("location", lessonItem.location)
@@ -158,8 +222,6 @@ object ScheduleDataGet {
             put("startWeek", lessonItem.startWeek)
             put("endWeek", lessonItem.endWeek)
         }
-        val db = dbHelper.writableDatabase
-
         if (lessonItem.id >= 0) {
             db.update("Schedule", value, "id = ?", arrayOf(lessonItem.id.toString()))
         } else {
@@ -171,28 +233,6 @@ object ScheduleDataGet {
     fun deleteLesson(id: Int) {
         val db = dbHelper.writableDatabase
         db.delete("Schedule", "id = ?", arrayOf(id.toString()))
-    }
-
-    private fun getWeekDaySchedule(query: Int): ArrayList<LessonItem> {
-        getSchedule(-1)
-        val week = getWeekCount(startDate)
-        val result = ArrayList<LessonItem>()
-        for (schedule in scheduleList) {
-            if (query == schedule.weekDay) {
-                if (schedule.startWeek > week || schedule.endWeek < week) continue
-                if (schedule.weekType == 0) {
-                    // 没有单双周 判断在起始周范围内
-                    result.add(schedule)
-                } else if (schedule.weekType == 1 && week % 2 == 1L) {
-                    // 单周 判断当前周是不是单周
-                    result.add(schedule)
-                } else if (schedule.weekType == 2 && week % 2 == 0L) {
-                    // 双周
-                    result.add(schedule)
-                }
-            }
-        }
-        return result
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
