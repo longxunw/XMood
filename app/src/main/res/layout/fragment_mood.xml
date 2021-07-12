@@ -45,7 +45,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:theme="@style/MyViewPagerTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dayCountText"
         app:layout_constraintTop_toBottomOf="@id/mood_time_tab"
         tools:layout_editor_absoluteX="20dp" />
 
@@ -63,7 +63,27 @@
         app:fabSize="auto" />
 
 
+    <TextView
+        android:id="@+id/dayCountText"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="天数："
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/mood_viewpager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        />
 
+    <TextView
+        android:id="@+id/dayCount"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintLeft_toRightOf="@id/dayCountText"
+        app:layout_constraintTop_toTopOf="@id/dayCountText"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

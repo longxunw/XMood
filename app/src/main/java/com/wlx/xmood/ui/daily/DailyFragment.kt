@@ -124,6 +124,7 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
 
     override fun onResume() {
         super.onResume()
+        initText()
         viewModel.searchEvent(
             "${calendar.selectedCalendar.year}-${
                 String.format(
@@ -166,6 +167,20 @@ class DailyFragment : Fragment(), CalendarView.OnCalendarSelectListener {
 
     override fun onCalendarSelect(calendar: Calendar?, isClick: Boolean) {
         calendar?.let {
+            val day = String.format("%02d", it.day)
+            dayText.text = day
+            val month = String.format("%02d", it.month) + "月"
+            monthText.text = month
+            yearText.text = it.year.toString()
+            val weekday = "星期${TimeUtil.getWeekDayChinese(it.week)}"
+            weekdayText.text = weekday
+            viewModel.searchEvent("${it.year}-${String.format("%02d", it.month)}-$day")
+            Log.d(TAG, "onCalendarSelect: ${it.year}-${String.format("%02d", it.month)}-$day")
+        }
+    }
+
+    fun initText(){
+        calendar.selectedCalendar.let {
             val day = String.format("%02d", it.day)
             dayText.text = day
             val month = String.format("%02d", it.month) + "月"

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
@@ -15,6 +16,9 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wlx.xmood.R
 import com.wlx.xmood.ui.mood.edit.MoodEditActivity
+import com.wlx.xmood.utils.TimeUtil
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MoodFragment : Fragment() {
 
@@ -56,6 +60,13 @@ class MoodFragment : Fragment() {
         viewPager = root.findViewById(R.id.mood_viewpager)
         viewPager.isUserInputEnabled = false
 //        initTab()
+
+        val dayCount = root.findViewById<TextView>(R.id.dayCount)
+        dayCount.text = TimeUtil.getGapDayCount(
+            TimeUtil.Str2Date("2019-12-03","yyyy-MM-dd"),
+            Date(System.currentTimeMillis())
+        ).toString()
+        Log.d(TAG, "onCreateView: ${TimeUtil.Long2Str(System.currentTimeMillis(),"yyyy-MM-dd HH:mm")}")
         return root
     }
 

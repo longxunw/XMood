@@ -31,6 +31,24 @@ object TimeUtil {
         return dateFormat.parse(string)?.time as Long
     }
 
+    fun getGapDayCount(startDate: Date, endDate: Date): Int{
+        val from = Calendar.getInstance().apply {
+            time = startDate
+            set(Calendar.HOUR_OF_DAY,0)
+            set(Calendar.MINUTE,0)
+            set(Calendar.SECOND,0)
+            set(Calendar.MILLISECOND,0)
+        }
+        val to = Calendar.getInstance().apply {
+            time = endDate
+            set(Calendar.HOUR_OF_DAY,0)
+            set(Calendar.MINUTE,0)
+            set(Calendar.SECOND,0)
+            set(Calendar.MILLISECOND,0)
+        }
+        return ((to.time.time-from.time.time)/(1000*60*60*24)).toInt()
+    }
+
     fun getWeekCount(date: String): Long {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         val start: Long = (dateFormat.parse(date)?.time as Long) / (1000 * 3600 * 24)
