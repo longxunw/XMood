@@ -61,12 +61,6 @@ class MoodFragment : Fragment() {
         viewPager.isUserInputEnabled = false
 //        initTab()
 
-        val dayCount = root.findViewById<TextView>(R.id.dayCount)
-        dayCount.text = TimeUtil.getGapDayCount(
-            TimeUtil.Str2Date("2019-12-03","yyyy-MM-dd"),
-            Date(System.currentTimeMillis())
-        ).toString()
-        Log.d(TAG, "onCreateView: ${TimeUtil.Long2Str(System.currentTimeMillis(),"yyyy-MM-dd HH:mm")}")
         return root
     }
 

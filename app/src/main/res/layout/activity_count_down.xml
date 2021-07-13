@@ -26,20 +26,23 @@
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_back_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="倒计时"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:layout_gravity="center"/>
         </Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.cardview.widget.CardView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/count_down_list"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/app_bar"
-        android:layout_margin="10dp"
-        app:cardCornerRadius="20dp">
-
-
-
-    </androidx.cardview.widget.CardView>
-
+        android:layout_marginTop="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

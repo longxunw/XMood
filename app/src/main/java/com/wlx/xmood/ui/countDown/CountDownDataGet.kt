@@ -16,7 +16,7 @@ object CountDownDataGet {
     val TAG = "CountDownDataGet"
     lateinit var dbHelper: MyDatabaseHelper
 
-    fun getAll() = fire(Dispatchers.IO){
+    fun getAll(string: String) = fire(Dispatchers.IO){
         val db = dbHelper.writableDatabase
         val sql = "select * from Countdown"
         val cursor = db.rawQuery(sql,null)
@@ -29,6 +29,7 @@ object CountDownDataGet {
                         getString(getColumnIndex("content")),
                         getLong(getColumnIndex("startDay"))
                     )
+                    result.add(item)
                 }while(moveToNext())
             }
         }
