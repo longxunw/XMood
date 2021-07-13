@@ -8,6 +8,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.wlx.xmood.dao.MyDatabaseHelper
+import com.wlx.xmood.ui.countDown.CountDownDataGet
 import com.wlx.xmood.ui.daily.DailyDataGet
 import com.wlx.xmood.ui.me.MeDataGet
 import com.wlx.xmood.ui.memorandum.MemoDataGet
@@ -30,6 +31,7 @@ class MainActivity : BaseActivity() {
         MoodDataGet.dbHelper = databaseHelper
         DailyDataGet.dbHelper = databaseHelper
         MeDataGet.dbHelper = databaseHelper
+        CountDownDataGet.dbHelper = databaseHelper
 //        supportActionBar?.hide()
         navView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)

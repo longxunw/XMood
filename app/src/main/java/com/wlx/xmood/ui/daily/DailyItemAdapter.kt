@@ -20,7 +20,7 @@ class DailyItemAdapter(
     private val contentList: List<DailyItem>
 ) : RecyclerView.Adapter<DailyItemAdapter.ViewHolder>() {
 
-    private val TAG = " DailyItemAdapter"
+    private val TAG = "DailyItemAdapter"
     private lateinit var context: Context
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

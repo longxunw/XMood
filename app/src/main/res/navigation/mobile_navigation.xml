@@ -26,6 +26,7 @@
         android:name="com.wlx.xmood.ui.schedule.ScheduleFragment"
         android:label="@string/title_schedule"
         tools:layout="@layout/fragment_schedule" />
+
     <fragment
         android:id="@+id/navigation_me"
         android:name="com.wlx.xmood.ui.me.MeFragment"

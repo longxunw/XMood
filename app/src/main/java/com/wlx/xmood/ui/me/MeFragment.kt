@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -24,7 +25,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wlx.xmood.ActivityCollector
 import com.wlx.xmood.R
+import com.wlx.xmood.ui.countDown.CountDownActivity
 import com.wlx.xmood.utils.DensityUtil
+import com.wlx.xmood.utils.Utils
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
 
@@ -87,6 +90,11 @@ class MeFragment : Fragment() {
 //        alarmTest.setOnClickListener {
 //            setAlarm(Date().time + 1000)
 //        }
+        val toCountDown = root.findViewById<CardView>(R.id.to_CountDown)
+        toCountDown.setOnClickListener{
+            val intent = Intent(context,CountDownActivity::class.java)
+            startActivity(intent)
+        }
         return root
     }
 

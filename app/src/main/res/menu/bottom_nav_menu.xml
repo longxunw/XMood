@@ -18,6 +18,7 @@
         android:id="@+id/navigation_schedule"
         android:icon="@drawable/ic_schedule_black_24"
         android:title="@string/title_schedule" />
+
     <item
         android:id="@+id/navigation_me"
         android:icon="@drawable/ic_me_black_24"

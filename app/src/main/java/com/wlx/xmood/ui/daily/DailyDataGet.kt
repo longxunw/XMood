@@ -62,6 +62,7 @@ object DailyDataGet {
                     result.add(item)
                 } while (moveToNext())
             }
+            close()
         }
         Log.d(TAG, "getEvent: ${result.size}")
         Result.success(result)
